@@ -1,36 +1,23 @@
 ---
 layout: archive
-title: "Publications"
+title: "Publications & Patents"
 permalink: /publications/
 author_profile: true
 ---
 
-{% if site.author.googlescholar %}
-  <div class="wordwrap">You can also find my articles on <a href="{{site.author.googlescholar}}">my Google Scholar profile</a>.</div>
-{% endif %}
+<h2>Peer-Reviewed Papers</h2>
+<ul>
+  <li>2025: <em>The Immersive Art Therapy Driven by AIGC: An Innovative Approach to Alleviating Children’s Nyctophobia</em> – CHI SDC Paper.</li>
+  <li>2024: <em>ContextCam: Bridging Context Awareness with Creative Human-AI Image Co-Creation</em> – CHI Full Paper. DOI: 10.1145/3613904.3642129.</li>
+  <li>2024: <em>Enlivening Performance Art: Enhanced Interactivity through Embodied Cognition and Real-Time Physical Visualization on Swarm Tangible Interfaces</em> – Proceedings of the ICLC. DOI: 10.5281/zenodo.11350409.</li>
+  <li>2023: <em>TrailTracking: AI-Driven Distributed Narratives of Descendant Civilizations in a Digitally Encoded Cosmos</em> – Science 24 hours. DOI: 10.3969/j.issn.1002-7394.2024.10.003.</li>
+</ul>
 
-{% include base_path %}
-
-<!-- New style rendering if publication categories are defined -->
-{% if site.publication_category %}
-  {% for category in site.publication_category  %}
-    {% assign title_shown = false %}
-    {% for post in site.publications reversed %}
-      {% if post.category != category[0] %}
-        {% continue %}
-      {% endif %}
-      {% unless title_shown %}
-        <h2>{{ category[1].title }}</h2><hr />
-        {% assign title_shown = true %}
-      {% endunless %}
-      {% include archive-single.html %}
-    {% endfor %}
-  {% endfor %}
-{% else %}
-  {% for post in site.publications reversed %}
-    {% include archive-single.html %}
-  {% endfor %}
-{% endif %}
-
-
-
+<h2>Patents & Software</h2>
+<ul>
+  <li>2023: <em>AI-Assisted Design Creation Software</em> – Software Monograph, Registration No. 2023SR1444677.</li>
+  <li>2023: <em>Integrated Art Education Service Solution Based on Generative AI</em> – Invention Patent, Application No. 202310399782X.</li>
+  <li>2022: <em>Box</em> – Design Patent, Patent No. ZL 2022 3 0178236.X.</li>
+  <li>2022: <em>A Kind of Robotic Arm</em> – Utility Model Patent, Patent No. ZL 2022 2 0740933.4.</li>
+  <li>2022: <em>Image Digital Projection Device</em> – Utility Model Patent, Patent No. ZL 2022 2 3454035.1.</li>
+</ul>
