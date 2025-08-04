@@ -1,0 +1,49 @@
+#particles-js {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.hero {
+  text-align: center;
+  padding: 10rem 1rem 5rem;
+}
+
+.tags {
+  text-align: center;
+}
+
+.tag {
+  display: inline-block;
+  background: #f0f0f0;
+  color: #333;
+  padding: 0.3rem 0.6rem;
+  margin: 0.2rem;
+  border-radius: 0.2rem;
+  font-size: 0.9rem;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.link-box {
+  margin: 0.5rem;
+  padding: 1rem 2rem;
+  background: #fff;
+  border: 1px solid #ddd;
+  text-decoration: none;
+  color: #333;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.link-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
