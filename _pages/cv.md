@@ -9,7 +9,7 @@ Interdisciplinary design researcher bridging art, technology, and human-centered
 
 ## Education
 - **School of Design, The Hong Kong Polytechnic University** – AED Lab, Ph.D. Student, 2024–Present.
-- **China Academy of Art** – BFA in Innovative Design, 2020–2024.
+- **China Academy of Art** – B.Eng in Innovative Design, 2020–2024.
 
 ## Experience
 - **CEO**, Hangzhou BIZZLE Network Technology Co., Ltd. (Feb 2022 – Present).
