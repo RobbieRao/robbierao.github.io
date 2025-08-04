@@ -9,7 +9,7 @@ title: "Robbie Rao Fenggui"
 <div id="particles-js"></div>
 
 <section class="hero">
-  <h1>Robbie Rao Fenggui</h1>
+  <h1>{{ page.title }}</h1>
   <p>Interdisciplinary design researcher bridging art, technology, and human-centered innovation.</p>
 </section>
 
