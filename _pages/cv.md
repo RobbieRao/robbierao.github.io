@@ -4,42 +4,34 @@ title: "CV"
 permalink: /cv/
 author_profile: true
 ---
+## Profile
+Interdisciplinary design researcher bridging art, technology, and human-centered innovation. Expertise in ergonomic design, generative AI, and interactive systems.
 
-### Contact
+## Education
+- **School of Design, The Hong Kong Polytechnic University** – AED Lab, Ph.D. Student, 2024–Present.
+- **China Academy of Art** – BFA in Innovative Design, 2020–2024.
 
-Robbie Rao Fenggui  
-School of Design, The Hong Kong Polytechnic University  
-Hung Hom, Kowloon, Hong Kong  
-Supervisor: Yan Tina Luximon  
-Tel: (852) 84032765  
-Email: robbie.rao@connect.polyu.hk  
-Website: [robbierao.com](https://robbierao.com)  
-AED Lab: [sd.polyu.edu.hk/aedlab](https://sd.polyu.edu.hk/aedlab)  
-Design Anything Lab: [designanything.design](https://designanything.design)
+## Experience
+- **CEO**, Hangzhou BIZZLE Network Technology Co., Ltd. (Feb 2022 – Present).
+- **Co-Founder**, DesignAnything Lab, China Academy of Art (Mar 2022 – Sep 2024).
 
-### Overview
-
-Interdisciplinary design researcher bridging art, technology, and human-centered innovation. Expert in ergonomic design, generative AI, and interactive systems.
-
-### Projects
-
+## Projects
 - **Blind Box Experience Upgrade** – Reimagined the blind box concept through innovative interaction design and patented solutions.
-- **AIGC-Driven Virtual Art Education Tutor** – Transformed virtual art education using generative AI, garnering top honors.
+- **AIGC-Driven Virtual Art Education Tutor** – Transformed virtual art education using generative AI, earning top honors.
 - **Private Domain UX Design** – Developed data-driven strategies and intuitive interfaces to enhance digital user engagement.
 
-### Publications & Patents
+## Publications & Patents
+- *The Immersive Art Therapy Driven by AIGC: An Innovative Approach to Alleviating Children’s Nyctophobia*, CHI SDC Paper, 2025.
+- *ContextCam: Bridging Context Awareness with Creative Human-AI Image Co-Creation*, CHI Full Paper, 2024. DOI: 10.1145/3613904.3642129.
+- *Enlivening Performance Art: Enhanced Interactivity through Embodied Cognition and Real-Time Physical Visualization on Swarm Tangible Interfaces*, Proceedings of the ICLC, 2024. DOI: 10.5281/zenodo.11350409.
+- *TrailTracking: AI-Driven Distributed Narratives of Descendant Civilizations in a Digitally Encoded Cosmos*, Science 24 hours, 2024. DOI: 10.3969/j.issn.1002-7394.2024.10.003.
+- *AI-Assisted Design Creation Software*, Software Monograph, 2023. Registration No. 2023SR1444677.
+- *Integrated Art Education Service Solution Based on Generative AI*, Invention Patent, 2023. Application No. 202310399782X.
+- *Box*, Design Patent, 2022. Patent No. ZL 2022 3 0178236.X.
+- *A Kind of Robotic Arm*, Utility Model Patent, 2022. Patent No. ZL 2022 2 0740933.4.
+- *Image Digital Projection Device*, Utility Model Patent, 2022. Patent No. ZL 2022 2 3454035.1.
 
-- 2025.04: *The Immersive Art Therapy Driven by AIGC: An Innovative Approach to Alleviating Children’s Nyctophobia* – CHI Student Design Competition, 2025.
-- 2024.05: *ContextCam: Bridging Context Awareness with Creative Human-AI Image Co-Creation* – CHI, 2024. DOI: 10.1145/3613904.3642129.
-- 2024.05: *Enlivening Performance Art: Enhanced Interactivity through Embodied Cognition and Real-Time Physical Visualization on Swarm Tangible Interfaces* – ICLC, 2024. DOI: 10.5281/zenodo.11350409.
-- 2023.12: *TrailTracking: AI-Driven Distributed Narratives of Descendant Civilizations in a Digitally Encoded Cosmos* – Science 24 Hours, 2024. DOI: 10.3969/j.issn.1002-7394.2024.10.003.
-- 2023.12: *AI-Assisted Design Creation Software* – Software Monograph, Registration No. 2023SR1444677.
-- 2023.10: *Integrated Art Education Service Solution Based on Generative AI* – Invention Patent, Application No. 202310399782X.
-- 2022.03: Design Patent for “Box” – Patent No. ZL 2022 3 0178236.X.
-- 2022.02: A Kind of Robotic Arm – Utility Model Patent, Patent No. ZL 2022 2 0740933.4.
-- 2022.02: Image Digital Projection Device – Utility Model Patent, Patent No. ZL 2022 2 3454035.1.
-
-### Experience
-
-- **CEO**, Hangzhou BIZZLE Network Technology Co., Ltd., Feb 2022 – Present. Leading innovative product design and managing dynamic teams to cultivate market-leading strategies.
-- **Co-Founder**, DesignAnything Lab, China Academy of Art, Mar 2022 – Sep 2024. Spearheaded tailored design solutions that enhance social impact.
+## Contact
+Hung Hom, Kowloon, Hong Kong  
+Tel: (852) 8403 2765  
+Email: [robbie.rao@connect.polyu.hk](mailto:robbie.rao@connect.polyu.hk)  
