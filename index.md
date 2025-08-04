@@ -1,6 +1,6 @@
 ---
-layout: splash
-author_profile: false
+layout: single
+author_profile: true
 title: "Robbie Rao Fenggui"
 ---
 
@@ -9,8 +9,6 @@ title: "Robbie Rao Fenggui"
 <div id="particles-js"></div>
 
 <section class="hero">
-  <div id="model-container"></div>
-  <img src="https://robbierao.com/Robbie.png" alt="Robbie Rao" class="hero-photo">
   <h1>{{ page.title }}</h1>
   <p>Interdisciplinary design researcher bridging art, technology, and human-centered innovation.</p>
 </section>
@@ -23,6 +21,8 @@ title: "Robbie Rao Fenggui"
 
 <section class="links">
   <a class="link-box" href="/publications/">Publications</a>
+  <a class="link-box" href="/talks/">Talks</a>
+  <a class="link-box" href="/teaching/">Teaching</a>
   <a class="link-box" href="/portfolio/">Portfolio</a>
   <a class="link-box" href="/year-archive/">Blog Posts</a>
   <a class="link-box" href="/cv/">CV</a>
@@ -39,7 +39,4 @@ title: "Robbie Rao Fenggui"
 </section>
 
 <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-<script src="https://unpkg.com/three@0.158.0/build/three.min.js"></script>
-<script src="https://unpkg.com/three@0.158.0/examples/js/loaders/OBJLoader.js"></script>
 <script src="/assets/js/home.js"></script>
-<script src="/assets/js/model.js"></script>
