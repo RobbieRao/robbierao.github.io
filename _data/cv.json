@@ -1,152 +1,105 @@
 {
   "basics": {
-    "name": "Your Sidebar Name",
-    "email": "none@example.org",
-    "phone": "",
-    "website": "https://academicpages.github.io",
-    "summary": "Currently employed at Red Brick University. Short biography for the left-hand sidebar",
+    "name": "Robbie Rao Fenggui",
+    "email": "robbie.rao@connect.polyu.hk",
+    "phone": "(852) 84032765",
+    "website": "https://robbierao.com",
+    "summary": "Interdisciplinary design researcher bridging art, technology, and human-centered innovation.",
     "location": {
-      "address": "",
-      "postalCode": "",
-      "city": "Earth",
-      "countryCode": "US",
-      "region": ""
+      "city": "Hong Kong",
+      "region": "Hong Kong"
     },
     "profiles": [
       {
-        "network": "Google Scholar",
-        "username": "",
-        "url": "https://scholar.google.com/citations?user=PS_CX0AAAAAJ"
-      },
-      {
-        "network": "ORCID",
-        "username": "",
-        "url": "http://orcid.org/yourorcidurl"
-      },
-      {
         "network": "GitHub",
-        "username": "academicpages",
-        "url": "https://github.com/academicpages"
+        "username": "RobbieRao",
+        "url": "https://github.com/RobbieRao"
       }
     ]
   },
-  "work": [],
-  "education": [
+  "work": [
     {
-      "institution": "GitHub University",
-      "area": "Ph.D in Version Control Theory",
-      "studyType": "",
-      "startDate": "",
-      "endDate": "2018",
-      "gpa": null,
-      "courses": []
+      "company": "Hangzhou BIZZLE Network Technology Co., Ltd.",
+      "position": "CEO",
+      "startDate": "2022-02",
+      "summary": "Leading innovative product design and managing dynamic teams to cultivate market-leading strategies."
     },
     {
-      "institution": "GitHub University",
-      "area": "M.S. in Jekyll",
-      "studyType": "",
-      "startDate": "",
-      "endDate": "2014",
-      "gpa": null,
-      "courses": []
-    },
-    {
-      "institution": "GitHub University",
-      "area": "B.S. in GitHub",
-      "studyType": "",
-      "startDate": "",
-      "endDate": "2012",
-      "gpa": null,
-      "courses": []
+      "company": "DesignAnything Lab, China Academy of Art",
+      "position": "Co-Founder",
+      "startDate": "2022-03",
+      "endDate": "2024-09",
+      "summary": "Spearheaded tailored design solutions that enhance social impact."
     }
   ],
-  "skills": [],
-  "languages": [],
-  "interests": [],
-  "references": [],
   "publications": [
     {
-      "name": "Paper Title Number 1",
-      "publisher": "Journal 1",
-      "releaseDate": "2009-10-01",
-      "website": "http://academicpages.github.io/files/paper1.pdf",
-      "summary": "This paper is about the number 1. The number 2 is left for future work."
+      "name": "The Immersive Art Therapy Driven by AIGC: An Innovative Approach to Alleviating Children’s Nyctophobia",
+      "publisher": "CHI Student Design Competition",
+      "releaseDate": "2025-04-01"
     },
     {
-      "name": "Paper Title Number 2",
-      "publisher": "Journal 1",
-      "releaseDate": "2010-10-01",
-      "website": "http://academicpages.github.io/files/paper2.pdf",
-      "summary": "This paper is about the number 2. The number 3 is left for future work."
+      "name": "ContextCam: Bridging Context Awareness with Creative Human-AI Image Co-Creation",
+      "publisher": "CHI",
+      "releaseDate": "2024-05-01",
+      "doi": "10.1145/3613904.3642129"
     },
     {
-      "name": "Paper Title Number 3",
-      "publisher": "Journal 1",
-      "releaseDate": "2015-10-01",
-      "website": "http://academicpages.github.io/files/paper3.pdf",
-      "summary": "This paper is about the number 3. The number 4 is left for future work."
+      "name": "Enlivening Performance Art: Enhanced Interactivity through Embodied Cognition and Real-Time Physical Visualization on Swarm Tangible Interfaces",
+      "publisher": "ICLC",
+      "releaseDate": "2024-05-01",
+      "doi": "10.5281/zenodo.11350409"
     },
     {
-      "name": "Paper Title Number 4",
-      "publisher": "GitHub Journal of Bugs",
-      "releaseDate": "2024-02-17",
-      "website": "http://academicpages.github.io/files/paper3.pdf",
-      "summary": "This paper is about fixing template issue #693."
-    }
-  ],
-  "presentations": [
-    {
-      "name": "Talk 1 on Relevant Topic in Your Field",
-      "event": "UC San Francisco, Department of Testing",
-      "date": "2012-03-01",
-      "location": "San Francisco, CA, USA",
-      "description": ""
+      "name": "TrailTracking: AI-Driven Distributed Narratives of Descendant Civilizations in a Digitally Encoded Cosmos",
+      "publisher": "Science 24 Hours",
+      "releaseDate": "2023-12-01",
+      "doi": "10.3969/j.issn.1002-7394.2024.10.003"
     },
     {
-      "name": "Tutorial 1 on Relevant Topic in Your Field",
-      "event": "UC-Berkeley Institute for Testing Science",
-      "date": "2013-03-01",
-      "location": "Berkeley, CA, USA",
-      "description": ""
+      "name": "AI-Assisted Design Creation Software",
+      "publisher": "Software Monograph",
+      "releaseDate": "2023-12-01"
     },
     {
-      "name": "Talk 2 on Relevant Topic in Your Field",
-      "event": "London School of Testing",
-      "date": "2014-02-01",
-      "location": "London, UK",
-      "description": ""
+      "name": "Integrated Art Education Service Solution Based on Generative AI",
+      "publisher": "Invention Patent",
+      "releaseDate": "2023-10-01"
     },
     {
-      "name": "Conference Proceeding talk 3 on Relevant Topic in Your Field",
-      "event": "Testing Institute of America 2014 Annual Conference",
-      "date": "2014-03-01",
-      "location": "Los Angeles, CA, USA",
-      "description": ""
-    }
-  ],
-  "teaching": [
-    {
-      "course": "Teaching experience 1",
-      "institution": "University 1, Department",
-      "date": "2014-01-01",
-      "role": "Undergraduate course",
-      "description": ""
+      "name": "Design Patent for \"Box\"",
+      "publisher": "Design Patent",
+      "releaseDate": "2022-03-01"
     },
     {
-      "course": "Teaching experience 2",
-      "institution": "University 1, Department",
-      "date": "2015-01-01",
-      "role": "Workshop",
-      "description": ""
+      "name": "A Kind of Robotic Arm",
+      "publisher": "Utility Model Patent",
+      "releaseDate": "2022-02-01"
+    },
+    {
+      "name": "Image Digital Projection Device",
+      "publisher": "Utility Model Patent",
+      "releaseDate": "2022-02-01"
     }
   ],
   "portfolio": [
     {
-      "name": "Portfolio item number 1",
+      "name": "Blind Box Experience Upgrade",
       "category": "portfolio",
-      "date": "",
-      "url": "",
-      "description": "Short description of portfolio item number 1<br/><img src='/images/500x300.png'>"
+      "date": "2024-01-01",
+      "description": "Reimagined the blind box concept through innovative interaction design and patented solutions."
+    },
+    {
+      "name": "AIGC-Driven Virtual Art Education Tutor",
+      "category": "portfolio",
+      "date": "2024-01-01",
+      "description": "Transformed virtual art education using generative AI, garnering top honors."
+    },
+    {
+      "name": "Private Domain UX Design",
+      "category": "portfolio",
+      "date": "2024-01-01",
+      "description": "Developed data-driven strategies and intuitive interfaces to enhance digital user engagement."
     }
   ]
 }
