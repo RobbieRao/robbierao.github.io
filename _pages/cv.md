@@ -4,7 +4,6 @@ title: "CV"
 permalink: /cv/
 author_profile: true
 ---
-
 ## Profile
 Interdisciplinary design researcher bridging art, technology, and human-centered innovation. Expertise in ergonomic design, generative AI, and interactive systems.
 
@@ -36,4 +35,3 @@ Interdisciplinary design researcher bridging art, technology, and human-centered
 Hung Hom, Kowloon, Hong Kong  
 Tel: (852) 8403 2765  
 Email: [robbie.rao@connect.polyu.hk](mailto:robbie.rao@connect.polyu.hk)  
-Website: [robbierao.com](https://robbierao.com)
