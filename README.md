@@ -1,6 +1,3 @@
-# RAO Fenggui
-
-This repository contains the source for the personal website of **RAO Fenggui**.
 The site is built with [Academic Pages](https://github.com/academicpages/academicpages.github.io) and hosted with GitHub Pages.
 
 - Affiliation: Hong Kong Polytechnic University
