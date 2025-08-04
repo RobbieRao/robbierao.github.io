@@ -12,6 +12,19 @@
   padding: 10rem 1rem 5rem;
 }
 
+#model-container {
+  width: 300px;
+  height: 300px;
+  margin: 0 auto 2rem;
+}
+
+.hero-photo {
+  width: 150px;
+  border-radius: 50%;
+  display: block;
+  margin: 0 auto 1rem;
+}
+
 .tags {
   text-align: center;
 }
