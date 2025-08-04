@@ -1,7 +1,7 @@
 ---
 layout: single
-author_profile: true
-title: "Robbie Rao Fenggui"
+author_profile: false
+title: ""
 ---
 
 <link rel="stylesheet" href="/assets/css/home.css">
@@ -9,8 +9,10 @@ title: "Robbie Rao Fenggui"
 <div id="particles-js"></div>
 
 <section class="hero">
-  <h1>{{ page.title }}</h1>
+  <img src="https://robbierao.com/Robbie.png" alt="Robbie Rao" class="profile-photo">
+  <h1>Robbie Rao Fenggui</h1>
   <p>Interdisciplinary design researcher bridging art, technology, and human-centered innovation.</p>
+  <div id="model-container"></div>
 </section>
 
 <section class="tags">
@@ -21,8 +23,6 @@ title: "Robbie Rao Fenggui"
 
 <section class="links">
   <a class="link-box" href="/publications/">Publications</a>
-  <a class="link-box" href="/talks/">Talks</a>
-  <a class="link-box" href="/teaching/">Teaching</a>
   <a class="link-box" href="/portfolio/">Portfolio</a>
   <a class="link-box" href="/year-archive/">Blog Posts</a>
   <a class="link-box" href="/cv/">CV</a>
@@ -39,4 +39,6 @@ title: "Robbie Rao Fenggui"
 </section>
 
 <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/examples/js/loaders/OBJLoader.js"></script>
 <script src="/assets/js/home.js"></script>
