@@ -11,22 +11,9 @@ title: "Robbie Rao Fenggui"
 <div id="head-container"></div>
 
 <section class="hero">
-  <h1>{{ page.title }}</h1>
   <p>Interdisciplinary design researcher bridging art, technology, and human-centered innovation.</p>
 </section>
 
-<section class="tags">
-  <span class="tag">Ergonomic Design</span>
-  <span class="tag">Generative AI</span>
-  <span class="tag">Interactive Systems</span>
-</section>
-
-<section class="links">
-    <a class="link-box" href="/publications/">Publications</a>
-    <a class="link-box" href="/portfolio/">Portfolio</a>
-    <a class="link-box" href="/year-archive/">Blog Posts</a>
-    <a class="link-box" href="/cv/">CV</a>
-</section>
 
 <section class="contact">
   <h2>Contact</h2>
