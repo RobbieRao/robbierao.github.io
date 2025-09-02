@@ -35,8 +35,14 @@
   "publications": [
     {
       "name": "The Immersive Art Therapy Driven by AIGC: An Innovative Approach to Alleviating Children’s Nyctophobia",
-      "publisher": "CHI Student Design Competition",
-      "releaseDate": "2025-04-01"
+      "publisher": "CHI EA 2025",
+      "releaseDate": "2025-04-01",
+      "doi": "10.1145/3706599.3720312"
+    },
+    {
+      "name": "Between Real and Imagined: Developing a dynamic immersive virtual auditing (DIVA) framework for high-density urban health trails",
+      "publisher": "Education and Research in Computer Aided Architectural Design in Europe (eCAADe 2025)",
+      "releaseDate": "2025-09-01"
     },
     {
       "name": "ContextCam: Bridging Context Awareness with Creative Human-AI Image Co-Creation",
