@@ -21,7 +21,8 @@ Interdisciplinary design researcher bridging art, technology, and human-centered
 - **Private Domain UX Design** – Developed data-driven strategies and intuitive interfaces to enhance digital user engagement.
 
 ## Publications & Patents
-- *The Immersive Art Therapy Driven by AIGC: An Innovative Approach to Alleviating Children’s Nyctophobia*, CHI SDC Paper, 2025.
+- *The Immersive Art Therapy Driven by AIGC: An Innovative Approach to Alleviating Children’s Nyctophobia*, CHI EA 2025. DOI: 10.1145/3706599.3720312.
+- *Between Real and Imagined: Developing a dynamic immersive virtual auditing (DIVA) framework for high-density urban health trails*, Education and Research in Computer Aided Architectural Design in Europe (eCAADe 2025), 2025.
 - *ContextCam: Bridging Context Awareness with Creative Human-AI Image Co-Creation*, CHI Full Paper, 2024. DOI: 10.1145/3613904.3642129.
 - *Enlivening Performance Art: Enhanced Interactivity through Embodied Cognition and Real-Time Physical Visualization on Swarm Tangible Interfaces*, Proceedings of the ICLC, 2024. DOI: 10.5281/zenodo.11350409.
 - *TrailTracking: AI-Driven Distributed Narratives of Descendant Civilizations in a Digitally Encoded Cosmos*, Science 24 hours, 2024. DOI: 10.3969/j.issn.1002-7394.2024.10.003.
