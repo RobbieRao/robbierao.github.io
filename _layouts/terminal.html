@@ -3,11 +3,22 @@ layout: compress
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="{{ site.locale | default: 'en' }}">
 <head>
   <meta charset="utf-8">
   <title>{{ page.title }}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{{ page.description | default: site.description }}">
+  <meta property="og:title" content="{{ page.title }}">
+  <meta property="og:description" content="{{ page.description | default: site.description }}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ page.url | absolute_url }}">
+  <meta property="og:image" content="{{ '/images/profile.png' | absolute_url }}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ page.title }}">
+  <meta name="twitter:description" content="{{ page.description | default: site.description }}">
+  <meta name="twitter:image" content="{{ '/images/profile.png' | absolute_url }}">
+  <link rel="canonical" href="{{ page.url | absolute_url }}">
   <link rel="stylesheet" href="/assets/css/terminal.css">
 </head>
 <body>

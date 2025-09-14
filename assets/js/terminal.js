@@ -34,7 +34,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   buttons.forEach(btn => {
     const cmd = btn.dataset.cmd;
-    const content = btn.dataset.content.split('\\n').join('\n\n').trim();
+    const key = btn.dataset.key;
+    const content = (profileData[key] || '').split('\n').join('\n\n').trim();
     commands[cmd] = content;
     btn.addEventListener('click', () => {
       runCommand(cmd, content);
