@@ -8,7 +8,11 @@ document.addEventListener('DOMContentLoaded', function () {
     date: () => typeText(new Date().toString(), printLine('')),
     sudo: () => typeText('Nice try.', printLine('')),
     'rm -rf /': () => typeText('Not that kind of terminal.', printLine('')),
-    dance: () => typeText('You found an easter egg!', printLine(''))
+    party: () => confetti({ spread: 70, origin: { y: 0.6 } }),
+    matrix: startMatrix,
+    quake: triggerQuake,
+    dance: triggerQuake,
+    glitch: triggerGlitch
   };
 
   function typeText(text, container) {
@@ -43,8 +47,21 @@ document.addEventListener('DOMContentLoaded', function () {
         terminal.style.color = color || '#fff';
         return;
       }
+      if (lower.startsWith('theme')) {
+        const mode = value.split(' ')[1];
+        if (mode === 'dark') {
+          document.body.classList.add('dark-theme');
+          document.body.classList.remove('light-theme');
+        } else if (mode === 'light') {
+          document.body.classList.add('light-theme');
+          document.body.classList.remove('dark-theme');
+        } else {
+          typeText('Usage: theme <dark|light>', printLine(''));
+        }
+        return;
+      }
       if (lower === 'help') {
-        const builtIns = ['help', 'clear', 'color <color>', 'ls', 'pwd', 'date', 'sudo', 'rm -rf /', 'dance'];
+        const builtIns = ['help', 'clear', 'color <color>', 'theme <mode>', 'ls', 'pwd', 'date', 'sudo', 'rm -rf /', 'dance', 'quake', 'matrix', 'party', 'glitch'];
         const list = builtIns.concat(Object.keys(commands));
         typeText('Supported commands:\n' + list.join('\n'), printLine(''));
         return;
@@ -58,6 +75,47 @@ document.addEventListener('DOMContentLoaded', function () {
     } else {
       typeText('Command not found', printLine(''));
     }
+  }
+
+  function triggerQuake() {
+    document.body.classList.add('quake');
+    setTimeout(() => document.body.classList.remove('quake'), 500);
+  }
+
+  function triggerGlitch() {
+    document.body.classList.add('glitch');
+    setTimeout(() => document.body.classList.remove('glitch'), 3000);
+  }
+
+  function startMatrix() {
+    if (document.getElementById('matrix-overlay')) return;
+    const canvas = document.createElement('canvas');
+    canvas.id = 'matrix-overlay';
+    document.body.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    const fontSize = 16;
+    const columns = Math.floor(canvas.width / fontSize);
+    const drops = Array(columns).fill(1);
+    function draw() {
+      ctx.fillStyle = 'rgba(0,0,0,0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#0f0';
+      ctx.font = fontSize + 'px monospace';
+      for (let i = 0; i < drops.length; i++) {
+        const text = letters.charAt(Math.floor(Math.random() * letters.length));
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+      }
+    }
+    const interval = setInterval(draw, 33);
+    setTimeout(() => {
+      clearInterval(interval);
+      canvas.remove();
+    }, 5000);
   }
 
   function appendPrompt() {
