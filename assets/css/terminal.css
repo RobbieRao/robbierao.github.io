@@ -12,6 +12,7 @@ body {
   width: 95%;
   max-width: 95%;
   margin: 0 auto;
+  text-align: center;
 }
 
 .profile {
@@ -28,7 +29,7 @@ h1 {
 
 .tagline {
   margin-bottom: 1rem;
-  text-align: left;
+  text-align: center;
 }
 
 .tags {
@@ -80,22 +81,19 @@ h1 {
 
 #terminal {
   background: #000;
-  color: #0f0;
+  color: #fff;
   padding: 1rem;
   font-size: 0.9rem;
-  min-height: 150px;
+  height: 300px;
+  overflow-y: auto;
   white-space: pre-wrap;
   line-height: 1.4;
 }
 
-#terminal .command {
-  color: #0f0;
-}
-
-#terminal .output {
-  color: #fff;
-}
-
 #terminal .input {
   outline: none;
+}
+
+#terminal .command {
+  color: #0f0;
 }
