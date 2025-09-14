@@ -16,6 +16,7 @@ description: "Interdisciplinary design researcher bridging art, technology, and 
     <button data-cmd="open patents" data-key="patents">Patents</button>
     <button data-cmd="open projects" data-key="projects">Projects</button>
     <button data-cmd="open experience" data-key="experience">Experience</button>
+    <button data-cmd="help">Help</button>
   </div>
   <div class="terminal-window">
     <div class="terminal-bar">
