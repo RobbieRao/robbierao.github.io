@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
   buttons.forEach(btn => {
     btn.addEventListener('click', () => {
       const cmd = btn.dataset.cmd;
-      const content = btn.dataset.content;
+      const content = btn.dataset.content.replace(/\\n/g, '\n');
       terminal.innerHTML = '';
 
       const commandLine = document.createElement('div');
