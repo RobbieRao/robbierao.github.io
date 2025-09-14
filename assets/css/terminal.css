@@ -88,6 +88,7 @@ h1 {
   overflow-y: auto;
   white-space: pre-wrap;
   line-height: 1.4;
+  text-align: left;
 }
 
 #terminal .input {
