@@ -2,6 +2,24 @@ document.addEventListener('DOMContentLoaded', function () {
   const terminal = document.getElementById('terminal');
   const buttons = document.querySelectorAll('.tags button');
   const commands = {};
+  const history = [];
+  let historyIndex = -1;
+  const builtInNames = new Set([
+    'help',
+    'clear',
+    'color',
+    'theme',
+    'ls',
+    'pwd',
+    'date',
+    'sudo',
+    'rm -rf /',
+    'dance',
+    'quake',
+    'matrix',
+    'party',
+    'glitch'
+  ]);
   const builtInHandlers = {
     ls: () => typeText('assets  images  scripts', printLine('')),
     pwd: () => typeText('~', printLine('')),
@@ -118,6 +136,15 @@ document.addEventListener('DOMContentLoaded', function () {
     }, 5000);
   }
 
+  function setCaretToEnd(el) {
+    const range = document.createRange();
+    const sel = window.getSelection();
+    range.selectNodeContents(el);
+    range.collapse(false);
+    sel.removeAllRanges();
+    sel.addRange(range);
+  }
+
   function appendPrompt() {
     const line = document.createElement('div');
     line.className = 'command';
@@ -138,9 +165,38 @@ document.addEventListener('DOMContentLoaded', function () {
         const value = input.textContent.trim();
         input.contentEditable = false;
         if (value) {
+          history.push(value);
+          historyIndex = -1;
           processCommand(value);
         }
         appendPrompt();
+      } else if (e.key === 'ArrowUp') {
+        if (!history.length) return;
+        e.preventDefault();
+        if (historyIndex === -1) historyIndex = history.length - 1;
+        else if (historyIndex > 0) historyIndex--;
+        input.textContent = history[historyIndex] || '';
+        setCaretToEnd(input);
+      } else if (e.key === 'ArrowDown') {
+        if (!history.length) return;
+        e.preventDefault();
+        if (historyIndex !== -1) historyIndex++;
+        if (historyIndex >= history.length) {
+          historyIndex = -1;
+          input.textContent = '';
+        } else {
+          input.textContent = history[historyIndex];
+        }
+        setCaretToEnd(input);
+      } else if (e.key === 'Tab') {
+        e.preventDefault();
+        const value = input.textContent.trim();
+        const all = Array.from(new Set([...builtInNames, ...Object.keys(commands)]));
+        const matches = all.filter(c => c.startsWith(value));
+        if (matches.length === 1) {
+          input.textContent = matches[0];
+          setCaretToEnd(input);
+        }
       }
     });
   }
