@@ -76,6 +76,7 @@ h1 {
   font-size: 0.9rem;
   min-height: 150px;
   white-space: pre-wrap;
+  line-height: 1.4;
 }
 
 #terminal .command {
@@ -84,4 +85,20 @@ h1 {
 
 #terminal .output {
   color: #fff;
+}
+
+#terminal-input {
+  width: 100%;
+  background: #000;
+  color: #0f0;
+  border: none;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  font-family: inherit;
+  box-sizing: border-box;
+  margin-top: 0.5rem;
+}
+
+#terminal-input:focus {
+  outline: none;
 }
