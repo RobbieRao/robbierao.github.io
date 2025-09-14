@@ -14,7 +14,6 @@ description: "Interdisciplinary design researcher bridging art, technology, and 
     <button data-cmd="open education" data-key="education">Education</button>
     <button data-cmd="open publications" data-key="publications">Publications</button>
     <button data-cmd="open patents" data-key="patents">Patents</button>
-    <button data-cmd="open award" data-key="award">Award</button>
     <button data-cmd="open projects" data-key="projects">Projects</button>
     <button data-cmd="open experience" data-key="experience">Experience</button>
   </div>
@@ -25,7 +24,6 @@ description: "Interdisciplinary design researcher bridging art, technology, and 
       <span class="dot green"></span>
     </div>
     <div id="terminal"></div>
-    <input type="text" id="terminal-input" placeholder="Type a command...">
   </div>
 </div>
 <script>

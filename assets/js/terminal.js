@@ -1,9 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
   const terminal = document.getElementById('terminal');
   const buttons = document.querySelectorAll('.tags button');
-  const input = document.getElementById('terminal-input');
   const commands = {};
-  input.focus();
 
   function typeText(text, container) {
     let index = 0;
@@ -17,19 +15,61 @@ document.addEventListener('DOMContentLoaded', function () {
     type();
   }
 
-  function runCommand(cmd, content) {
-    terminal.innerHTML = '';
+  function printLine(text) {
+    const line = document.createElement('div');
+    line.textContent = text || '';
+    terminal.appendChild(line);
+    terminal.scrollTop = terminal.scrollHeight;
+    return line;
+  }
 
-    const commandLine = document.createElement('div');
-    commandLine.className = 'command';
-    commandLine.textContent = '> ' + cmd;
-    terminal.appendChild(commandLine);
+  function processCommand(value) {
+    const lower = value.toLowerCase();
+    if (lower === 'clear') {
+      terminal.innerHTML = '';
+      return;
+    }
+    if (lower.startsWith('color ')) {
+      const color = value.split(' ')[1];
+      terminal.style.color = color || '#0f0';
+      return;
+    }
+    if (lower === 'help') {
+      const builtIns = ['help', 'clear', 'color <color>'];
+      const list = builtIns.concat(Object.keys(commands));
+      typeText('Supported commands:\n' + list.join('\n'), printLine(''));
+      return;
+    }
+    if (commands[value]) {
+      typeText(commands[value], printLine(''));
+    } else {
+      typeText('Command not found', printLine(''));
+    }
+  }
 
-    const outputLine = document.createElement('div');
-    outputLine.className = 'output';
-    terminal.appendChild(outputLine);
+  function appendPrompt() {
+    const line = document.createElement('div');
+    const prompt = document.createElement('span');
+    prompt.textContent = '> ';
+    const input = document.createElement('span');
+    input.className = 'input';
+    input.contentEditable = true;
+    line.appendChild(prompt);
+    line.appendChild(input);
+    terminal.appendChild(line);
+    input.focus();
 
-    typeText('\n' + content, outputLine);
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const value = input.textContent.trim();
+        input.contentEditable = false;
+        if (value) {
+          processCommand(value);
+        }
+        appendPrompt();
+      }
+    });
   }
 
   buttons.forEach(btn => {
@@ -38,19 +78,18 @@ document.addEventListener('DOMContentLoaded', function () {
     const content = (profileData[key] || '').split('\n').join('\n\n').trim();
     commands[cmd] = content;
     btn.addEventListener('click', () => {
-      runCommand(cmd, content);
+      const current = terminal.querySelector('.input[contenteditable="true"]');
+      if (current) {
+        current.textContent = cmd;
+        current.contentEditable = false;
+      } else {
+        printLine('> ' + cmd);
+      }
+      processCommand(cmd);
+      appendPrompt();
     });
   });
 
-  input.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      const value = input.value.trim();
-      if (value) {
-        const content = commands[value] || 'Command not found';
-        runCommand(value, content);
-      }
-      input.value = '';
-    }
-  });
+  appendPrompt();
 });
 

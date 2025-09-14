@@ -8,9 +8,17 @@ body {
   margin: 2rem;
 }
 
+.container {
+  width: 95%;
+  max-width: 95%;
+  margin: 0 auto;
+}
+
 .profile {
   width: 150px;
-  border-radius: 50%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 15px;
 }
 
 h1 {
@@ -20,7 +28,7 @@ h1 {
 
 .tagline {
   margin-bottom: 1rem;
-  text-align: center;
+  text-align: left;
 }
 
 .tags {
@@ -44,8 +52,9 @@ h1 {
 }
 
 .terminal-window {
-  width: 100%;
-  max-width: 600px;
+  width: 95%;
+  max-width: 95%;
+  margin: 0 auto;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 0 10px rgba(0,0,0,0.25);
@@ -87,18 +96,6 @@ h1 {
   color: #fff;
 }
 
-#terminal-input {
-  width: 100%;
-  background: #000;
-  color: #0f0;
-  border: none;
-  padding: 0.5rem;
-  font-size: 0.9rem;
-  font-family: inherit;
-  box-sizing: border-box;
-  margin-top: 0.5rem;
-}
-
-#terminal-input:focus {
+#terminal .input {
   outline: none;
 }
