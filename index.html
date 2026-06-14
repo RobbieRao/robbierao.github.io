@@ -1,0 +1,889 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>RAO Fenggui — The Founder's Office</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="description" content="Step into RAO Fenggui's office — an interactive, hand-drawn 3D résumé overlooking Hong Kong's Central harbour. Pick up the CV, pull projects off the bookshelf, read the awards. PhD researcher (HK PolyU), founder of DesignAnything Lab.">
+<meta property="og:title" content="RAO Fenggui — The Founder's Office (interactive 3D CV)">
+<meta property="og:description" content="A warm, Ghibli-style office you can explore, overlooking Hong Kong Central. Generative AI × art-design, HCI, public culture.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://robbierao.github.io/">
+<meta property="og:image" content="https://robbierao.github.io/images/profile.png">
+<meta name="theme-color" content="#3f2817">
+<link rel="canonical" href="https://robbierao.github.io/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --walnut:#5b3a24; --walnut-deep:#3f2817; --cream:#f4ead3; --paper:#fbf3e2;
+    --ink:#2e231a; --oxblood:#7a2e2e; --oxblood-deep:#5c1f1f; --brass:#c9a24a; --brass-lt:#e6c478;
+    --teal:#2f6b62; --green:#5a8f4e;
+    --display:'Playfair Display', Georgia, 'Times New Roman', serif;
+    --ui:'Nunito', ui-sans-serif, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;overflow:hidden;background:#221710;color:var(--cream);overscroll-behavior:none}
+  body{font-family:var(--ui);-webkit-font-smoothing:antialiased}
+  #app{position:fixed;inset:0}
+  #scene{position:absolute;inset:0;display:block;width:100%;height:100%;touch-action:none;cursor:grab}
+  #scene.grabbing{cursor:grabbing}
+  #scene.point{cursor:pointer}
+
+  /* ---------- HUD ---------- */
+  #hud{position:absolute;inset:0;pointer-events:none;z-index:20;font-family:var(--ui)}
+  #hud a, #hud button{pointer-events:auto}
+
+  #brand{position:absolute;top:max(16px,env(safe-area-inset-top));left:max(20px,env(safe-area-inset-left));max-width:62vw}
+  #brand .name{font-family:var(--display);font-weight:700;font-size:26px;letter-spacing:.5px;color:#fff;
+    text-shadow:0 2px 10px rgba(0,0,0,.55)}
+  #brand .role{margin-top:4px;font-size:12px;font-weight:700;letter-spacing:1.5px;color:var(--brass-lt);
+    text-transform:uppercase;text-shadow:0 1px 6px rgba(0,0,0,.6)}
+  @media(max-width:560px){#brand .name{font-size:19px}#brand .role{font-size:9.5px}}
+
+  #hint{position:absolute;top:max(18px,env(safe-area-inset-top));right:max(20px,env(safe-area-inset-right));
+    text-align:right;font-size:12px;line-height:1.8;color:#f0e6cf;font-weight:600;
+    text-shadow:0 1px 6px rgba(0,0,0,.7);opacity:.92;max-width:48vw}
+  #hint b{color:var(--brass-lt);font-weight:800}
+  #hint .t{display:none}
+  @media(max-width:560px){#hint{font-size:10px;max-width:52vw}}
+
+  /* nav dock */
+  #dock{position:absolute;left:50%;bottom:max(16px,env(safe-area-inset-bottom));transform:translateX(-50%);
+    display:flex;gap:8px;flex-wrap:wrap;justify-content:center;max-width:97vw;padding:0 6px}
+  .navbtn{font-family:var(--ui);font-weight:700;font-size:13px;color:#f3e7cc;
+    background:linear-gradient(180deg, rgba(60,38,22,.92), rgba(38,24,14,.94));
+    border:1px solid var(--brass);border-radius:999px;padding:10px 16px;cursor:pointer;
+    backdrop-filter:blur(6px);box-shadow:0 6px 18px rgba(0,0,0,.35);transition:transform .12s, background .2s, box-shadow .2s;white-space:nowrap}
+  .navbtn:hover{background:linear-gradient(180deg, var(--oxblood), var(--oxblood-deep));transform:translateY(-2px);box-shadow:0 10px 22px rgba(0,0,0,.45)}
+  .navbtn .zh{color:#fff;font-weight:800}
+  .navbtn .en{margin-left:7px;font-size:10px;color:var(--brass-lt);letter-spacing:.6px;text-transform:uppercase}
+  .navbtn.active{background:linear-gradient(180deg, var(--oxblood), var(--oxblood-deep));border-color:var(--brass-lt);box-shadow:0 0 0 2px rgba(201,162,74,.35),0 8px 20px rgba(0,0,0,.4)}
+  @media(max-width:560px){.navbtn{font-size:12px;padding:9px 13px}.navbtn .en{display:none}#dock{gap:6px}}
+
+  /* reticle + tooltip */
+  #reticle{position:absolute;left:50%;top:50%;width:10px;height:10px;margin:-5px 0 0 -5px;
+    border:2px solid rgba(255,255,255,.7);border-radius:50%;transition:.16s ease;opacity:.5}
+  #reticle.hot{width:30px;height:30px;margin:-15px 0 0 -15px;border-color:var(--brass-lt);opacity:.95;box-shadow:0 0 14px rgba(230,196,120,.6)}
+  @media(pointer:coarse){#reticle,#tip{display:none}#hint .d{display:none}#hint .t{display:inline}}
+  #tip{position:absolute;pointer-events:none;font-family:var(--ui);font-weight:700;font-size:13px;color:#fff;
+    background:rgba(40,25,16,.86);border:1px solid var(--brass);padding:8px 12px;border-radius:10px;
+    transform:translate(-50%,-150%);white-space:nowrap;display:none;box-shadow:0 8px 22px rgba(0,0,0,.45);z-index:25;backdrop-filter:blur(4px)}
+  #tip small{display:block;color:var(--brass-lt);font-size:11px;font-weight:600;margin-top:2px}
+
+  /* footer links */
+  #foot{position:absolute;left:max(20px,env(safe-area-inset-left));bottom:max(16px,env(safe-area-inset-bottom));
+    display:flex;gap:18px;font-family:var(--ui);font-size:12px;font-weight:700;letter-spacing:.5px}
+  #foot a{color:#d8c8a6;text-decoration:none;text-shadow:0 1px 6px rgba(0,0,0,.6)}
+  #foot a:hover{color:var(--brass-lt)}
+  @media(max-width:880px){#foot{display:none}}
+
+  #sound{position:absolute;right:max(20px,env(safe-area-inset-right));bottom:max(16px,env(safe-area-inset-bottom));
+    font-family:var(--ui);font-weight:700;font-size:12px;color:#d8c8a6;background:rgba(40,25,16,.6);
+    border:1px solid rgba(201,162,74,.5);border-radius:999px;padding:9px 14px;cursor:pointer;backdrop-filter:blur(4px)}
+  #sound:hover{color:var(--brass-lt);border-color:var(--brass)}
+  @media(max-width:560px){#foot{display:none}#sound{display:none}}
+
+  /* soft cinematic vignette */
+  #vig{position:absolute;inset:0;pointer-events:none;z-index:18;
+    background:radial-gradient(130% 120% at 50% 42%, transparent 58%, rgba(20,10,4,.42) 100%)}
+
+  /* ---------- detail panel ---------- */
+  #overlay{position:absolute;inset:0;z-index:40;display:none;align-items:center;justify-content:center;
+    background:rgba(20,12,6,.5);backdrop-filter:blur(4px);padding:20px;pointer-events:auto}
+  #overlay.show{display:flex;animation:fade .22s ease}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  .card{position:relative;width:min(680px,94vw);max-height:86vh;overflow:auto;touch-action:pan-y;-webkit-overflow-scrolling:touch;
+    background:linear-gradient(180deg,#fdf6e7,#f6 ebd4);background:var(--paper);
+    color:var(--ink);border-radius:16px;box-shadow:0 30px 80px rgba(0,0,0,.55);animation:pop .26s cubic-bezier(.2,1.2,.4,1)}
+  @keyframes pop{from{transform:translateY(20px) scale(.97);opacity:0}to{transform:none;opacity:1}}
+  .card .top{position:sticky;top:0;background:linear-gradient(180deg,var(--oxblood),var(--oxblood-deep));color:#fff;
+    padding:20px 24px;display:flex;align-items:flex-start;justify-content:space-between;gap:14px;
+    border-bottom:3px solid var(--brass);border-radius:16px 16px 0 0}
+  .card .top h2{margin:0;font-family:var(--display);font-weight:700;font-size:25px;letter-spacing:.4px;line-height:1.25}
+  .card .top .sub{font-family:var(--ui);font-weight:700;font-size:12px;letter-spacing:1.4px;text-transform:uppercase;
+    color:var(--brass-lt);margin-top:7px;display:block}
+  .card .x{font-size:18px;color:#fff;background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.25);
+    border-radius:10px;cursor:pointer;padding:7px 11px;line-height:1;flex:none}
+  .card .x:hover{background:rgba(0,0,0,.4)}
+  .card .body{padding:22px 26px 28px}
+  .card h3{font-family:var(--display);font-weight:700;font-size:18px;color:var(--oxblood);margin:24px 0 12px}
+  .card h3:first-child{margin-top:4px}
+  .card p{line-height:1.65;margin:0 0 12px;font-size:15.5px}
+  .card .lead{font-size:17px;color:#3a2c20}
+  .card a{color:var(--oxblood);font-weight:700}
+  .row{display:flex;justify-content:space-between;gap:18px;border-bottom:1px solid #e6d6b4;padding:13px 0}
+  .row:last-child{border-bottom:0}
+  .row .l{font-weight:800;color:#33271c}
+  .row .r{color:#7a6649;text-align:right;font-size:13.5px;font-weight:700;white-space:nowrap}
+  .row .d{font-size:13.5px;color:#6f5b40;margin-top:3px;line-height:1.5}
+  .meta{display:inline-block;font-family:var(--ui);font-weight:800;font-size:11px;letter-spacing:.6px;
+    background:var(--oxblood);color:#fff;padding:6px 11px;border-radius:999px;margin:0 7px 7px 0;text-decoration:none}
+  .meta.teal{background:var(--teal)}.meta.brass{background:var(--brass);color:#3a2c12}
+  .kv{display:grid;grid-template-columns:auto 1fr;gap:9px 18px;font-size:15px}
+  .kv .k{font-weight:800;color:var(--oxblood)}
+  .tags{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0 4px}
+  .stamp{display:inline-block;border:2px solid var(--oxblood);color:var(--oxblood);font-family:var(--ui);font-weight:800;
+    font-size:12px;letter-spacing:.5px;padding:8px 12px;border-radius:10px;transform:rotate(-3deg);margin-top:10px}
+  @media(max-width:560px){.card .top h2{font-size:21px}.card .body{padding:18px 18px 22px}}
+
+  /* ---------- loader / enter gate ---------- */
+  #gate{position:absolute;inset:0;z-index:60;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    background:radial-gradient(140% 120% at 50% 22%, #6a4a30, #2c1c10 70%);text-align:center;padding:26px}
+  #gate.hide{opacity:0;pointer-events:none;transition:opacity .7s ease}
+  #gate .logo{font-family:var(--ui);font-weight:800;font-size:13px;letter-spacing:4px;color:var(--brass-lt);
+    text-transform:uppercase;margin-bottom:16px;opacity:.9}
+  #gate h1{font-family:var(--display);font-weight:700;font-size:52px;color:#fff;margin:0;line-height:1.05;
+    text-shadow:0 6px 30px rgba(0,0,0,.5)}
+  #gate h1 em{font-style:italic;color:var(--brass-lt)}
+  #gate .sub{font-family:var(--ui);font-size:15px;color:#ecdcc0;margin:20px 0 30px;line-height:1.7;max-width:540px}
+  #gate .sub b{color:var(--brass-lt);font-weight:800}
+  #enter{font-family:var(--ui);font-weight:800;font-size:16px;letter-spacing:.5px;color:#2c1c10;
+    background:linear-gradient(180deg,var(--brass-lt),var(--brass));border:none;border-radius:999px;
+    padding:16px 34px;cursor:pointer;box-shadow:0 12px 30px rgba(0,0,0,.4);transition:transform .12s, filter .15s}
+  #enter:hover{filter:brightness(1.07);transform:translateY(-2px)}#enter:active{transform:translateY(0)}
+  #bar{width:260px;height:8px;border-radius:999px;background:rgba(255,255,255,.15);margin-top:26px;overflow:hidden}
+  #bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brass),var(--brass-lt));transition:width .25s}
+  #gate .load-txt{font-family:var(--ui);font-weight:600;font-size:12px;color:#bda078;margin-top:12px;letter-spacing:.5px}
+  @media(max-width:560px){#gate h1{font-size:34px}}
+
+  #fail{position:absolute;inset:0;z-index:70;display:none;flex-direction:column;align-items:center;justify-content:center;
+    background:#2c1c10;text-align:center;padding:28px;font-family:var(--ui)}
+  #fail.show{display:flex}
+  #fail h2{font-family:var(--display);font-size:26px;color:var(--brass-lt)}
+  #fail a{color:#fff;background:var(--oxblood);padding:12px 18px;border-radius:999px;text-decoration:none;margin:8px;display:inline-block;font-weight:700}
+
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+</head>
+<body>
+<div id="app">
+  <canvas id="scene"></canvas>
+  <div id="vig"></div>
+
+  <div id="hud">
+    <div id="brand">
+      <div class="name">Rao&nbsp;Fenggui</div>
+      <div class="role">Founder · Designer · PhD&nbsp;Researcher</div>
+    </div>
+    <div id="hint">
+      <span class="d"><b>Drag</b> to look &nbsp;·&nbsp; <b>Click</b> objects<br><b>W A S D</b> to walk &nbsp;·&nbsp; buttons jump views</span>
+      <span class="t"><b>Drag</b> to look &nbsp;·&nbsp; <b>Tap</b> objects<br>buttons jump to each area</span>
+    </div>
+    <div id="reticle"></div>
+    <div id="tip"></div>
+
+    <div id="dock"></div>
+
+    <div id="foot">
+      <a href="https://github.com/RobbieRao" target="_blank" rel="noopener">GitHub</a>
+      <a href="mailto:robbie.rao@connect.polyu.hk">Email</a>
+      <a href="/terminal/">Terminal CV</a>
+      <a href="/cv/">Academic CV</a>
+    </div>
+    <button id="sound">&#9834; Sound: Off</button>
+  </div>
+
+  <div id="overlay"><div class="card" role="dialog" aria-modal="true">
+    <div class="top"><div><h2 id="cardTitle"></h2><span class="sub" id="cardSub"></span></div>
+      <button class="x" id="cardX" aria-label="Close">&#10005;</button></div>
+    <div class="body" id="cardBody"></div>
+  </div></div>
+
+  <div id="gate">
+    <div class="logo">DesignAnything Lab presents</div>
+    <h1>The Founder's <em>Office</em></h1>
+    <div class="sub">An interactive office of <b>Rao&nbsp;Fenggui</b>, overlooking Hong&nbsp;Kong's Central harbour.<br>
+      Walk in. Pick up the CV. Pull a project off the shelf.</div>
+    <button id="enter">Enter the office &nbsp;&rarr;</button>
+    <div id="bar"><i></i></div>
+    <div class="load-txt" id="loadTxt">warming up the lights…</div>
+  </div>
+
+  <div id="fail">
+    <h2>This room needs WebGL</h2>
+    <p>Your browser couldn't start the 3D office. No problem — here's the same content:</p>
+    <div><a href="/terminal/">Terminal CV</a><a href="/cv/">Academic CV</a><a href="/publications/">Publications</a></div>
+  </div>
+
+  <div class="sr">
+    <h1>Rao Fenggui (Robbie Rao) — Founder, Designer, PhD Researcher</h1>
+    <p>PhD student at the Hong Kong Polytechnic University School of Design (Asian Ergonomics Design Lab),
+    China Academy of Art-trained designer, founder and lead of DesignAnything Lab. Research in generative AI,
+    art-design workflows, HCI, public culture and creative education. Email robbie.rao@connect.polyu.hk.
+    Selected work: ContextCam (CHI 2024), Flowing Ink Resonator, CityCure, DIVA framework, Let My Goldfish Go.
+    See the <a href="/terminal/">terminal CV</a>, <a href="/cv/">academic CV</a> and <a href="/publications/">publications</a>.</p>
+  </div>
+</div>
+
+<noscript><div style="position:fixed;inset:0;background:#2c1c10;color:#fff;display:flex;align-items:center;justify-content:center;text-align:center;font-family:sans-serif;padding:24px">This interactive office needs JavaScript. View the <a style="color:#e6c478" href="/terminal/">terminal CV</a> or <a style="color:#e6c478" href="/cv/">academic CV</a> instead.</div></noscript>
+
+<script type="importmap">
+{ "imports": { "three": "/assets/game/lib/three.module.min.js" } }
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+
+/* =====================================================================
+   CONTENT — from R. Rao Fenggui's dossier + site profile data
+   ===================================================================== */
+const DATA = {
+  person:{ name:"Rao Fenggui", alias:"Robbie Rao",
+    tagline:"Generative AI × art-design workflows, HCI & public cultural experience.",
+    based:"Hong Kong", langs:"Mandarin · English · Cantonese (conversational)" },
+  resume:{
+    summary:"PhD student at the HK PolyU School of Design and a China Academy of Art-trained designer. Founder & lead of DesignAnything Lab (D&A Lab), working across generative AI, art-design workflows, HCI, public culture and creative education.",
+    education:[
+      {school:"The Hong Kong Polytechnic University — School of Design",
+       detail:"PhD Student in Design · Asian Ergonomics Design (AED) Lab · Supervisor: Yan Tina Luximon", years:"2024–Present"},
+      {school:"China Academy of Art — School of Design & Innovation",
+       detail:"B.Eng / B.Design in Innovative Design · GPA 90/100 · Ranked #1 in comprehensive assessment (2021–22 & 2022–23)", years:"2020–2024"}],
+    contact:[["Email","robbie.rao@connect.polyu.hk"],["Tel","+852 8403 2765"],
+      ["Web","robbierao.github.io · robbierao.com · designanything.design"],
+      ["ORCID","0009-0000-8990-1515"],["GitHub","github.com/RobbieRao"]] },
+  about:{ bio:"I'm a designer-researcher who also builds. I take AI + design ideas from studio practice into working prototypes, public-facing experiences, papers and teachable workflows.",
+    skills:[
+      ["AI Workflow Construction","Generative image/video pipelines, prompt systems, multimodal ideation, RAG / knowledge-base structuring, agentic workflow design and evaluation."],
+      ["Design Research","HCI study design, qualitative & quantitative analysis, design probes, interaction prototypes, CHI/DIS framing, academic writing."],
+      ["Creative Direction","AI art direction, speculative design, public cultural experience, exhibition narrative, product & interaction design."],
+      ["Technical Practice","Python, data analysis, frontend prototyping, interactive systems, Rhino / Blender / Unity, ControlNet / IP-Adapter visual workflows."]] },
+  projects:[
+    {t:"ContextCam", v:"CHI 2024 · Full Paper", c:"#2f6b62", d:"A context-aware human-AI image co-creation system that brings real-world context into the generative loop."},
+    {t:"Flowing Ink Resonator", v:"CHI EA 2026", c:"#7a2e2e", d:"An embodied Grand Canal soundscape installation with a provenance-aware cultural-asset workflow for authoring when historical records are scarce."},
+    {t:"CityCure", v:"CHI EA 2026", c:"#34557f", d:"In-situ MR + generative-AI workflow for walking, capturing and reimagining small street micro-interventions."},
+    {t:"Immersive Art Therapy", v:"CHI EA 2026", c:"#8a5a2b", d:"An AIGC-driven immersive art-therapy approach designed to help children cope with nyctophobia (fear of the dark)."},
+    {t:"DIVA Framework", v:"eCAADe 2025", c:"#4f6b2f", d:"Between Real & Imagined — a Dynamic Immersive Virtual Auditing framework for high-density urban health trails."},
+    {t:"Enlivening Performance Art", v:"ICLC 2025", c:"#5f3f78", d:"Enhanced interactivity through embodied cognition and real-time physical visualization on swarm tangible interfaces."},
+    {t:"Let My Goldfish Go", v:"DIS 2025 · Art Gallery", c:"#2b6b8a", d:"A speculative AI/art installation on pet ethics and non-human ecology — a D&A Lab project selected for the DIS Art Gallery."},
+    {t:"Plast-ocean", v:"DIS 2025", c:"#2f8a6b", d:"The Creative Journey of Plast-ocean — an AIGC-driven ecological-narrative interactive system exploring ocean plastic."},
+    {t:"Song-Yun Culture AIGC", v:"Zhejiang TV · 2024", c:"#a05a2b", d:"Public-culture collaboration using AI image generation and AR-style play to activate Song-dynasty cultural storytelling."}],
+  honors:[
+    ["National Scholarship","2021–2022"],["Provincial Government Scholarship","2022–2023"],
+    ["Outstanding Student & Student Leader","China Academy of Art"],
+    ["Lin Fengmian Design Silver Award","China Academy of Art"],
+    ["“Internet+” Entrepreneurship — Bronze","Zhejiang Province"],
+    ["KTK Jin Daiqiang Design Award — Finalist","Global Chinese Design Competition"]],
+  ip:[
+    ["AI-Assisted Design Creation Software","Software Copyright · Reg. 2023SR1444677 · 2023"],
+    ["Generative-AI Art-Education Solution","Invention Patent · App. 202310399782X · 2023"],
+    ["TrailTracking","AI-driven distributed narratives · creative IP · 2024"],
+    ["“Box”","Design Patent · 2022"],["Robotic Arm","Utility Model · 2022"],
+    ["Image Digital Projection Device","Utility Model · 2022"]],
+  roles:[
+    ["Founder & Lead — DesignAnything Lab","China Academy of Art · 2023–Present — an ongoing AI art-design lab & community across workshops, salons, exhibitions and project incubation."],
+    ["Founder & Chief Curator — Lingyuan / Soulscapes","Originated this AI art-exhibition IP and built its concept, public program, cross-school collaboration and hackathon format."],
+    ["CEO — Hangzhou BIZZLE Network Technology","2022–Present."],
+    ["Teaching Assistant & URIS Peer Mentor — HK PolyU","Supported design teaching and mentored undergraduate research & innovation projects."],
+    ["Reviewer — ACM CHI","Peer review for CHI; contribution framing, method quality and reviewer-facing writing."]]
+};
+
+/* =====================================================================
+   BOOT / WEBGL GUARD
+   ===================================================================== */
+const canvas=document.getElementById('scene');
+let renderer;
+try{ renderer=new THREE.WebGLRenderer({canvas, antialias:true, powerPreference:'high-performance'}); }
+catch(e){ document.getElementById('fail').classList.add('show'); throw e; }
+if(!renderer || !renderer.getContext()){ document.getElementById('fail').classList.add('show'); }
+
+const MOBILE = matchMedia('(pointer:coarse)').matches || Math.min(innerWidth,innerHeight)<620;
+renderer.outputColorSpace=THREE.SRGBColorSpace;
+renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=1.05;
+renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+const MAXA=renderer.capabilities.getMaxAnisotropy();
+
+const scene=new THREE.Scene();
+scene.background=new THREE.Color(0xd9c2a0);
+const camera=new THREE.PerspectiveCamera(60,1,0.05,100);
+camera.rotation.order='YXZ';
+
+/* =====================================================================
+   TEXTURE HELPERS  (smooth, hand-drawn / painterly)
+   ===================================================================== */
+function cvs(w,h){const c=document.createElement('canvas');c.width=w;c.height=h;return c;}
+function tex(canvas,repeat){const t=new THREE.CanvasTexture(canvas);t.colorSpace=THREE.SRGBColorSpace;
+  t.anisotropy=MAXA; if(repeat){t.wrapS=t.wrapT=THREE.RepeatWrapping;} return t;}
+function art(canvas){const t=tex(canvas);return new THREE.MeshBasicMaterial({map:t,toneMapped:false});}
+function rrect(x,rx,ry,rw,rh,r){x.beginPath();x.moveTo(rx+r,ry);x.arcTo(rx+rw,ry,rx+rw,ry+rh,r);
+  x.arcTo(rx+rw,ry+rh,rx,ry+rh,r);x.arcTo(rx,ry+rh,rx,ry,r);x.arcTo(rx,ry,rx+rw,ry,r);x.closePath();}
+
+function woodTex(base,dark,grain){
+  const W=256,H=256,c=cvs(W,H),x=c.getContext('2d');
+  const g=x.createLinearGradient(0,0,W,0);g.addColorStop(0,dark);g.addColorStop(.5,base);g.addColorStop(1,dark);
+  x.fillStyle=base;x.fillRect(0,0,W,H);
+  for(let i=0;i<26;i++){const y=Math.random()*H;x.strokeStyle='rgba(0,0,0,'+(0.04+Math.random()*0.06)+')';
+    x.lineWidth=1+Math.random()*2;x.beginPath();x.moveTo(0,y);
+    for(let xx=0;xx<=W;xx+=16)x.lineTo(xx,y+Math.sin(xx*0.05+i)*3);x.stroke();}
+  x.fillStyle=grain||'rgba(255,240,210,.05)';for(let i=0;i<400;i++)x.fillRect(Math.random()*W,Math.random()*H,1,1);
+  return c;
+}
+function wallTex(){
+  const W=256,H=256,c=cvs(W,H),x=c.getContext('2d');
+  const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,'#efe4ca');g.addColorStop(1,'#ddc9a4');
+  x.fillStyle=g;x.fillRect(0,0,W,H);
+  x.strokeStyle='rgba(120,80,50,.05)';for(let i=10;i<W;i+=26){x.beginPath();x.moveTo(i,0);x.lineTo(i,H);x.stroke();}
+  return c;
+}
+function rugTex(){
+  const S=512,c=cvs(S,S),x=c.getContext('2d');
+  x.fillStyle='#6e2230';x.fillRect(0,0,S,S);
+  const bands=[['#5a1c28',30],['#c9a24a',16],['#2f4f5a',10],['#c9a24a',16]];let off=18;
+  bands.forEach(([col,w])=>{x.strokeStyle=col;x.lineWidth=w;x.strokeRect(off+w/2,off+w/2,S-2*off-w,S-2*off-w);off+=w+6;});
+  x.save();x.translate(S/2,S/2);
+  x.fillStyle='#1f3a44';x.beginPath();for(let i=0;i<16;i++){const a=i/16*Math.PI*2,r=i%2?150:96;x.lineTo(Math.cos(a)*r,Math.sin(a)*r);}x.closePath();x.fill();
+  x.fillStyle='#c9a24a';x.beginPath();for(let i=0;i<8;i++){const a=i/8*Math.PI*2,r=i%2?70:30;x.lineTo(Math.cos(a)*r,Math.sin(a)*r);}x.closePath();x.fill();
+  x.fillStyle='#7a2e2e';x.beginPath();x.arc(0,0,18,0,7);x.fill();x.restore();
+  return c;
+}
+function paperResumeTex(){
+  const W=560,H=740,c=cvs(W,H),x=c.getContext('2d');
+  x.fillStyle='#fdfaf0';x.fillRect(0,0,W,H);
+  x.fillStyle='#7a2e2e';x.fillRect(0,0,W,108);
+  x.fillStyle='#fff';x.font='700 44px Georgia, serif';x.textBaseline='middle';x.fillText('Curriculum Vitae',40,46);
+  x.fillStyle='#f3d7a6';x.font='600 22px Nunito, Helvetica, sans-serif';x.fillText('Rao Fenggui · Robbie Rao',42,84);
+  x.fillStyle='#efe2c4';x.fillRect(440,128,84,100);x.fillStyle='#7a2e2e';x.font='700 40px Georgia,serif';x.textAlign='center';x.fillText('RF',482,184);x.textAlign='left';
+  function sect(y,t){x.fillStyle='#7a2e2e';x.font='700 24px Georgia,serif';x.fillText(t,40,y);x.strokeStyle='#c9a24a';x.lineWidth=2;x.beginPath();x.moveTo(40,y+16);x.lineTo(400,y+16);x.stroke();}
+  function ln(y,t,col,sz){x.fillStyle=col||'#3a2c20';x.font=(sz||'600 18px')+' Nunito, Helvetica, sans-serif';x.fillText(t,40,y);}
+  sect(168,'Education');
+  ln(206,'PhD · The Hong Kong Polytechnic University','#23303a','700 19px');ln(232,'School of Design · AED Lab · 2024–Present','#6f5b40');
+  ln(272,'B.Design · China Academy of Art','#23303a','700 19px');ln(298,'Innovative Design · GPA 90/100 · 2020–2024','#6f5b40');
+  sect(356,'Research & Practice');
+  ['Generative AI × art-design workflows','HCI research — CHI / DIS publications','Founder & lead, DesignAnything Lab','Public cultural & exhibition experience'].forEach((t,i)=>ln(396+i*30,'·  '+t));
+  sect(548,'Contact');
+  ln(586,'robbie.rao@connect.polyu.hk','#23303a','700 18px');ln(612,'robbierao.github.io  ·  ORCID 0009-0000-8990-1515','#6f5b40');
+  ln(660,'Hong Kong  ·  Mandarin · English · Cantonese','#6f5b40','600 16px');
+  return c;
+}
+function monitorTex(blink){
+  const W=640,H=400,c=cvs(W,H),x=c.getContext('2d');
+  const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,'#16202b');g.addColorStop(1,'#0d141d');x.fillStyle=g;x.fillRect(0,0,W,H);
+  x.fillStyle='#1d2a38';x.fillRect(0,0,W,40);['#ff6b5e','#ffc93c','#3ad06a'].forEach((col,i)=>{x.fillStyle=col;x.beginPath();x.arc(26+i*30,20,9,0,7);x.fill();});
+  x.fillStyle='#7fd0c2';x.font='700 22px Nunito, Helvetica, sans-serif';x.fillText('D&A Lab — Founder Console',74,28);
+  x.fillStyle='#e9dcc0';x.font='20px Nunito, Helvetica, sans-serif';
+  x.fillText('> generative art-design workflows',28,96);x.fillText('> HCI research · CHI / DIS',28,128);
+  const bars=[['AI Workflows',0.95,'#4f9a8e'],['Design Research',0.86,'#c9a24a'],['Creative Direction',0.8,'#d98a7a'],['Technical Practice',0.74,'#5a8fc4']];
+  bars.forEach((b,i)=>{const y=176+i*44;x.fillStyle='#9fb0bd';x.font='600 18px Nunito,sans-serif';x.fillText(b[0],28,y+18);
+    x.fillStyle='#27323f';rrect(x,250,y,360,20,10);x.fill();x.fillStyle=b[2];rrect(x,250,y,360*b[1],20,10);x.fill();});
+  x.fillStyle=blink?'#7fd0c2':'#16202b';x.fillRect(28,372,14,6);
+  return c;
+}
+function spineTex(title,base){
+  const W=150,H=620,c=cvs(W,H),x=c.getContext('2d');
+  const g=x.createLinearGradient(0,0,W,0);g.addColorStop(0,'rgba(255,255,255,.18)');g.addColorStop(.2,'rgba(255,255,255,0)');g.addColorStop(.85,'rgba(0,0,0,0)');g.addColorStop(1,'rgba(0,0,0,.3)');
+  x.fillStyle=base;x.fillRect(0,0,W,H);x.fillStyle=g;x.fillRect(0,0,W,H);
+  x.fillStyle='rgba(230,196,120,.85)';x.fillRect(20,40,W-40,5);x.fillRect(20,H-44,W-40,5);
+  x.save();x.translate(W/2,H-70);x.rotate(-Math.PI/2);x.fillStyle='#fbf2dc';x.font='700 30px Georgia, serif';x.textBaseline='middle';
+  let t=title.length>20?title.slice(0,19)+'…':title;x.fillText(t,0,0);x.restore();
+  return c;
+}
+function frameTex(title,sub,painting){
+  const W=420,H=540,c=cvs(W,H),x=c.getContext('2d');
+  const fg=x.createLinearGradient(0,0,W,H);fg.addColorStop(0,'#7a5a32');fg.addColorStop(.5,'#caa24a');fg.addColorStop(1,'#6e4e28');
+  x.fillStyle=fg;x.fillRect(0,0,W,H);x.fillStyle='#5a3f22';x.fillRect(14,14,W-28,H-28);
+  if(painting){ // a small Ghibli-ish landscape
+    const sky=x.createLinearGradient(0,30,0,H/2);sky.addColorStop(0,'#bfe0e6');sky.addColorStop(1,'#fbe6c0');x.fillStyle=sky;x.fillRect(30,30,W-60,H-60);
+    x.fillStyle='#88b06a';x.beginPath();x.moveTo(30,H-120);x.quadraticCurveTo(W/2,H-220,W-30,H-130);x.lineTo(W-30,H-30);x.lineTo(30,H-30);x.fill();
+    x.fillStyle='#5f8f52';x.beginPath();x.moveTo(30,H-70);x.quadraticCurveTo(W/2,H-140,W-30,H-80);x.lineTo(W-30,H-30);x.lineTo(30,H-30);x.fill();
+    x.fillStyle='#fff7e0';x.beginPath();x.arc(W-110,110,30,0,7);x.fill();
+    x.fillStyle='#3a2c20';x.font='italic 600 20px Georgia,serif';x.textAlign='center';x.fillText(title,W/2,H-46);x.textAlign='left';return c;}
+  x.fillStyle='#fbf4e2';x.fillRect(30,30,W-60,H-60);
+  x.strokeStyle='#7a2e2e';x.lineWidth=3;x.strokeRect(48,48,W-96,H-96);
+  x.fillStyle='#7a2e2e';x.font='700 30px Georgia, serif';x.textAlign='center';x.textBaseline='alphabetic';
+  wrap(x,title,W/2,150,W-130,34);
+  x.strokeStyle='#c9a24a';x.lineWidth=5;x.beginPath();x.arc(W/2,H/2+30,46,0,7);x.stroke();
+  x.fillStyle='#c9a24a';x.font='700 40px Georgia,serif';x.fillText('★',W/2,H/2+46);
+  x.fillStyle='#6f5b40';x.font='600 19px Nunito, sans-serif';wrap(x,sub,W/2,H-90,W-120,24);
+  x.textAlign='left';return c;
+}
+function wrap(x,t,cx,cy,maxw,lh){const w=(t||'').split(' ');let line='',y=cy;
+  for(const word of w){const test=line+word+' ';if(x.measureText(test).width>maxw&&line){x.fillText(line.trim(),cx,y);line=word+' ';y+=lh;}else line=test;}x.fillText(line.trim(),cx,y);}
+function nameplateTex(){
+  const W=520,H=120,c=cvs(W,H),x=c.getContext('2d');
+  const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,'#eccd84');g.addColorStop(.5,'#c9a24a');g.addColorStop(1,'#9c7a2e');
+  x.fillStyle=g;x.fillRect(0,0,W,H);x.strokeStyle='#7a5c1e';x.lineWidth=4;x.strokeRect(3,3,W-6,H-6);
+  x.fillStyle='#3a2410';x.textAlign='center';x.font='700 40px Georgia, serif';x.textBaseline='middle';x.fillText('RAO FENGGUI',W/2,46);
+  x.font='600 22px Nunito, sans-serif';x.fillText('Founder · DesignAnything Lab',W/2,86);x.textAlign='left';return c;
+}
+function labPosterTex(){
+  const W=420,H=560,c=cvs(W,H),x=c.getContext('2d');
+  const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,'#1d2b2a');g.addColorStop(1,'#142020');x.fillStyle=g;x.fillRect(0,0,W,H);
+  x.strokeStyle='#4f9a8e';x.lineWidth=6;x.strokeRect(18,18,W-36,H-36);
+  x.fillStyle='#e6c478';x.textAlign='center';x.font='700 120px Georgia, serif';x.fillText('D&A',W/2,170);
+  x.fillStyle='#f3e7cc';x.font='700 34px Nunito, sans-serif';x.fillText('DesignAnything Lab',W/2,230);
+  x.fillStyle='#9fc7bd';x.font='600 20px Nunito, sans-serif';x.fillText('AI · Art · Research', W/2,266);
+  const pts=[];for(let i=0;i<9;i++)pts.push([60+Math.random()*300,320+Math.random()*180]);
+  x.strokeStyle='rgba(79,154,142,.7)';x.lineWidth=1.5;for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++)if(Math.random()<0.35){x.beginPath();x.moveTo(pts[i][0],pts[i][1]);x.lineTo(pts[j][0],pts[j][1]);x.stroke();}
+  pts.forEach(p=>{x.fillStyle=Math.random()<0.5?'#e6c478':'#7a2e2e';x.beginPath();x.arc(p[0],p[1],5,0,7);x.fill();});
+  x.textAlign='left';return c;
+}
+function arcadeTex(){
+  const W=360,H=480,c=cvs(W,H),x=c.getContext('2d');x.fillStyle='#0c0f12';x.fillRect(0,0,W,H);
+  x.fillStyle='#2bd56a';x.font='700 26px "Courier New", monospace';
+  x.fillText('> classic terminal',24,60);x.fillText('  CV.exe', 24,96);
+  x.fillStyle='#0d1410';x.fillRect(24,130,W-48,200);x.fillStyle='#2bd56a';x.font='20px "Courier New",monospace';
+  x.fillText('$ whoami',38,166);x.fillText('rao_fenggui',38,196);x.fillText('$ open cv --retro',38,236);x.fillStyle='#1f8f48';x.fillRect(38,250,16,22);
+  x.fillStyle='#e6c478';x.font='700 30px Georgia,serif';x.textAlign='center';x.fillText('▶  PLAY',W/2,420);x.textAlign='left';return c;
+}
+
+/* ---- Hong Kong CENTRAL skyline (golden hour, painterly) ---- */
+function skylineTex(){
+  const W=1536,H=768,c=cvs(W,H),x=c.getContext('2d');
+  // sky
+  const sky=x.createLinearGradient(0,0,0,H);
+  sky.addColorStop(0,'#8fb4d6');sky.addColorStop(.34,'#cfd9d2');sky.addColorStop(.6,'#ffdcab');sky.addColorStop(.8,'#ffc585');sky.addColorStop(1,'#ffb877');
+  x.fillStyle=sky;x.fillRect(0,0,W,H);
+  // sun glow
+  const sx=W*0.72,sy=H*0.46;const sun=x.createRadialGradient(sx,sy,8,sx,sy,360);
+  sun.addColorStop(0,'rgba(255,250,228,0.98)');sun.addColorStop(.5,'rgba(255,236,186,0.5)');sun.addColorStop(1,'rgba(255,228,170,0)');
+  x.fillStyle=sun;x.fillRect(0,0,W,H);
+  x.fillStyle='rgba(255,252,235,0.95)';x.beginPath();x.arc(sx,sy,46,0,7);x.fill();
+  // clouds
+  function cloud(cx,cy,s,a){const cg=x.createRadialGradient(cx,cy,0,cx,cy,s);cg.addColorStop(0,'rgba(255,250,242,'+a+')');cg.addColorStop(1,'rgba(255,246,236,0)');
+    x.fillStyle=cg;x.beginPath();x.ellipse(cx,cy,s,s*0.46,0,0,7);x.fill();}
+  cloud(260,150,200,.8);cloud(440,200,150,.6);cloud(1120,120,220,.7);cloud(1330,200,160,.6);cloud(720,110,150,.5);
+  const waterY=H*0.8;
+  // The Peak (hills) behind, hazy
+  x.fillStyle='rgba(110,140,138,0.5)';x.beginPath();x.moveTo(0,waterY);
+  x.quadraticCurveTo(W*0.16,H*0.5,W*0.34,waterY-10);x.quadraticCurveTo(W*0.46,H*0.62,W*0.6,waterY);x.lineTo(0,waterY);x.fill();
+  x.fillStyle='rgba(95,125,128,0.45)';x.beginPath();x.moveTo(W,waterY);x.quadraticCurveTo(W*0.84,H*0.46,W*0.66,waterY-6);x.quadraticCurveTo(W*0.78,H*0.6,W,waterY);x.closePath();x.fill();
+  // building helpers
+  function win(bx,by,bw,bh){for(let yy=by+8;yy<by+bh-6;yy+=12)for(let xx=bx+6;xx<bx+bw-6;xx+=10){if(Math.random()<0.55){x.fillStyle=Math.random()<0.6?'rgba(255,222,150,0.9)':'rgba(150,180,200,0.5)';x.fillRect(xx,yy,5,6);}}}
+  function tower(bx,bw,top,col){x.fillStyle=col;x.fillRect(bx,top,bw,waterY-top);win(bx,top,bw,waterY-top);
+    x.fillStyle='rgba(255,228,180,0.18)';x.fillRect(bx,top,bw*0.4,waterY-top);}
+  // background cluster
+  for(let i=0;i<14;i++){const bw=40+Math.random()*60,bx=40+i*105+Math.random()*20,top=waterY-(120+Math.random()*210);
+    tower(bx,bw,top,'rgba('+(70+Math.random()*30|0)+','+(86+Math.random()*30|0)+','+(112+Math.random()*30|0)+',0.92)');}
+  // signature: The Center / Central Plaza (pyramid top)
+  (function(){const bx=300,bw=72,top=waterY-360;tower(bx,bw,top,'#56708f');
+    x.fillStyle='#46607f';x.beginPath();x.moveTo(bx,top);x.lineTo(bx+bw/2,top-60);x.lineTo(bx+bw,top);x.fill();})();
+  // signature: Bank of China Tower (triangular X-braced, twin masts)
+  (function(){const bx=560,bw=120,top=waterY-540;
+    x.fillStyle='#7f93ab';x.beginPath();x.moveTo(bx,waterY);x.lineTo(bx,top+150);x.lineTo(bx+bw/2,top);x.lineTo(bx+bw,top+150);x.lineTo(bx+bw,waterY);x.fill();
+    x.strokeStyle='rgba(255,255,255,0.35)';x.lineWidth=2;
+    for(let s=0;s<4;s++){const y0=top+150+s*((waterY-top-150)/4);const y1=y0+((waterY-top-150)/4);
+      x.beginPath();x.moveTo(bx,y0);x.lineTo(bx+bw,y1);x.moveTo(bx+bw,y0);x.lineTo(bx,y1);x.stroke();}
+    x.strokeStyle='#3a4a5e';x.lineWidth=4;x.beginPath();x.moveTo(bx+bw/2,top);x.lineTo(bx+bw/2,top-80);
+    x.moveTo(bx+bw*0.42,top+10);x.lineTo(bx+bw*0.42,top-60);x.stroke();})();
+  // signature: IFC Two (tallest, tapered, notched crown)
+  (function(){const bx=900,bw=128,top=waterY-620;
+    const tg=x.createLinearGradient(bx,0,bx+bw,0);tg.addColorStop(0,'#aebfce');tg.addColorStop(.5,'#cdd9e3');tg.addColorStop(1,'#93a6ba');
+    x.fillStyle=tg;x.beginPath();x.moveTo(bx+8,waterY);x.lineTo(bx+14,top+40);x.lineTo(bx+bw/2,top);x.lineTo(bx+bw-14,top+40);x.lineTo(bx+bw-8,waterY);x.fill();
+    win(bx+14,top+60,bw-28,waterY-top-70);
+    x.fillStyle='#b9c6d4';for(let k=0;k<5;k++){x.fillRect(bx+18+k*((bw-36)/5),top+8,(bw-36)/5-4,30);}
+    x.fillStyle='#dfe8ef';x.fillRect(bx+bw/2-4,top-46,8,46);})();
+  // IFC One (shorter companion)
+  tower(1052,96,waterY-360,'#9fb0c2');
+  // harbour water
+  const wg=x.createLinearGradient(0,waterY,0,H);wg.addColorStop(0,'#6f93ad');wg.addColorStop(.5,'#5a82a0');wg.addColorStop(1,'#4a6e8c');
+  x.fillStyle=wg;x.fillRect(0,waterY,W,H-waterY);
+  x.fillStyle='rgba(255,236,190,0.5)';for(let i=0;i<180;i++){const wy=waterY+Math.random()*(H-waterY);x.fillRect(Math.random()*W,wy,12+Math.random()*30,2);}
+  // sun reflection column
+  const ref=x.createLinearGradient(sx-60,0,sx+60,0);ref.addColorStop(0,'rgba(255,240,200,0)');ref.addColorStop(.5,'rgba(255,240,200,0.5)');ref.addColorStop(1,'rgba(255,240,200,0)');
+  x.fillStyle=ref;x.fillRect(sx-60,waterY,120,H-waterY);
+  // a little Star-Ferry-ish boat
+  x.fillStyle='#3a4a44';x.fillRect(360,waterY+54,120,26);x.fillStyle='#7a2e2e';x.fillRect(360,waterY+44,120,12);
+  x.fillStyle='#e9dcc0';x.fillRect(400,waterY+30,40,16);
+  return c;
+}
+
+/* =====================================================================
+   MATERIAL / MESH HELPERS
+   ===================================================================== */
+const lam=(color,opts={})=>new THREE.MeshStandardMaterial(Object.assign({color:new THREE.Color(color),roughness:0.86,metalness:0.0},opts));
+const brass=(c='#c9a24a',r=0.34)=>new THREE.MeshStandardMaterial({color:new THREE.Color(c),roughness:r,metalness:0.85});
+function box(w,h,d,material){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),material.isMaterial?material:lam(material));m.castShadow=true;m.receiveShadow=true;return m;}
+function cyl(rt,rb,h,seg,material){const m=new THREE.Mesh(new THREE.CylinderGeometry(rt,rb,h,seg||20),material.isMaterial?material:lam(material));m.castShadow=true;m.receiveShadow=true;return m;}
+function at(o,x,y,z){o.position.set(x,y,z);return o;}
+
+/* =====================================================================
+   LIGHTS  (warm, soft, golden hour)
+   ===================================================================== */
+scene.add(new THREE.AmbientLight(0xfff1dd,0.55));
+scene.add(new THREE.HemisphereLight(0xfff3dd,0x5b3f2a,0.65));
+const sun=new THREE.DirectionalLight(0xffd9a0, 2.3);
+sun.position.set(-3,7,-9); sun.castShadow=true;
+sun.shadow.mapSize.set(MOBILE?1024:2048, MOBILE?1024:2048);
+sun.shadow.camera.near=1; sun.shadow.camera.far=32;
+sun.shadow.camera.left=-9; sun.shadow.camera.right=9; sun.shadow.camera.top=8; sun.shadow.camera.bottom=-5;
+sun.shadow.bias=-0.0009; sun.shadow.normalBias=0.02; scene.add(sun);
+const fill=new THREE.DirectionalLight(0xbcd2e0, 0.35); fill.position.set(5,4,6); scene.add(fill);
+const lamp=new THREE.PointLight(0xffca7a, 9, 7, 2); lamp.position.set(-1.25,1.5,-4.0);
+lamp.castShadow=!MOBILE; if(lamp.shadow){lamp.shadow.mapSize.set(512,512);lamp.shadow.bias=-0.004;} scene.add(lamp);
+const chand=new THREE.PointLight(0xffe6c2, 7, 16, 2); chand.position.set(0,3.7,-1); scene.add(chand);
+const shelfLight=new THREE.PointLight(0xffe2bc, 5, 8, 2); shelfLight.position.set(-3.7,2.7,0.2); scene.add(shelfLight);
+
+/* =====================================================================
+   ROOM SHELL   (x[-6,6], z[-6,6], floor y0, ceil 4.2)
+   ===================================================================== */
+const RW=6, RD=6, RH=4.2;
+const floorT=tex(woodTex('#7a4f2e','#5a3920'),true); floorT.repeat.set(4,4);
+const floor=new THREE.Mesh(new THREE.PlaneGeometry(RW*2,RD*2), lam('#7a4f2e',{map:floorT,roughness:0.7}));
+floor.rotation.x=-Math.PI/2; floor.receiveShadow=true; scene.add(floor);
+const ceil=new THREE.Mesh(new THREE.PlaneGeometry(RW*2,RD*2), lam('#f1e7d0'));
+ceil.rotation.x=Math.PI/2; ceil.position.y=RH; scene.add(ceil);
+
+const wallT=tex(wallTex(),true); wallT.repeat.set(3,1.6);
+const wallMat=lam('#e7d8b4',{map:wallT,roughness:0.95});
+function wall(w,h,x,y,z,ry){const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),wallMat);m.position.set(x,y,z);m.rotation.y=ry;m.receiveShadow=true;scene.add(m);}
+wall(RW*2,RH,0,RH/2,-RD,0); wall(RW*2,RH,0,RH/2,RD,Math.PI);
+wall(RD*2,RH,-RW,RH/2,0,Math.PI/2); wall(RD*2,RH,RW,RH/2,0,-Math.PI/2);
+
+const woodMat=lam('#6e4327',{map:tex(woodTex('#6e4327','#4a2c18'))});
+function wainscot(w,x,z,ry){const m=box(w,1.15,0.07,woodMat);m.position.set(x,0.57,z);m.rotation.y=ry;scene.add(m);}
+wainscot(RW*2,0,-RD+0.05,0);wainscot(RD*2,-RW+0.05,0,Math.PI/2);wainscot(RD*2,RW-0.05,0,-Math.PI/2);wainscot(RW*2,0,RD-0.05,Math.PI);
+function trim(w,x,z,ry,y,col){const m=box(w,0.14,0.05,lam(col));m.position.set(x,y,z);m.rotation.y=ry;scene.add(m);}
+// baseboard + crown molding
+[[-RD+0.04,0],[RD-0.04,Math.PI]].forEach(([z,ry])=>{trim(RW*2,0,z,ry,0.07,'#4a2c18');trim(RW*2,0,z,ry,RH-0.12,'#efe2c4');});
+[[-RW+0.04,Math.PI/2],[RW-0.04,-Math.PI/2]].forEach(([x,ry])=>{trim(RD*2,x,0,ry,0.07,'#4a2c18');trim(RD*2,x,0,ry,RH-0.12,'#efe2c4');});
+
+const rug=new THREE.Mesh(new THREE.PlaneGeometry(5.4,4.2), lam('#6e2230',{map:tex(rugTex()),roughness:0.95}));
+rug.rotation.x=-Math.PI/2; rug.position.set(0,0.02,-1.0); rug.receiveShadow=true; scene.add(rug);
+
+/* chandelier */
+const chandG=new THREE.Group();
+chandG.add(at(cyl(0.02,0.02,0.5,8,brass('#7a5c1e')),0,RH-0.25,0));
+const ring=new THREE.Mesh(new THREE.TorusGeometry(0.42,0.04,8,24),brass('#caa24a'));ring.rotation.x=Math.PI/2;at(ring,0,RH-0.55,0);chandG.add(ring);
+for(let i=0;i<6;i++){const a=i/6*Math.PI*2;const arm=at(cyl(0.015,0.015,0.18,6,brass('#caa24a')),Math.cos(a)*0.42,RH-0.46,Math.sin(a)*0.42);chandG.add(arm);
+  const bb=new THREE.Mesh(new THREE.SphereGeometry(0.06,10,10),new THREE.MeshBasicMaterial({color:0xfff0c8,toneMapped:false}));at(bb,Math.cos(a)*0.42,RH-0.4,Math.sin(a)*0.42);chandG.add(bb);}
+at(chandG,0,0,-1);scene.add(chandG);
+
+/* =====================================================================
+   WINDOW + HK CENTRAL SKYLINE (back wall)
+   ===================================================================== */
+const sky=new THREE.Mesh(new THREE.PlaneGeometry(6.4,3.4), art(skylineTex())); at(sky,0,2.3,-RD+0.06); scene.add(sky);
+const glass=new THREE.Mesh(new THREE.PlaneGeometry(6.0,3.1), new THREE.MeshStandardMaterial({color:0xcfeefc,transparent:true,opacity:0.07,roughness:0.1,metalness:0}));
+at(glass,0,2.25,-RD+0.12); scene.add(glass);
+const frM=lam('#efe7d4',{roughness:0.6});
+[[6.4,0.2,0,0.62],[6.4,0.2,0,3.95],[0.2,3.6,-3.05,2.3],[0.2,3.6,3.05,2.3],[0.12,3.1,0,2.3],[6.0,0.12,0,2.3],[6.0,0.12,0,3.0],[6.0,0.12,0,1.6]]
+ .forEach(([w,h,x,y])=>{const m=box(w,h,0.18,frM);at(m,x,y,-RD+0.1);scene.add(m);});
+const sill=box(6.4,0.16,0.4,woodMat);at(sill,0,0.56,-RD+0.22);scene.add(sill);
+const winHit=new THREE.Mesh(new THREE.PlaneGeometry(6.0,3.1),new THREE.MeshBasicMaterial({visible:false}));at(winHit,0,2.3,-RD+0.16);scene.add(winHit);
+
+/* =====================================================================
+   DESK + items
+   ===================================================================== */
+const deskG=new THREE.Group(); scene.add(deskG);
+const deskWood=lam('#5e3a22',{map:tex(woodTex('#5e3a22','#3f2410')),roughness:0.55,metalness:0.05});
+const top=box(3.5,0.16,1.45,deskWood); at(top,0,1.02,-4.3); deskG.add(top);
+const trimTop=box(3.56,0.04,1.51,brass('#b7902f',0.5)); at(trimTop,0,1.11,-4.3); deskG.add(trimTop);
+const leather=box(1.6,0.02,1.0, lam('#3a1518',{roughness:0.5})); at(leather,0.1,1.115,-4.25); deskG.add(leather);
+const panel=box(3.1,0.82,0.12, deskWood); at(panel,0,0.6,-3.78); deskG.add(panel);
+[[-1.65,-4.88],[1.65,-4.88],[-1.65,-3.8],[1.65,-3.8]].forEach(([x,z])=>{deskG.add(at(box(0.18,1.0,0.18,deskWood),x,0.5,z));});
+
+// nameplate
+const nameplate=new THREE.Group();
+nameplate.add(box(0.66,0.07,0.18,lam('#2a1a10')));
+const npf=new THREE.Mesh(new THREE.PlaneGeometry(0.62,0.13),art(nameplateTex()));at(npf,0,0.03,0.092);npf.rotation.x=-0.2;nameplate.add(npf);
+at(nameplate,0,1.13,-3.96);deskG.add(nameplate);
+
+// résumé paper
+const paper=new THREE.Group();
+paper.add(box(0.64,0.02,0.86,lam('#fdfaf0',{roughness:0.9})));
+const print=new THREE.Mesh(new THREE.PlaneGeometry(0.62,0.84),art(paperResumeTex()));print.rotation.x=-Math.PI/2;at(print,0,0.012,0);paper.add(print);
+at(paper,-0.9,1.12,-4.0);paper.rotation.y=0.14;paper.userData.baseY=1.12;deskG.add(paper);
+
+// monitor
+const monitor=new THREE.Group();
+monitor.add(at(box(0.2,0.5,0.2,lam('#26262b')),0,-0.18,0));
+monitor.add(at(box(0.5,0.05,0.3,lam('#26262b')),0,-0.42,0));
+monitor.add(at(box(1.55,0.95,0.08,lam('#15151a')),0,0.42,0));
+let monMat=new THREE.MeshBasicMaterial({map:tex(monitorTex(true)),toneMapped:false});
+monitor.add(at(new THREE.Mesh(new THREE.PlaneGeometry(1.42,0.82),monMat),0,0.42,0.05));
+at(monitor,0,1.13,-4.64);deskG.add(monitor);
+
+// framed photo
+const photoG=new THREE.Group();
+photoG.add(box(0.46,0.54,0.05,brass('#7a5c2e',0.5)));
+const photo=new THREE.Mesh(new THREE.PlaneGeometry(0.36,0.44),new THREE.MeshBasicMaterial({color:0xd9cba6,toneMapped:false}));at(photo,0,0.02,0.03);photoG.add(photo);
+at(photoG,1.05,1.31,-4.5);photoG.rotation.y=-0.5;deskG.add(photoG);
+
+// banker's lamp (brass + green shade)
+const lampG=new THREE.Group();
+lampG.add(cyl(0.13,0.16,0.05,16,brass('#caa24a')));
+lampG.add(at(cyl(0.02,0.02,0.42,10,brass('#caa24a')),0,0.24,0));
+const shade=new THREE.Mesh(new THREE.CylinderGeometry(0.16,0.16,0.16,18,1,true,0,Math.PI),
+  new THREE.MeshStandardMaterial({color:0x1f5a3a,roughness:0.4,metalness:0.2,side:THREE.DoubleSide,emissive:0x0a3a22,emissiveIntensity:0.6}));
+shade.rotation.z=Math.PI/2;at(shade,0,0.46,0);lampG.add(shade);
+at(lampG,-1.25,1.11,-4.5);deskG.add(lampG);
+
+// coffee, pens, bonsai
+const mug=cyl(0.07,0.06,0.14,16,lam('#f0ead8'));at(mug,0.6,1.18,-3.98);deskG.add(mug);
+mug.add(at(new THREE.Mesh(new THREE.TorusGeometry(0.05,0.012,8,14),lam('#f0ead8')),0.08,0,0));
+const penc=cyl(0.07,0.06,0.16,14,brass('#9c7a2e',0.5));at(penc,0.82,1.19,-4.16);deskG.add(penc);
+[[-0.02,0.16,'#caa24a'],[0.02,0.13,'#7a2e2e'],[0.0,0.18,'#222']].forEach(([dx,h,col])=>{const p=cyl(0.008,0.008,h,6,lam(col));at(p,0.82+dx,1.25,-4.16);deskG.add(p);});
+const bonsai=new THREE.Group();bonsai.add(cyl(0.1,0.12,0.08,14,lam('#3a4a44')));bonsai.add(at(cyl(0.02,0.03,0.14,6,lam('#5a3a22')),0,0.1,0));
+[[0,0.22,0.11,'#5a8f4e'],[0.08,0.2,0.09,'#4f7d3a'],[-0.08,0.19,0.08,'#6a9f5a']].forEach(([dx,y,r,col])=>{bonsai.add(at(new THREE.Mesh(new THREE.SphereGeometry(r,10,10),lam(col)),dx,y,0));});
+at(bonsai,-1.5,1.16,-3.95);deskG.add(bonsai);
+
+/* executive leather chair */
+const chair=new THREE.Group();
+const lth=lam('#6a2330',{roughness:0.5,metalness:0.05});
+chair.add(at(box(0.74,0.16,0.72,lth),0,0.62,0));
+const back=box(0.74,1.15,0.16,lth);at(back,0,1.22,-0.3);back.rotation.x=-0.08;chair.add(back);
+chair.add(at(box(0.74,0.28,0.16,lth),0,1.86,-0.36));   // headrest
+[[0.42],[-0.42]].forEach(([x])=>{chair.add(at(box(0.1,0.1,0.6,lth),x,0.92,0));chair.add(at(cyl(0.05,0.05,0.34,8,lam('#2a2a2e')),x,0.74,0.0));});
+chair.add(at(cyl(0.05,0.06,0.5,10,lam('#2a2a2e')),0,0.32,0));
+const star=new THREE.Group();for(let i=0;i<5;i++){const a=i/5*Math.PI*2;const leg=at(box(0.07,0.05,0.34,lam('#1f1f22')),Math.cos(a)*0.18,0.06,Math.sin(a)*0.18);leg.rotation.y=-a;star.add(leg);
+  star.add(at(new THREE.Mesh(new THREE.SphereGeometry(0.06,10,10),lam('#111')),Math.cos(a)*0.34,0.06,Math.sin(a)*0.34));}
+chair.add(star);
+at(chair,0,0,-5.05);chair.rotation.y=Math.PI;scene.add(chair);
+
+/* =====================================================================
+   BOOKSHELF (left wall) — books = projects
+   ===================================================================== */
+const shelfG=new THREE.Group(); scene.add(shelfG);
+const caseMat=lam('#6e4327',{map:tex(woodTex('#6e4327','#4a2c18')),roughness:0.7});
+const SX=-5.76;
+shelfG.add(at(box(0.42,3.3,3.7,caseMat),SX-0.13,1.65,0));
+[0.42,1.18,1.94,2.7].forEach(y=>shelfG.add(at(box(0.52,0.07,3.7,caseMat),SX,y,0)));
+shelfG.add(at(box(0.52,3.3,0.09,caseMat),SX,1.65,-1.85));
+shelfG.add(at(box(0.52,3.3,0.09,caseMat),SX,1.65,1.85));
+shelfG.add(at(box(0.52,0.1,3.7,caseMat),SX,3.28,0));
+// warm back glow panel
+shelfG.add(at(new THREE.Mesh(new THREE.PlaneGeometry(3.5,3.1),new THREE.MeshBasicMaterial({color:0x3a2415,toneMapped:false})),SX-0.32,1.65,0));
+shelfG.children[shelfG.children.length-1].rotation.y=Math.PI/2;
+
+const books=[];
+const fillerCols=['#6e3f24','#34557f','#2f6b62','#7a2e2e','#4f6b2f','#8a5a2b','#5f3f78','#2b6b8a','#a05a2b','#3a4a44'];
+const surfaces=[1.94,1.18,0.42];
+const rows=[[0,3],[3,6],[6,9]];
+function projBook(idx,z,surface){
+  const p=DATA.projects[idx];const h=0.64,th=0.2;
+  const b=new THREE.Group();
+  b.add(box(0.36,h,th,lam(p.c,{roughness:0.6})));
+  const sp=new THREE.Mesh(new THREE.PlaneGeometry(th-0.012,h-0.03),art(spineTex(p.t,p.c)));sp.rotation.y=Math.PI/2;at(sp,0.181,0,0);b.add(sp);
+  at(b,SX,surface+h/2,z+th/2);b.userData.rest=SX;b.userData.proj=idx;
+  shelfG.add(b);books.push(b);return th;
+}
+function fillerBook(z,surface,seed){const h=0.5+((seed)%3)*0.07,th=0.11+((seed)%2)*0.05;
+  const fb=box(0.33,h,th,lam(fillerCols[seed%fillerCols.length],{roughness:0.7}));at(fb,SX-0.018,surface+h/2,z+th/2);shelfG.add(fb);return th;}
+rows.forEach((rng,ri)=>{const surface=surfaces[ri];const projIdx=[];for(let i=rng[0];i<rng[1]&&i<DATA.projects.length;i++)projIdx.push(i);
+  const segW=3.0/projIdx.length;
+  projIdx.forEach((idx,si)=>{let z=-1.5+si*segW;const segEnd=z+segW;const nf=1+(si%2);
+    for(let f=0;f<nf;f++){z+=fillerBook(z,surface,idx+f+ri)+0.025;}
+    z+=projBook(idx,z,surface)+0.035;
+    let g=0;while(segEnd-z>0.18&&g<3){z+=fillerBook(z,surface,idx+10+g+ri)+0.025;g++;}});});
+// shelf decor
+const trophy=new THREE.Group();trophy.add(cyl(0.0,0.1,0.2,12,brass('#caa24a')));trophy.add(at(cyl(0.07,0.02,0.06,12,lam('#5a3a22')),0,-0.12,0));at(trophy,SX,2.86,1.45);shelfG.add(trophy);
+const globe=new THREE.Mesh(new THREE.SphereGeometry(0.14,16,16),lam('#2f6b62',{map:tex(flatGlobe())}));at(globe,SX,2.12,1.5);shelfG.add(globe);
+function flatGlobe(){const c=cvs(64,32),x=c.getContext('2d');x.fillStyle='#2f6b8a';x.fillRect(0,0,64,32);x.fillStyle='#5a8f4e';for(let i=0;i<8;i++)x.fillRect(Math.random()*64,Math.random()*32,8+Math.random()*10,5+Math.random()*6);return c;}
+
+/* floor globe (executive) */
+const fGlobe=new THREE.Group();
+[[0.2,0],[-0.1,0.17],[-0.1,-0.17]].forEach(([x,z])=>{const l=at(cyl(0.02,0.03,0.7,8,lam('#5a3a22')),x,0.35,z);l.lookAt(0,0.9,0);fGlobe.add(l);});
+const fring=new THREE.Mesh(new THREE.TorusGeometry(0.26,0.02,8,24),brass('#caa24a'));fring.rotation.x=0.4;at(fring,0,0.78,0);fGlobe.add(fring);
+fGlobe.add(at(new THREE.Mesh(new THREE.SphereGeometry(0.24,18,18),lam('#3a6b8a',{map:tex(flatGlobe())})),0,0.78,0));
+at(fGlobe,-4.9,0,3.7);scene.add(fGlobe);
+
+/* corner plant */
+const plant=new THREE.Group();plant.add(cyl(0.3,0.24,0.55,16,lam('#8a5a2b')));
+for(let i=0;i<9;i++){const lf=box(0.12,1.0,0.06,lam(i%2?'#4f7d3a':'#5a8f4e'));lf.position.set(Math.cos(i*0.9)*0.13,0.7,Math.sin(i*0.9)*0.13);lf.rotation.set(0.25,i,(i%2?1:-1)*0.4);plant.add(lf);}
+at(plant,5.1,0.28,5.0);scene.add(plant);
+
+/* =====================================================================
+   AWARDS WALL (right wall) — frames
+   ===================================================================== */
+const wallG=new THREE.Group(); scene.add(wallG);
+const AX=RW-0.08;
+function makeFrame(w,h,y,z,t,sub,kind){const f=new THREE.Mesh(new THREE.PlaneGeometry(w,h),art(frameTex(t,sub,kind==='paint')));
+  f.rotation.y=-Math.PI/2;at(f,AX,y,z);wallG.add(f);return f;}
+const fDipA=makeFrame(1.0,1.28,2.45,-1.9,"Ph.D. — HK PolyU","School of Design · AED Lab");
+const fDipB=makeFrame(1.0,1.28,2.45,-0.45,"B.Design — China Academy of Art","Innovative Design · GPA 90/100");
+const fHon =makeFrame(1.0,1.28,2.45,1.1,"Honours & Scholarships","6 awards · 2021–2024");
+const fIP  =makeFrame(1.2,1.0,1.05,-0.45,"IP & Patents","copyright · patents · 2022–2024");
+const paint=makeFrame(1.0,0.86,1.1,1.15,"Hong Kong, golden hour","",'paint');
+const clock=new THREE.Group();clock.add(cyl(0.24,0.24,0.06,20,brass('#7a5c2e',0.5)));
+clock.add(at(new THREE.Mesh(new THREE.CircleGeometry(0.2,24),new THREE.MeshBasicMaterial({color:0xf6ecd2,toneMapped:false})),0,0,0.035));
+clock.rotation.y=-Math.PI/2;at(clock,AX,3.4,0.3);wallG.add(clock);
+
+/* D&A poster (front-left) + arcade (front-right) + door */
+const poster=new THREE.Mesh(new THREE.PlaneGeometry(1.3,1.7),art(labPosterTex()));at(poster,-3.4,2.15,RD-0.09);poster.rotation.y=Math.PI;scene.add(poster);
+const arcadeG=new THREE.Group();
+arcadeG.add(at(box(1.0,2.0,0.8,lam('#222228')),0,1.0,0));
+arcadeG.add(at(new THREE.Mesh(new THREE.PlaneGeometry(0.74,0.98),art(arcadeTex())),0,1.32,-0.41));
+arcadeG.add(at(box(1.04,0.22,0.84,brass('#caa24a')),0,2.06,0));
+at(arcadeG,3.5,0,RD-0.62);arcadeG.rotation.y=Math.PI;scene.add(arcadeG);
+const doorG=new THREE.Group();
+doorG.add(at(box(1.4,2.6,0.12,woodMat),0,1.3,0));
+doorG.add(at(box(1.5,2.7,0.06,lam('#4a2c18')),0,1.3,-0.04));
+const handle=cyl(0.04,0.04,0.12,10,brass('#caa24a'));handle.rotation.x=Math.PI/2;at(handle,0.48,1.25,0.09);doorG.add(handle);
+at(doorG,0.4,0,RD-0.06);scene.add(doorG);
+
+/* =====================================================================
+   INTERACTIVES REGISTRY
+   ===================================================================== */
+const interactives=[]; const rayTargets=[];
+function register(root,label,sub,action){root.userData.label=label;root.userData.sub=sub;root.userData.action=action;root.userData.hov=0;root.userData.sel=0;
+  const stash=[];root.traverse(o=>{if(o.isMesh){o.userData.root=root;rayTargets.push(o);const m=o.material;if(m&&m.emissive&&m.toneMapped!==false)stash.push({m,e:m.emissive.getHex()});}});
+  root.userData.emis=stash;interactives.push(root);}
+register(paper,"Résumé","pick it up & read",'resume');
+register(monitor,"Founder Console","about & skills",'about');
+register(photoG,"Portrait","who is this?",'person');
+register(nameplate,"Nameplate","roles & leadership",'roles');
+register(winHit,"The Window","Hong Kong · contact",'contact');
+register(chair,"The Founder's Chair","behold the throne",'chair');
+register(poster,"D&A Lab","what is the lab?",'roles');
+register(arcadeG,"Arcade: Classic CV","play the terminal site",'terminal');
+register(fDipA,"Diploma","education",'edu');register(fDipB,"Diploma","education",'edu');
+register(fHon,"Honours","scholarships & awards",'honors');register(fIP,"IP & Patents","copyright & patents",'ip');
+register(fGlobe,"Globe","Hong Kong · contact",'contact');
+books.forEach(b=>register(b,DATA.projects[b.userData.proj].t,DATA.projects[b.userData.proj].v,'project'));
+
+/* =====================================================================
+   CAMERA RIG / CONTROLS
+   ===================================================================== */
+const state={eye:new THREE.Vector3(0,1.7,3.7),yaw:0,pitch:-0.05};
+const goal={eye:state.eye.clone(),yaw:0,pitch:-0.05};
+function lookAngles(pos,target){const dx=target.x-pos.x,dy=target.y-pos.y,dz=target.z-pos.z;
+  const len=Math.hypot(dx,dy,dz)||1;return{yaw:Math.atan2(-(dx/len),-(dz/len)),pitch:Math.asin(Math.max(-1,Math.min(1,dy/len)))};}
+function unwrap(t,r){while(t-r>Math.PI)t-=2*Math.PI;while(t-r<-Math.PI)t+=2*Math.PI;return t;}
+const VIEWS={
+  overview:{pos:new THREE.Vector3(0,1.75,3.8),tgt:new THREE.Vector3(0,1.3,-3)},
+  resume:{pos:new THREE.Vector3(-0.55,1.62,-2.7),tgt:new THREE.Vector3(-0.9,1.05,-4.0)},
+  projects:{pos:new THREE.Vector3(-2.5,1.62,0),tgt:new THREE.Vector3(-6,1.55,0)},
+  about:{pos:new THREE.Vector3(0,1.5,-3.0),tgt:new THREE.Vector3(0,1.32,-4.64)},
+  honors:{pos:new THREE.Vector3(2.4,1.8,-0.2),tgt:new THREE.Vector3(6,1.95,-0.4)},
+  contact:{pos:new THREE.Vector3(0,1.72,-2.3),tgt:new THREE.Vector3(0,2.1,-6)},
+  chair:{pos:new THREE.Vector3(2.05,1.85,-2.0),tgt:new THREE.Vector3(-0.25,1.1,-4.55)}
+};
+let flying=0;
+function flyTo(key){const v=VIEWS[key];if(!v)return;goal.eye.copy(v.pos);const a=lookAngles(v.pos,v.tgt);
+  goal.yaw=unwrap(a.yaw,state.yaw);goal.pitch=a.pitch;flying=1;setActiveDock(key);}
+
+let dragging=false,moved=0,lastX=0,lastY=0;
+const ndc=new THREE.Vector2(-2,-2);
+canvas.addEventListener('pointerdown',e=>{dragging=true;moved=0;lastX=e.clientX;lastY=e.clientY;canvas.classList.add('grabbing');canvas.setPointerCapture(e.pointerId);});
+canvas.addEventListener('pointermove',e=>{const r=canvas.getBoundingClientRect();
+  ndc.x=((e.clientX-r.left)/r.width)*2-1;ndc.y=-((e.clientY-r.top)/r.height)*2+1;
+  tipEl.style.left=e.clientX+'px';tipEl.style.top=e.clientY+'px';
+  if(dragging){const dx=e.clientX-lastX,dy=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;moved+=Math.abs(dx)+Math.abs(dy);
+    goal.yaw-=dx*0.0034;goal.pitch-=dy*0.0034;goal.pitch=Math.max(-1.05,Math.min(1.05,goal.pitch));flying=0;}});
+canvas.addEventListener('pointerup',e=>{if(!dragging)return;dragging=false;canvas.classList.remove('grabbing');if(moved<7)doClick();});
+canvas.addEventListener('pointercancel',()=>{dragging=false;canvas.classList.remove('grabbing');});
+const keys={};
+addEventListener('keydown',e=>{keys[e.code]=1;if(e.code==='Escape')closePanel();});
+addEventListener('keyup',e=>{keys[e.code]=0;});
+function moveKeys(dt){const sp=2.6*dt;let f=0,s=0;
+  if(keys['KeyW']||keys['ArrowUp'])f+=1;if(keys['KeyS']||keys['ArrowDown'])f-=1;
+  if(keys['KeyA']||keys['ArrowLeft'])s-=1;if(keys['KeyD']||keys['ArrowRight'])s+=1;
+  if(!f&&!s)return;flying=0;setActiveDock(null);
+  const fwd=new THREE.Vector3(Math.sin(goal.yaw),0,Math.cos(goal.yaw)).multiplyScalar(-1);
+  const right=new THREE.Vector3(fwd.z,0,-fwd.x);
+  goal.eye.addScaledVector(fwd,f*sp);goal.eye.addScaledVector(right,s*sp);
+  goal.eye.x=Math.max(-5.2,Math.min(5.2,goal.eye.x));goal.eye.z=Math.max(-3.2,Math.min(5.4,goal.eye.z));goal.eye.y=Math.max(1.2,Math.min(2.0,goal.eye.y));}
+
+/* hover + click */
+const ray=new THREE.Raycaster();let hovered=null;
+const tipEl=document.getElementById('tip'),reticle=document.getElementById('reticle');
+function pick(){ray.setFromCamera(ndc,camera);const hits=ray.intersectObjects(rayTargets,false);
+  for(const h of hits){let o=h.object;while(o&&!o.userData.label)o=o.parent;if(o&&o.userData.label)return o;}return null;}
+function setHover(o){if(hovered===o)return;if(hovered)hovered.userData.hov=0;hovered=o;
+  if(o){o.userData.hov=1;tipEl.style.display='block';tipEl.innerHTML=o.userData.label+'<small>'+(o.userData.sub||'click to open')+'</small>';reticle.classList.add('hot');canvas.classList.add('point');}
+  else{tipEl.style.display='none';reticle.classList.remove('hot');canvas.classList.remove('point');}}
+function applyEmis(o,hex){(o.userData.emis||[]).forEach(s=>{s.m.emissive.setHex(hex);s.m.emissiveIntensity=hex?0.5:1;});}
+function doClick(){const o=pick()||hovered;if(!o)return;act(o.userData.action,o);}
+function act(action,obj){switch(action){
+  case 'resume':flyTo('resume');selectPaper();openPanel('resume');break;
+  case 'about':flyTo('about');openPanel('about');break;
+  case 'person':flyTo('about');openPanel('person');break;
+  case 'roles':flyTo('overview');openPanel('roles');break;
+  case 'contact':flyTo('contact');openPanel('contact');break;
+  case 'edu':flyTo('honors');openPanel('edu');break;
+  case 'honors':flyTo('honors');openPanel('honors');break;
+  case 'ip':flyTo('honors');openPanel('ip');break;
+  case 'chair':flyTo('chair');openPanel('roles');break;
+  case 'terminal':window.open('/terminal/','_blank');break;
+  case 'project':flyTo('projects');selectBook(obj);openPanel('project',obj.userData.proj);break;}
+  blip(520);}
+let selectedBook=null,paperSel=false;
+function selectBook(b){if(selectedBook&&selectedBook!==b)selectedBook.userData.sel=0;selectedBook=b;b.userData.sel=1;}
+function clearBook(){if(selectedBook){selectedBook.userData.sel=0;selectedBook=null;}}
+function selectPaper(){paperSel=true;paper.userData.sel=1;}
+function clearPaper(){paperSel=false;paper.userData.sel=0;}
+
+/* panel */
+const overlay=document.getElementById('overlay');
+const cardTitle=document.getElementById('cardTitle'),cardSub=document.getElementById('cardSub'),cardBody=document.getElementById('cardBody');
+document.getElementById('cardX').onclick=closePanel;
+overlay.addEventListener('pointerdown',e=>{if(e.target===overlay)closePanel();});
+function closePanel(){overlay.classList.remove('show');clearBook();clearPaper();}
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function openPanel(type,idx){let title='',sub='',html='';
+  if(type==='resume'){title='Résumé';sub='Rao Fenggui · 简历';
+    html='<p class="lead">'+esc(DATA.resume.summary)+'</p><h3>Education · 教育</h3>'+
+      DATA.resume.education.map(e=>'<div class="row"><div><div class="l">'+esc(e.school)+'</div><div class="d">'+esc(e.detail)+'</div></div><div class="r">'+esc(e.years)+'</div></div>').join('')+
+      '<h3>Contact · 联系</h3><div class="kv">'+DATA.resume.contact.map(c=>'<div class="k">'+esc(c[0])+'</div><div>'+esc(c[1])+'</div>').join('')+'</div><div class="stamp">Languages · '+esc(DATA.person.langs)+'</div>';}
+  else if(type==='about'){title='About · Skills';sub='founder console';
+    html='<p class="lead">'+esc(DATA.about.bio)+'</p><h3>What I do</h3>'+DATA.about.skills.map(s=>'<div class="row"><div><div class="l">'+esc(s[0])+'</div><div class="d">'+esc(s[1])+'</div></div></div>').join('');}
+  else if(type==='person'){title='Who is this?';sub='Rao Fenggui · Robbie Rao';
+    html='<p class="lead">'+esc(DATA.person.tagline)+'</p><div class="tags"><span class="meta">Hong Kong</span><span class="meta teal">PhD · HK PolyU</span><span class="meta brass">Founder · D&A Lab</span></div><p>'+esc(DATA.about.bio)+'</p><p class="d">'+esc(DATA.person.langs)+'</p>';}
+  else if(type==='edu'){title='Education';sub='diplomas';
+    html=DATA.resume.education.map(e=>'<div class="row"><div><div class="l">'+esc(e.school)+'</div><div class="d">'+esc(e.detail)+'</div></div><div class="r">'+esc(e.years)+'</div></div>').join('');}
+  else if(type==='honors'){title='Honours & Scholarships';sub='2021–2024';
+    html=DATA.honors.map(h=>'<div class="row"><div class="l">'+esc(h[0])+'</div><div class="r">'+esc(h[1])+'</div></div>').join('');}
+  else if(type==='ip'){title='IP & Patents';sub='copyright · patents';
+    html=DATA.ip.map(h=>'<div class="row"><div class="l">'+esc(h[0])+'</div><div class="r">'+esc(h[1])+'</div></div>').join('');}
+  else if(type==='roles'){title='Roles & Leadership';sub='founder · curator · mentor';
+    html=DATA.roles.map(r=>'<div class="row"><div><div class="l">'+esc(r[0])+'</div><div class="d">'+esc(r[1])+'</div></div></div>').join('');}
+  else if(type==='contact'){title='Get in touch';sub='Hong Kong · open to collaborate';
+    html='<p class="lead">Based in '+esc(DATA.person.based)+'. '+esc(DATA.person.langs)+'.</p><div class="kv">'+DATA.resume.contact.map(c=>'<div class="k">'+esc(c[0])+'</div><div>'+linkify(c)+'</div>').join('')+'</div><div class="tags" style="margin-top:16px"><a class="meta" href="mailto:robbie.rao@connect.polyu.hk">✉ Email me</a><a class="meta teal" href="https://github.com/RobbieRao" target="_blank" rel="noopener">GitHub</a><a class="meta brass" href="/cv/">Academic CV</a></div>';}
+  else if(type==='project'){const p=DATA.projects[idx];title=p.t;sub=p.v;
+    html='<div class="tags"><span class="meta">'+esc(p.v)+'</span></div><p class="lead">'+esc(p.d)+'</p><p class="d">More on the <a href="/publications/">publications page</a>.</p>';}
+  cardTitle.textContent=title;cardSub.textContent=sub;cardBody.innerHTML=html;overlay.classList.add('show');}
+function linkify(c){const v=esc(c[1]);if(c[0]==='Email')return '<a href="mailto:'+v+'">'+v+'</a>';if(c[0]==='GitHub')return '<a href="https://github.com/RobbieRao" target="_blank" rel="noopener">'+v+'</a>';return v;}
+
+/* dock */
+const DOCK=[['全景','Overview','overview'],['简历','Résumé','resume'],['项目','Projects','projects'],['关于','About','about'],['荣誉','Honours','honors'],['联系','Contact','contact'],['总裁位','The Chair','chair']];
+const dockEl=document.getElementById('dock');
+DOCK.forEach(([zh,en,key])=>{const b=document.createElement('button');b.className='navbtn';b.dataset.key=key;
+  b.innerHTML='<span class="zh">'+zh+'</span><span class="en">'+en+'</span>';
+  b.onclick=()=>{blip(440);
+    if(key==='resume'){flyTo('resume');selectPaper();openPanel('resume');}
+    else if(key==='about'){flyTo('about');openPanel('about');}
+    else if(key==='honors'){flyTo('honors');openPanel('honors');}
+    else if(key==='contact'){flyTo('contact');openPanel('contact');}
+    else{closePanel();flyTo(key);}};
+  dockEl.appendChild(b);});
+function setActiveDock(key){[...dockEl.children].forEach(b=>b.classList.toggle('active',b.dataset.key===key));}
+
+/* sound */
+let actx=null,soundOn=false;const soundBtn=document.getElementById('sound');
+soundBtn.onclick=()=>{soundOn=!soundOn;soundBtn.innerHTML='&#9834; Sound: '+(soundOn?'On':'Off');if(soundOn&&!actx)try{actx=new(window.AudioContext||window.webkitAudioContext)();}catch(e){}};
+function blip(freq){if(!soundOn||!actx)return;try{const o=actx.createOscillator(),g=actx.createGain();o.type='sine';o.frequency.value=freq;g.gain.value=0.05;o.connect(g);g.connect(actx.destination);o.start();g.gain.exponentialRampToValueAtTime(0.0001,actx.currentTime+0.13);o.stop(actx.currentTime+0.14);}catch(e){}}
+let lastHoverEmit=null;
+
+/* profile photo */
+new THREE.TextureLoader().load('/images/profile.png',t=>{t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=MAXA;photo.material.map=t;photo.material.color.setHex(0xffffff);photo.material.needsUpdate=true;},undefined,()=>{});
+
+/* resize / loop */
+function resize(){const w=innerWidth,h=innerHeight;camera.aspect=w/h;camera.updateProjectionMatrix();
+  renderer.setPixelRatio(Math.min(devicePixelRatio||1,MOBILE?1.5:2));renderer.setSize(w,h);}
+addEventListener('resize',resize);addEventListener('orientationchange',()=>setTimeout(resize,200));resize();
+
+let started=false,monBlink=true,monT=0,t0=performance.now();
+function animate(now){requestAnimationFrame(animate);const dt=Math.min(0.05,(now-t0)/1000);t0=now;
+  if(started)moveKeys(dt);
+  const le=flying?0.055:0.16,la=flying?0.055:0.2;
+  state.eye.lerp(goal.eye,le);state.yaw+=(goal.yaw-state.yaw)*la;state.pitch+=(goal.pitch-state.pitch)*la;
+  if(flying&&state.eye.distanceTo(goal.eye)<0.02&&Math.abs(goal.yaw-state.yaw)<0.005)flying=0;
+  const bob=started?Math.sin(now*0.0011)*0.006:0;
+  camera.position.set(state.eye.x,state.eye.y+bob,state.eye.z);camera.rotation.set(state.pitch,state.yaw,0);
+  if(started&&!overlay.classList.contains('show')){const o=pick();setHover(o);if(o&&o!==lastHoverEmit){lastHoverEmit=o;blip(680);}else if(!o)lastHoverEmit=null;}else setHover(null);
+  for(const o of interactives)applyEmis(o,(o.userData.hov||o.userData.sel)?0x6a4012:0x000000);
+  for(const b of books){const out=b.userData.sel?0.36:(b.userData.hov?0.13:0);b.position.x+=((b.userData.rest+out)-b.position.x)*0.2;}
+  const py=paper.userData.baseY+(paperSel?0.24:(paper.userData.hov?0.04:0));paper.position.y+=(py-paper.position.y)*0.2;
+  paper.rotation.x+=((paperSel?-0.5:0)-paper.rotation.x)*0.15;
+  monT+=dt;if(monT>0.7){monT=0;monBlink=!monBlink;monMat.map=tex(monitorTex(monBlink));monMat.needsUpdate=true;}
+  renderer.render(scene,camera);}
+requestAnimationFrame(animate);
+
+/* enter gate */
+const gate=document.getElementById('gate'),bar=document.querySelector('#bar i'),loadTxt=document.getElementById('loadTxt');
+let prog=0;const pint=setInterval(()=>{prog=Math.min(100,prog+12+Math.random()*16);bar.style.width=prog+'%';
+  loadTxt.textContent=prog<50?'building the office…':prog<90?'opening the harbour view…':'ready.';if(prog>=100)clearInterval(pint);},120);
+document.getElementById('enter').onclick=()=>{started=true;gate.classList.add('hide');flyTo('overview');setTimeout(()=>gate.style.display='none',700);};
+</script>
+</body>
+</html>

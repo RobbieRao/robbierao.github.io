@@ -1,5 +1,6 @@
 ---
 layout: terminal
+permalink: /terminal/
 title: "Robbie Rao Fenggui"
 description: "Interdisciplinary design researcher bridging art, technology, and human-centered innovation."
 ---
