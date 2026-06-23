@@ -2,293 +2,280 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Robbie's Office — Rao Fenggui</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<meta name="description" content="Step into Rao Fenggui's office — an interactive 3D room overlooking Hong Kong's Central harbour. Read the CV on the desk, pull projects off the shelf, open the terminal on the computer, then take the seat by the window. Design researcher (HK PolyU) & founder of DesignAnything Lab.">
-<meta property="og:title" content="Robbie's Office — Rao Fenggui (interactive 3D CV)">
-<meta property="og:description" content="A quiet modern office overlooking Hong Kong Central, with a real harbour view. Generative AI × art-design, HCI, public culture.">
+<title>Rao Fenggui — Research Atlas</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="A navigable star-map of Rao Fenggui (Robbie Rao)'s research — where generative AI, HCI, art &amp; design and public culture connect. PhD researcher at HK PolyU, founder of DesignAnything Lab. Click any star to read the work.">
+<meta property="og:title" content="Rao Fenggui — Research Atlas (an interactive map of the work)">
+<meta property="og:description" content="A celestial map of how the work bridges generative AI, HCI, art-design and public culture. Click a star to read.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://robbierao.github.io/">
 <meta property="og:image" content="https://robbierao.github.io/images/profile.png">
-<meta name="theme-color" content="#1c1814">
+<meta name="theme-color" content="#0a0f1f">
 <link rel="canonical" href="https://robbierao.github.io/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bone:#efe9dd; --bone-2:#e7ded0; --paper:#f7f2e8; --line:#e2d8c6;
-    --oak:#c6a06a; --oak-dk:#9c7b4e;
-    --ink:#2a2622; --char:#2c2c2e; --char-2:#3a3a3d;
-    --clay:#b5654d; --clay-dk:#9d4f3a; --bronze:#b08d57; --sage:#7d8a6a;
+    --bg0:#070b18; --bg1:#0c1226; --bg2:#141d3a;
+    --star:#eaf0ff; --ink:#e9ecf6; --mut:#9fb0d4; --faint:#6b7aa3;
+    --gold:#e7cfa6; --gold-2:#f0dcb8;
+    --ai:#62c6c6; --hci:#9bb2ee; --art:#e2a0bb; --pub:#e9c178;
+    --line:rgba(180,200,255,.16);
     --display:'Fraunces', Georgia, 'Times New Roman', serif;
     --ui:'Inter', ui-sans-serif, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    --mono:ui-monospace,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace;
+    --mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
   }
   *{box-sizing:border-box}
-  html,body{margin:0;height:100%;overflow:hidden;background:#161310;color:var(--bone);overscroll-behavior:none}
-  body{font-family:var(--ui);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
-  #app{position:fixed;inset:0}
-  #scene{position:absolute;inset:0;display:block;width:100%;height:100%;touch-action:none;cursor:grab}
-  #scene.grabbing{cursor:grabbing}
-  #scene.point{cursor:pointer}
+  html,body{margin:0;height:100%;overflow:hidden;background:var(--bg0);color:var(--ink);
+    overscroll-behavior:none;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  body{font-family:var(--ui)}
+  #app{position:fixed;inset:0;overflow:hidden}
 
-  /* ---------- HUD ---------- */
-  #hud{position:absolute;inset:0;pointer-events:none;z-index:20;font-family:var(--ui)}
-  #hud a, #hud button, #hud #walk{pointer-events:auto}
+  /* starfield + deep-sky gradient */
+  #sky{position:absolute;inset:0;z-index:0;display:block;
+    background:
+      radial-gradient(120% 90% at 72% 18%, rgba(120,150,255,.10), transparent 55%),
+      radial-gradient(140% 120% at 22% 92%, rgba(230,193,120,.07), transparent 55%),
+      radial-gradient(100% 100% at 50% 42%, #101a38 0%, var(--bg1) 38%, var(--bg0) 100%)}
+  #vig{position:absolute;inset:0;z-index:6;pointer-events:none;
+    background:radial-gradient(125% 115% at 50% 46%, transparent 56%, rgba(2,4,12,.66) 100%)}
 
-  #brand{position:absolute;top:max(18px,env(safe-area-inset-top));left:max(22px,env(safe-area-inset-left));max-width:62vw}
-  #brand .name{font-family:var(--display);font-weight:600;font-size:25px;letter-spacing:.2px;color:#fff;
-    text-shadow:0 2px 14px rgba(0,0,0,.55)}
-  #brand .role{margin-top:5px;font-size:10.5px;font-weight:600;letter-spacing:2.6px;color:#e9d8bf;
-    text-transform:uppercase;text-shadow:0 1px 8px rgba(0,0,0,.6);opacity:.92}
-  @media(max-width:560px){#brand .name{font-size:19px}#brand .role{font-size:9px;letter-spacing:2px}}
+  /* ---------------- constellation stage ---------------- */
+  #viewport{position:absolute;inset:0;z-index:4;cursor:grab;touch-action:none}
+  #viewport.grabbing{cursor:grabbing}
+  #stage{position:absolute;left:0;top:0;width:1200px;height:800px;transform-origin:0 0;will-change:transform}
+  #edges{position:absolute;left:0;top:0;width:1200px;height:800px;overflow:visible;pointer-events:none}
+  .edge{stroke-width:1.5;fill:none;opacity:.72;transition:opacity .45s ease, stroke-width .25s ease;
+    filter:drop-shadow(0 0 3px rgba(150,180,255,.25))}
+  .edge.spine{stroke-width:1.7;opacity:.85}
+  .edge.aux{stroke:var(--line);opacity:.4;stroke-width:1;filter:none}
+  .edge.draw{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.5s ease forwards}
+  @keyframes draw{to{stroke-dashoffset:0}}
+  .edge.lit{opacity:1 !important;stroke-width:2.1}
+  .edge.dim{opacity:.07 !important}
 
-  #hint{position:absolute;top:max(20px,env(safe-area-inset-top));right:max(22px,env(safe-area-inset-right));
-    text-align:right;font-size:11.5px;line-height:1.85;color:#efe6d4;font-weight:500;
-    text-shadow:0 1px 8px rgba(0,0,0,.7);opacity:.9;max-width:48vw}
-  #hint b{color:#fff;font-weight:700}
-  #hint .t{display:none}
-  @media(max-width:560px){#hint{font-size:10px;max-width:50vw}}
+  .node{position:absolute;transform:translate(-50%,-50%);border:0;background:none;cursor:pointer;
+    font-family:var(--ui);color:var(--ink);padding:0;display:flex;flex-direction:column;align-items:center;
+    gap:7px;pointer-events:auto;opacity:0;transition:opacity .6s ease, filter .3s ease, transform .3s ease}
+  #stage.ready .node{opacity:1}
+  .node .dot{border-radius:50%;background:radial-gradient(circle at 38% 34%, #fff, var(--c) 64%, rgba(0,0,0,0) 72%);
+    box-shadow:0 0 14px 2px var(--glow), 0 0 4px 1px rgba(255,255,255,.55) inset;transition:transform .3s ease, box-shadow .3s ease}
+  .node .lab{font-weight:600;letter-spacing:.2px;text-shadow:0 2px 12px rgba(2,6,18,.9);white-space:nowrap}
+  .node .sub{font-size:10.5px;color:var(--mut);font-weight:500;margin-top:-3px;text-shadow:0 2px 10px rgba(2,6,18,.9)}
+  .node:hover{filter:brightness(1.12)}
+  .node:hover .dot, .node.lit .dot{transform:scale(1.16)}
 
-  /* nav dock */
-  #dock{position:absolute;left:50%;bottom:max(18px,env(safe-area-inset-bottom));transform:translateX(-50%);
-    display:flex;gap:7px;flex-wrap:wrap;justify-content:center;max-width:94vw;padding:0 6px}
-  .navbtn{font-family:var(--ui);font-weight:600;font-size:12.5px;color:#efe6d4;letter-spacing:.2px;
-    background:rgba(28,24,20,.62);border:1px solid rgba(236,224,200,.22);border-radius:11px;
-    padding:9px 15px;cursor:pointer;backdrop-filter:blur(10px) saturate(1.1);
-    box-shadow:0 6px 20px rgba(0,0,0,.28);transition:transform .14s, background .2s, border-color .2s, color .2s;white-space:nowrap}
-  .navbtn:hover{background:rgba(40,34,28,.85);transform:translateY(-2px);border-color:rgba(236,224,200,.4);color:#fff}
-  .navbtn.active{background:var(--clay);border-color:rgba(255,255,255,.5);color:#fff;box-shadow:0 8px 22px rgba(157,79,58,.42)}
-  @media(max-width:560px){.navbtn{font-size:11.5px;padding:8px 12px}#dock{gap:5px}}
+  .node.center .dot{width:34px;height:34px}
+  .node.center .lab{font-family:var(--display);font-weight:500;font-size:23px;color:#fff;letter-spacing:.3px}
+  .node.center .sub{font-size:11px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-top:1px}
+  .node.center .dot{animation:pulse 4.2s ease-in-out infinite}
+  @keyframes pulse{0%,100%{box-shadow:0 0 16px 3px var(--glow),0 0 4px 1px rgba(255,255,255,.6) inset}
+    50%{box-shadow:0 0 30px 8px var(--glow),0 0 4px 1px rgba(255,255,255,.7) inset}}
 
-  /* reticle + tooltip */
-  #reticle{position:absolute;left:50%;top:50%;width:7px;height:7px;margin:-3.5px 0 0 -3.5px;
-    border:1.5px solid rgba(255,255,255,.7);border-radius:50%;transition:.18s ease;opacity:.45}
-  #reticle.hot{width:26px;height:26px;margin:-13px 0 0 -13px;border-color:#f1e2c4;opacity:.95;box-shadow:0 0 16px rgba(241,226,196,.5)}
-  @media(pointer:coarse){#reticle{display:none}#tip{display:none}#hint .d{display:none}#hint .t{display:inline}}
-  #tip{position:absolute;pointer-events:none;font-family:var(--ui);font-weight:600;font-size:12.5px;color:#fff;
-    background:rgba(26,22,18,.9);border:1px solid rgba(236,224,200,.28);padding:8px 12px;border-radius:10px;
-    transform:translate(-50%,-150%);white-space:nowrap;display:none;box-shadow:0 10px 26px rgba(0,0,0,.45);z-index:25;backdrop-filter:blur(6px)}
-  #tip small{display:block;color:#d9b58e;font-size:10.5px;font-weight:500;margin-top:2px;letter-spacing:.3px}
+  .node.domain .dot{width:19px;height:19px}
+  .node.domain .lab{font-size:12.5px;font-weight:700;letter-spacing:2.4px;text-transform:uppercase}
+  .node.domain .sub{font-size:9.5px;letter-spacing:1px}
 
-  /* footer links */
-  #foot{position:absolute;left:max(22px,env(safe-area-inset-left));bottom:max(18px,env(safe-area-inset-bottom));
-    display:flex;gap:16px;font-family:var(--ui);font-size:11.5px;font-weight:600;letter-spacing:.3px}
-  #foot a{color:#cdbfa4;text-decoration:none;text-shadow:0 1px 8px rgba(0,0,0,.6)}
-  #foot a:hover{color:#fff}
-  @media(max-width:980px){#foot{display:none}}
+  .node.work .dot{width:13px;height:13px}
+  .node.work .lab{font-family:var(--display);font-weight:400;font-size:15px}
+  .node.work .sub{font-size:9.5px;letter-spacing:.4px}
 
-  /* corner controls */
-  .corner{position:absolute;right:max(22px,env(safe-area-inset-right));font-family:var(--ui);font-weight:600;font-size:11.5px;
-    color:#cdbfa4;background:rgba(26,22,18,.55);border:1px solid rgba(236,224,200,.2);border-radius:999px;
-    padding:8px 14px;cursor:pointer;backdrop-filter:blur(8px);transition:color .2s,border-color .2s,background .2s}
-  .corner:hover{color:#fff;border-color:rgba(236,224,200,.4);background:rgba(40,34,28,.7)}
-  #timebtn{bottom:calc(max(18px,env(safe-area-inset-bottom)) + 42px)}
-  #sound{bottom:max(18px,env(safe-area-inset-bottom))}
-  @media(max-width:560px){#sound{display:none}#timebtn{bottom:max(64px,calc(env(safe-area-inset-bottom) + 64px))}}
+  .node.aux{gap:5px}
+  .node.aux .dot{width:8px;height:8px;background:radial-gradient(circle at 40% 36%,#fff,var(--gold) 70%,transparent 76%);
+    box-shadow:0 0 9px 1px rgba(231,207,166,.5)}
+  .node.aux .lab{font-size:10.5px;font-weight:600;letter-spacing:1.4px;text-transform:uppercase;color:var(--gold-2);opacity:.92}
 
-  /* forward / back slider */
-  #walk{position:absolute;right:max(16px,env(safe-area-inset-right));top:50%;transform:translateY(-50%);
-    width:46px;height:160px;border-radius:26px;background:rgba(26,22,18,.5);border:1px solid rgba(236,224,200,.2);
-    backdrop-filter:blur(8px);touch-action:none;cursor:grab;box-shadow:0 8px 24px rgba(0,0,0,.3);z-index:21}
-  #walk:active{cursor:grabbing}
-  #walk::before,#walk::after{position:absolute;left:0;right:0;text-align:center;color:#cdbfa4;font-size:13px;font-weight:700}
-  #walk::before{content:"\2191";top:8px}
-  #walk::after{content:"\2193";bottom:8px}
-  #walkThumb{position:absolute;left:50%;top:50%;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;
-    background:linear-gradient(180deg,#f1e2c4,#d9b58e);box-shadow:0 4px 12px rgba(0,0,0,.4);will-change:transform}
-  #walkHint{position:absolute;right:calc(max(16px,env(safe-area-inset-right)) + 54px);top:50%;transform:translateY(-50%);
-    font-size:10.5px;font-weight:600;letter-spacing:1.5px;color:#bda884;text-transform:uppercase;writing-mode:vertical-rl;
-    text-shadow:0 1px 6px rgba(0,0,0,.6);opacity:.6;pointer-events:none}
-  @media(max-width:560px){#walk{height:130px;width:42px}#walkHint{display:none}}
+  #stage.focus .node:not(.lit){opacity:.16;filter:saturate(.5)}
+  #stage.focus .node.center{opacity:.5}
 
-  /* soft vignette */
-  #vig{position:absolute;inset:0;pointer-events:none;z-index:18;
-    background:radial-gradient(130% 120% at 50% 44%, transparent 62%, rgba(14,10,6,.34) 100%)}
+  /* ---------------- HUD ---------------- */
+  #hud{position:absolute;inset:0;z-index:10;pointer-events:none}
+  #hud a, #hud button{pointer-events:auto}
 
-  /* ---------- detail panel ---------- */
-  #overlay{position:absolute;inset:0;z-index:40;display:none;align-items:center;justify-content:center;
-    background:rgba(16,11,6,.5);backdrop-filter:blur(5px);padding:20px;pointer-events:auto}
-  #overlay.show{display:flex;animation:fade .22s ease}
-  @keyframes fade{from{opacity:0}to{opacity:1}}
-  .card{position:relative;width:min(660px,94vw);max-height:86vh;overflow:auto;touch-action:pan-y;-webkit-overflow-scrolling:touch;
-    background:var(--paper);color:var(--ink);border-radius:18px;box-shadow:0 30px 90px rgba(0,0,0,.5);
-    animation:pop .28s cubic-bezier(.2,1,.3,1)}
-  @keyframes pop{from{transform:translateY(18px) scale(.98);opacity:0}to{transform:none;opacity:1}}
-  .card .top{position:sticky;top:0;z-index:2;background:var(--bone-2);color:var(--ink);
-    padding:20px 24px;display:flex;align-items:flex-start;justify-content:space-between;gap:14px;
-    border-bottom:1px solid var(--line);border-radius:18px 18px 0 0}
-  .card .top h2{margin:0;font-family:var(--display);font-weight:600;font-size:25px;letter-spacing:.2px;line-height:1.2}
-  .card .top .sub{font-family:var(--ui);font-weight:600;font-size:11px;letter-spacing:1.6px;text-transform:uppercase;
-    color:var(--clay);margin-top:8px;display:block}
-  .card .x{font-size:16px;color:inherit;background:rgba(0,0,0,.07);border:1px solid rgba(0,0,0,.12);
-    border-radius:10px;cursor:pointer;padding:8px 11px;line-height:1;flex:none;transition:background .15s}
-  .card .x:hover{background:rgba(0,0,0,.16)}
-  .card .body{padding:22px 26px 28px}
-  .card h3{font-family:var(--display);font-weight:600;font-size:17px;color:var(--ink);margin:22px 0 12px;letter-spacing:.2px}
-  .card h3:first-child{margin-top:2px}
-  .card p{line-height:1.66;margin:0 0 12px;font-size:15px;color:#43382c}
-  .card .lead{font-size:16.5px;color:#372f25}
-  .card a{color:var(--clay-dk);font-weight:600;text-underline-offset:2px}
-  .row{display:flex;justify-content:space-between;gap:18px;border-bottom:1px solid var(--line);padding:13px 0}
-  .row:last-child{border-bottom:0}
-  .row .l{font-weight:700;color:var(--ink)}
-  .row .r{color:#8a755a;text-align:right;font-size:13px;font-weight:600;white-space:nowrap}
-  .row .d{font-size:13.5px;color:#6f5e47;margin-top:4px;line-height:1.55}
-  .meta{display:inline-block;font-family:var(--ui);font-weight:700;font-size:11px;letter-spacing:.4px;
-    background:var(--char);color:#fff;padding:7px 12px;border-radius:999px;margin:0 7px 7px 0;text-decoration:none}
-  .meta.clay{background:var(--clay)}.meta.sage{background:var(--sage)}.meta.bronze{background:var(--bronze);color:#241a0c}
-  .kv{display:grid;grid-template-columns:auto 1fr;gap:10px 18px;font-size:14.5px}
-  .kv .k{font-weight:700;color:var(--clay-dk)}
-  .tags{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0 4px}
-  .note{font-size:13px;color:#7a6a52;margin-top:10px}
+  #brand{position:absolute;top:max(22px,env(safe-area-inset-top));left:max(26px,env(safe-area-inset-left));max-width:64vw}
+  #brand .nm{font-family:var(--display);font-weight:500;font-size:25px;color:#fff;letter-spacing:.3px;text-shadow:0 2px 18px rgba(2,6,18,.8)}
+  #brand .tl{margin-top:6px;font-size:12px;font-weight:500;line-height:1.55;color:var(--mut);max-width:30ch;text-shadow:0 2px 12px rgba(2,6,18,.8)}
+  @media(max-width:620px){#brand .nm{font-size:21px}#brand .tl{font-size:11px}}
 
-  /* header variants — each object gets its own look */
-  .card.v-resume .top{border-bottom:2px solid var(--clay)}
-  .card.v-cert{background:#fbf6ea}
-  .card.v-cert .top{background:#f0e6cb;border-bottom:1px solid #dcc79a;text-align:center;justify-content:center;padding-right:48px}
-  .card.v-cert .top h2{font-family:var(--display);color:#6e4e28}
-  .card.v-cert .top .sub{color:#9c7b3a}
-  .card.v-cert .body{text-align:center}
-  .card.v-cert .row{text-align:left}
-  .card.v-cert .seal{display:inline-block;margin:6px auto 0;width:62px;height:62px;border-radius:50%;
-    border:2px solid var(--bronze);color:var(--bronze);font-size:26px;line-height:58px;font-family:var(--display)}
-  .card.v-contact .top{background:var(--clay);color:#fff}
-  .card.v-contact .top .sub{color:#ffe2d4}
-  .card.v-contact .top .x{color:#fff;background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.3)}
-  .card.v-person .top{background:var(--char);color:#fff}
-  .card.v-person .top .sub{color:#d9b58e}
-  .card.v-person .top .x{color:#fff;background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.24)}
-  .card.v-list .top{background:var(--char);color:#fff}
-  .card.v-list .top .sub{color:#d9b58e}
-  .card.v-list .top .x{color:#fff;background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.24)}
-  .card.v-view .top{background:linear-gradient(180deg,#7fb0cf,#5d88aa);color:#fff}
-  .card.v-view .top .sub{color:#e8f3fb}
-  .card.v-view .top .x{color:#fff;background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.3)}
-  .card.v-project .top{background:var(--pcol,#3a3a3d);color:#fff}
-  .card.v-project .top .sub{color:rgba(255,255,255,.85)}
-  .card.v-project .top .x{color:#fff;background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.3)}
+  #legend{position:absolute;top:max(24px,env(safe-area-inset-top));right:max(26px,env(safe-area-inset-right));
+    display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+  .leg{display:flex;align-items:center;gap:9px;background:rgba(12,18,38,.5);border:1px solid rgba(160,180,240,.16);
+    border-radius:999px;padding:6px 13px 6px 11px;cursor:pointer;backdrop-filter:blur(8px);
+    font-size:11px;font-weight:600;letter-spacing:1.4px;text-transform:uppercase;color:var(--mut);transition:.2s}
+  .leg .d{width:10px;height:10px;border-radius:50%;box-shadow:0 0 8px 1px var(--c)}
+  .leg:hover,.leg.on{color:#fff;border-color:rgba(200,215,255,.45);background:rgba(22,30,58,.7)}
+  @media(max-width:620px){#legend{display:none}}
 
-  /* terminal variant */
-  .card.v-terminal{background:#0e1512;color:#cfe8d6;border:1px solid #1f2c25}
-  .card.v-terminal .top{background:#0a0f0d;border-bottom:1px solid #1c2a22}
-  .card.v-terminal .top h2{font-family:var(--mono);font-weight:600;color:#86e6ad;font-size:18px}
-  .card.v-terminal .top .sub{color:#5f8a72}
-  .card.v-terminal .top .x{color:#9fe8bf;background:rgba(255,255,255,.06);border-color:rgba(159,232,191,.25)}
-  .card.v-terminal .body{font-family:var(--mono);font-size:13.5px;line-height:1.7;color:#bfe8cf;padding:18px 22px 24px}
-  #termBody .cmd{color:#86e6ad}
-  #termBody .pr{color:#5f8a72}
-  #termBody .ln{white-space:pre-wrap;margin:0 0 2px}
-  #termBody .out{color:#d6e9da;margin:2px 0 12px;white-space:pre-wrap}
-  #termBody a{color:#86e6ad}
-  .chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px;border-top:1px solid #1c2a22;padding-top:14px}
-  .chip{font-family:var(--mono);font-size:12px;color:#bfe8cf;background:#13201a;border:1px solid #25382e;
-    border-radius:8px;padding:7px 11px;cursor:pointer;transition:background .15s,border-color .15s}
-  .chip:hover{background:#1b2c23;border-color:#3a5a48;color:#fff}
-  @media(max-width:560px){.card .top h2{font-size:21px}.card .body{padding:18px 18px 22px}}
+  #hint{position:absolute;left:50%;bottom:max(22px,env(safe-area-inset-bottom));transform:translateX(-50%);
+    font-size:11.5px;font-weight:500;letter-spacing:.4px;color:var(--faint);text-align:center;
+    text-shadow:0 2px 10px rgba(2,6,18,.9);white-space:nowrap}
+  #hint b{color:var(--mut);font-weight:600}
+  @media(max-width:620px){#hint{display:none}}
 
-  /* ---------- loader / enter gate ---------- */
+  .corner{position:absolute;font-family:var(--ui);font-size:11.5px;font-weight:600;letter-spacing:.6px;
+    color:var(--mut);background:rgba(12,18,38,.5);border:1px solid rgba(160,180,240,.16);border-radius:999px;
+    padding:9px 15px;cursor:pointer;backdrop-filter:blur(8px);transition:.2s;text-decoration:none;display:inline-flex;align-items:center;gap:7px}
+  .corner:hover{color:#fff;border-color:rgba(200,215,255,.45);background:rgba(22,30,58,.7)}
+  #modeBtn{top:max(86px,calc(env(safe-area-inset-top) + 86px));right:max(26px,env(safe-area-inset-right))}
+  #foot{position:absolute;left:max(26px,env(safe-area-inset-left));bottom:max(22px,env(safe-area-inset-bottom));
+    display:flex;gap:16px;font-size:11.5px;font-weight:600;letter-spacing:.3px}
+  #foot a{color:var(--faint);text-decoration:none;text-shadow:0 2px 10px rgba(2,6,18,.9)}
+  #foot a:hover{color:var(--gold)}
+  @media(max-width:820px){#foot{display:none}}
+  #egg{right:max(26px,env(safe-area-inset-right));bottom:max(22px,env(safe-area-inset-bottom));}
+  #egg .g{font-size:14px;line-height:1}
+  @media(max-width:620px){#modeBtn{top:auto;bottom:max(78px,calc(env(safe-area-inset-bottom) + 78px));right:50%;transform:translateX(50%)}
+    #egg{bottom:max(22px,env(safe-area-inset-bottom))}}
+
+  /* ---------------- index list view ---------------- */
+  #index{position:absolute;inset:0;z-index:8;display:none;overflow:auto;-webkit-overflow-scrolling:touch;
+    padding:96px max(26px,env(safe-area-inset-left)) 120px;background:
+      radial-gradient(120% 80% at 80% 0%, rgba(120,150,255,.10), transparent 55%), var(--bg0)}
+  body.mode-index #index{display:block}
+  body.mode-index #viewport,body.mode-index #hint,body.mode-index #legend,body.mode-index #brand{display:none}
+  #index .wrap{max-width:760px;margin:0 auto}
+  #index h2{font-family:var(--display);font-weight:500;font-size:13px;letter-spacing:3px;text-transform:uppercase;
+    color:var(--gold);margin:34px 0 12px;border-bottom:1px solid rgba(160,180,240,.14);padding-bottom:10px}
+  #index h2:first-of-type{margin-top:6px}
+  .ix{display:flex;justify-content:space-between;gap:16px;align-items:baseline;padding:13px 6px;border-radius:10px;
+    cursor:pointer;transition:background .15s;border-bottom:1px solid rgba(160,180,240,.07)}
+  .ix:hover{background:rgba(120,145,230,.09)}
+  .ix .t{font-family:var(--display);font-weight:400;font-size:17px;color:var(--ink)}
+  .ix .t small{font-family:var(--ui);font-weight:500;font-size:12px;color:var(--mut);margin-left:10px;letter-spacing:.2px}
+  .ix .r{font-size:11.5px;font-weight:600;color:var(--faint);white-space:nowrap;letter-spacing:.5px}
+  .ix .dom{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:7px;vertical-align:middle}
+
+  /* ---------------- reading panel ---------------- */
+  #scrim{position:absolute;inset:0;z-index:30;background:rgba(4,7,18,.55);backdrop-filter:blur(3px);
+    opacity:0;pointer-events:none;transition:opacity .3s ease}
+  #scrim.show{opacity:1;pointer-events:auto}
+  #panel{position:absolute;z-index:31;top:0;right:0;height:100%;width:min(460px,100%);
+    background:linear-gradient(180deg,#0e1430,#0a0e22);border-left:1px solid rgba(160,180,240,.18);
+    box-shadow:-30px 0 80px rgba(0,0,0,.5);transform:translateX(102%);transition:transform .42s cubic-bezier(.22,1,.3,1);
+    display:flex;flex-direction:column}
+  #panel.show{transform:none}
+  #panel .top{position:relative;padding:30px 30px 22px;border-bottom:1px solid rgba(160,180,240,.14)}
+  #panel .kicker{font-size:11px;font-weight:700;letter-spacing:2.2px;text-transform:uppercase;color:var(--gold);margin-bottom:11px;display:flex;align-items:center;gap:9px}
+  #panel .kicker .d{width:9px;height:9px;border-radius:50%}
+  #panel h2{font-family:var(--display);font-weight:500;font-size:27px;line-height:1.18;margin:0;color:#fff;letter-spacing:.2px}
+  #panel .x{position:absolute;top:24px;right:24px;width:34px;height:34px;border-radius:50%;border:1px solid rgba(160,180,240,.25);
+    background:rgba(20,28,56,.6);color:var(--mut);font-size:15px;cursor:pointer;line-height:1;transition:.18s}
+  #panel .x:hover{color:#fff;border-color:rgba(200,215,255,.5);background:rgba(34,44,82,.8)}
+  #panel .body{padding:24px 30px 40px;overflow:auto;-webkit-overflow-scrolling:touch}
+  #panel p{line-height:1.66;margin:0 0 14px;font-size:14.5px;color:#cfd6ea}
+  #panel .lead{font-size:16px;color:#e4e9f6}
+  #panel h3{font-family:var(--ui);font-weight:700;font-size:11px;letter-spacing:1.8px;text-transform:uppercase;
+    color:var(--gold);margin:26px 0 12px}
+  #panel a{color:var(--gold-2);font-weight:600;text-underline-offset:2px}
+  .prow{padding:13px 0;border-bottom:1px solid rgba(160,180,240,.1)}
+  .prow:last-child{border-bottom:0}
+  .prow .l{font-weight:600;color:#eef1fa;font-size:14.5px;display:flex;justify-content:space-between;gap:14px;align-items:baseline}
+  .prow .l .yr{font-size:11.5px;font-weight:600;color:var(--faint);white-space:nowrap}
+  .prow .d{font-size:13px;color:var(--mut);margin-top:5px;line-height:1.55}
+  .linkrow{display:flex;justify-content:space-between;gap:14px;padding:11px 0;border-bottom:1px solid rgba(160,180,240,.1);font-size:14px}
+  .linkrow .k{font-weight:600;color:var(--gold-2)}
+  .linkrow .v{color:#cfd6ea;text-align:right}
+  .chip{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:#dfe6f6;
+    background:rgba(120,145,230,.14);border:1px solid rgba(160,180,240,.22);border-radius:999px;
+    padding:7px 13px;margin:0 7px 8px 0;cursor:pointer;text-decoration:none;transition:.15s}
+  .chip:hover{background:rgba(120,145,230,.26);color:#fff}
+  .chip .d{width:8px;height:8px;border-radius:50%}
+  .worklink{display:block;padding:11px 0;border-bottom:1px solid rgba(160,180,240,.1);cursor:pointer;transition:.15s}
+  .worklink:hover{padding-left:6px}
+  .worklink .wt{font-family:var(--display);font-size:15.5px;color:#eef1fa}
+  .worklink .wv{font-size:11.5px;color:var(--faint);margin-top:2px}
+  @media(max-width:620px){#panel{width:100%;border-left:0}#panel h2{font-size:23px}#panel .top{padding:26px 22px 18px}#panel .body{padding:20px 22px 36px}}
+
+  /* terminal-flavoured panel */
+  .term{font-family:var(--mono);font-size:13px;line-height:1.7;color:#bfe8cf;background:#0a1410;
+    border:1px solid #1c2a22;border-radius:12px;padding:16px 18px;white-space:pre-wrap}
+  .term .c{color:#86e6ad}
+
+  /* ---------------- enter gate ---------------- */
   #gate{position:absolute;inset:0;z-index:60;display:flex;flex-direction:column;align-items:center;justify-content:center;
-    background:radial-gradient(135% 120% at 50% 18%, #3a3128, #16110c 72%);text-align:center;padding:26px}
-  #gate.hide{opacity:0;pointer-events:none;transition:opacity .7s ease}
-  #gate .logo{font-family:var(--ui);font-weight:600;font-size:11.5px;letter-spacing:4.5px;color:#cdb389;
-    text-transform:uppercase;margin-bottom:18px;opacity:.92}
-  #gate h1{font-family:var(--display);font-weight:600;font-size:54px;color:#fff;margin:0;line-height:1.04;
-    text-shadow:0 8px 34px rgba(0,0,0,.5);letter-spacing:.3px}
-  #gate h1 em{font-style:italic;color:#e7cfa6;font-weight:500}
-  #gate .sub{font-family:var(--ui);font-size:14.5px;font-weight:400;color:#e6dcc8;margin:22px 0 32px;line-height:1.75;max-width:540px}
-  #gate .sub b{color:#e7cfa6;font-weight:600}
-  #enter{font-family:var(--ui);font-weight:700;font-size:15.5px;letter-spacing:.3px;color:#1c140c;
-    background:linear-gradient(180deg,#f1e2c4,#d9b58e);border:none;border-radius:999px;
-    padding:15px 32px;cursor:pointer;box-shadow:0 14px 34px rgba(0,0,0,.4);transition:transform .14s, filter .15s}
-  #enter:hover{filter:brightness(1.05);transform:translateY(-2px)}#enter:active{transform:translateY(0)}
-  #bar{width:240px;height:6px;border-radius:999px;background:rgba(255,255,255,.13);margin-top:28px;overflow:hidden}
-  #bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#b08d57,#e7cfa6);transition:width .25s}
-  #gate .load-txt{font-family:var(--ui);font-weight:500;font-size:11.5px;color:#a98f6c;margin-top:13px;letter-spacing:.4px}
-  @media(max-width:560px){#gate h1{font-size:34px}}
-
-  #fail{position:absolute;inset:0;z-index:70;display:none;flex-direction:column;align-items:center;justify-content:center;
-    background:#16110c;text-align:center;padding:28px;font-family:var(--ui)}
-  #fail.show{display:flex}
-  #fail h2{font-family:var(--display);font-size:26px;color:#e7cfa6}
-  #fail a{color:#fff;background:var(--clay);padding:12px 18px;border-radius:999px;text-decoration:none;margin:8px;display:inline-block;font-weight:600}
+    text-align:center;padding:28px;background:radial-gradient(120% 100% at 50% 36%, #131d3e, #060912 78%)}
+  #gate.hide{opacity:0;pointer-events:none;transition:opacity .8s ease}
+  #gate .logo{font-size:11.5px;font-weight:600;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;opacity:.9}
+  #gate h1{font-family:var(--display);font-weight:400;font-size:clamp(30px,6vw,58px);color:#fff;margin:0;line-height:1.08;letter-spacing:.4px}
+  #gate h1 em{font-style:italic;color:var(--gold-2)}
+  #gate .sub{font-size:14.5px;color:var(--mut);margin:22px 0 32px;line-height:1.75;max-width:520px}
+  #gate .sub b{color:#dfe6f6;font-weight:600}
+  #enter{font-family:var(--ui);font-weight:600;font-size:15px;letter-spacing:.4px;color:#0a0e1e;
+    background:linear-gradient(180deg,var(--gold-2),var(--gold));border:none;border-radius:999px;padding:15px 34px;
+    cursor:pointer;box-shadow:0 16px 40px rgba(0,0,0,.45);transition:transform .14s,filter .15s}
+  #enter:hover{filter:brightness(1.06);transform:translateY(-2px)}
+  #gate .skip{margin-top:18px;font-size:12px;color:var(--faint);background:none;border:0;cursor:pointer;letter-spacing:.4px}
+  #gate .skip:hover{color:var(--mut)}
 
   .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 </style>
 </head>
 <body>
 <div id="app">
-  <canvas id="scene"></canvas>
+  <canvas id="sky"></canvas>
+
+  <div id="viewport">
+    <div id="stage">
+      <svg id="edges" viewBox="0 0 1200 800" preserveAspectRatio="none"></svg>
+    </div>
+  </div>
   <div id="vig"></div>
+
+  <div id="index"><div class="wrap" id="indexWrap"></div></div>
 
   <div id="hud">
     <div id="brand">
-      <div class="name">Rao&nbsp;Fenggui</div>
-      <div class="role">Designer · Researcher · Founder</div>
+      <div class="nm">Rao&nbsp;Fenggui&nbsp;<span style="font-weight:400;color:var(--mut);font-size:.7em">· Robbie Rao</span></div>
+      <div class="tl">A design researcher bridging generative&nbsp;AI, art&nbsp;&amp;&nbsp;design, HCI and public&nbsp;culture. This is a map of the work — click a star to read it.</div>
     </div>
-    <div id="hint">
-      <span class="d"><b>Drag</b> to look &nbsp;·&nbsp; <b>Click</b> objects<br><b>W A S D</b> or the slider to move</span>
-      <span class="t"><b>Drag</b> to look &nbsp;·&nbsp; <b>Tap</b> objects<br>slider at right to move</span>
-    </div>
-    <div id="reticle"></div>
-    <div id="tip"></div>
 
-    <div id="dock"></div>
+    <div id="legend"></div>
+
+    <div id="hint"><b>Drag</b> to pan &nbsp;·&nbsp; <b>scroll</b> to zoom &nbsp;·&nbsp; <b>click a star</b> to read &nbsp;·&nbsp; <b>hover</b> to trace</div>
+
+    <button id="modeBtn" class="corner"><span class="g">&#9776;</span> <span id="modeLabel">Index</span></button>
 
     <div id="foot">
-      <a href="https://github.com/RobbieRao" target="_blank" rel="noopener">GitHub</a>
-      <a href="mailto:robbie.rao@connect.polyu.hk">Email</a>
       <a href="/terminal/">Terminal CV</a>
       <a href="/cv/">Academic CV</a>
+      <a href="/publications/">Publications</a>
+      <a href="https://github.com/RobbieRao" target="_blank" rel="noopener">GitHub</a>
     </div>
-    <button id="timebtn" class="corner">&#9728; Day</button>
-    <button id="sound" class="corner">&#9834; Sound</button>
-    <div id="walkHint">move</div>
-    <div id="walk" aria-label="Move forward and back"><div id="walkThumb"></div></div>
+    <a id="egg" class="corner" href="/office.html" title="Enter the room"><span class="g">&#9673;</span> The room</a>
   </div>
 
-  <div id="overlay"><div class="card" id="card" role="dialog" aria-modal="true">
-    <div class="top"><div><h2 id="cardTitle"></h2><span class="sub" id="cardSub"></span></div>
-      <button class="x" id="cardX" aria-label="Close">&#10005;</button></div>
-    <div class="body" id="cardBody"></div>
-  </div></div>
+  <div id="scrim"></div>
+  <aside id="panel" role="dialog" aria-modal="true" aria-label="Details">
+    <div class="top">
+      <div class="kicker" id="pKick"></div>
+      <h2 id="pTitle"></h2>
+      <button class="x" id="pClose" aria-label="Close">&#10005;</button>
+    </div>
+    <div class="body" id="pBody"></div>
+  </aside>
 
   <div id="gate">
     <div class="logo">Rao Fenggui · Robbie Rao</div>
-    <h1>Robbie's <em>Office</em></h1>
-    <div class="sub">A quiet room overlooking Hong&nbsp;Kong's <b>Central</b> harbour.<br>
-      Look around. Read the CV, open the computer, pull a project from the shelf — then take the seat by the window.</div>
-    <button id="enter">Step inside &nbsp;&rarr;</button>
-    <div id="bar"><i></i></div>
-    <div class="load-txt" id="loadTxt">warming up the room…</div>
+    <h1>A <em>Research</em> Atlas</h1>
+    <div class="sub">Not a CV page — a <b>star-map of the work</b>. Each project is a star sitting between the fields it bridges: generative&nbsp;AI, HCI, art&nbsp;&amp;&nbsp;design and public&nbsp;culture. Wander it, or open the plain index any time.</div>
+    <button id="enter">Open the map &nbsp;&rarr;</button>
+    <button class="skip" id="skip">or read the index instead</button>
   </div>
 
-  <div id="fail">
-    <h2>This room needs WebGL</h2>
-    <p>Your browser couldn't start the 3D office. No problem — here's the same content:</p>
-    <div><a href="/terminal/">Terminal CV</a><a href="/cv/">Academic CV</a><a href="/publications/">Publications</a></div>
-  </div>
+  <noscript><div style="position:fixed;inset:0;background:#060912;color:#fff;display:flex;align-items:center;justify-content:center;text-align:center;font-family:sans-serif;padding:24px">This interactive atlas needs JavaScript. View the <a style="color:#e7cfa6" href="/terminal/">terminal CV</a> or <a style="color:#e7cfa6" href="/cv/">academic CV</a> instead.</div></noscript>
 
   <div class="sr">
     <h1>Rao Fenggui (Robbie Rao) — Designer, Researcher, Founder</h1>
     <p>PhD student at the Hong Kong Polytechnic University School of Design (Asian Ergonomics Design Lab),
-    China Academy of Art-trained designer, founder and lead of DesignAnything Lab. Research in generative AI,
+    China Academy of Art-trained designer, founder and lead of DesignAnything Lab. Research bridging generative AI,
     art-design workflows, HCI, public culture and creative education. Email robbie.rao@connect.polyu.hk.
     Selected work: ContextCam (CHI 2024), Flowing Ink Resonator, CityCure, DIVA framework, Let My Goldfish Go.
     See the <a href="/terminal/">terminal CV</a>, <a href="/cv/">academic CV</a> and <a href="/publications/">publications</a>.</p>
   </div>
 </div>
 
-<noscript><div style="position:fixed;inset:0;background:#16110c;color:#fff;display:flex;align-items:center;justify-content:center;text-align:center;font-family:sans-serif;padding:24px">This interactive office needs JavaScript. View the <a style="color:#e7cfa6" href="/terminal/">terminal CV</a> or <a style="color:#e7cfa6" href="/cv/">academic CV</a> instead.</div></noscript>
-
-<script type="importmap">
-{ "imports": { "three": "/assets/game/lib/three.module.min.js" } }
-</script>
-
 <script type="module">
-import * as THREE from 'three';
-
 /* =====================================================================
    CONTENT — from R. Rao Fenggui's dossier + site profile data
    ===================================================================== */
@@ -342,778 +329,315 @@ const DATA = {
     ["Reviewer — ACM CHI","Peer review for CHI; contribution framing, method quality and reviewer-facing writing."]]
 };
 
-/* =====================================================================
-   BOOT / WEBGL GUARD
-   ===================================================================== */
-const canvas=document.getElementById('scene');
-let renderer;
-try{ renderer=new THREE.WebGLRenderer({canvas, antialias:true, powerPreference:'high-performance'}); }
-catch(e){ document.getElementById('fail').classList.add('show'); throw e; }
-if(!renderer || !renderer.getContext()){ document.getElementById('fail').classList.add('show'); }
+/* domains + which domains each project bridges (index-aligned with DATA.projects) */
+const DOMAINS={
+  ai:{name:"Generative AI", sub:"AI workflows · AIGC", c:getCSS('--ai'),
+      blurb:"Building generative image/video pipelines, prompt systems and agentic workflows — and studying how people actually create with them."},
+  hci:{name:"HCI / Interaction", sub:"CHI · DIS · embodied", c:getCSS('--hci'),
+      blurb:"Human-computer interaction research: study design, prototypes and embodied, in-situ and tangible interactions, framed for CHI / DIS."},
+  art:{name:"Art & Design", sub:"speculative · exhibition", c:getCSS('--art'),
+      blurb:"Art-design practice: speculative installations, exhibition narrative and AI art direction that turn research questions into things people can feel."},
+  pub:{name:"Public & Cultural", sub:"heritage · ecology · society", c:getCSS('--pub'),
+      blurb:"Public and cultural experience: heritage, ecology, health and education — work that reaches audiences beyond the lab."}
+};
+const PROJ_DOMAINS=[
+  ['ai','hci'],            // ContextCam
+  ['ai','art','pub'],      // Flowing Ink Resonator
+  ['ai','hci','pub'],      // CityCure
+  ['art','hci','pub'],     // Immersive Art Therapy
+  ['hci','pub'],           // DIVA Framework
+  ['hci','art'],           // Enlivening Performance Art
+  ['art','pub'],           // Let My Goldfish Go
+  ['ai','art','pub'],      // Plast-ocean
+  ['ai','pub']             // Song-Yun Culture AIGC
+];
+const AUX=[
+  ['about','About'],['education','Education'],['roles','Roles'],
+  ['honours','Honours'],['ip','Patents'],['contact','Contact']
+];
 
-const MOBILE = matchMedia('(pointer:coarse)').matches || Math.min(innerWidth,innerHeight)<620;
-renderer.outputColorSpace=THREE.SRGBColorSpace;
-renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=1.04;
-renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap;
-const MAXA=renderer.capabilities.getMaxAnisotropy();
-
-const scene=new THREE.Scene();
-scene.background=new THREE.Color(0xcdd9df);
-const camera=new THREE.PerspectiveCamera(58,1,0.05,200);
-camera.rotation.order='YXZ';
-
-/* =====================================================================
-   TEXTURE HELPERS
-   ===================================================================== */
-function cvs(w,h){const c=document.createElement('canvas');c.width=w;c.height=h;return c;}
-function tex(canvas,repeat){const t=new THREE.CanvasTexture(canvas);t.colorSpace=THREE.SRGBColorSpace;
-  t.anisotropy=MAXA; if(repeat){t.wrapS=t.wrapT=THREE.RepeatWrapping;} return t;}
-function art(canvas){const t=tex(canvas);return new THREE.MeshBasicMaterial({map:t,toneMapped:false});}
-function rrect(x,rx,ry,rw,rh,r){x.beginPath();x.moveTo(rx+r,ry);x.arcTo(rx+rw,ry,rx+rw,ry+rh,r);
-  x.arcTo(rx+rw,ry+rh,rx,ry+rh,r);x.arcTo(rx,ry+rh,rx,ry,r);x.arcTo(rx,ry,rx+rw,ry,r);x.closePath();}
-function wrap(x,t,cx,cy,maxw,lh){const w=(t||'').split(' ');let line='',y=cy;
-  for(const word of w){const test=line+word+' ';if(x.measureText(test).width>maxw&&line){x.fillText(line.trim(),cx,y);line=word+' ';y+=lh;}else line=test;}x.fillText(line.trim(),cx,y);}
-
-function woodTex(base,dark){
-  const W=256,H=256,c=cvs(W,H),x=c.getContext('2d');
-  x.fillStyle=base;x.fillRect(0,0,W,H);
-  for(let i=0;i<24;i++){const y=Math.random()*H;x.strokeStyle='rgba(0,0,0,'+(0.03+Math.random()*0.05)+')';
-    x.lineWidth=1+Math.random()*2;x.beginPath();x.moveTo(0,y);
-    for(let xx=0;xx<=W;xx+=16)x.lineTo(xx,y+Math.sin(xx*0.05+i)*3);x.stroke();}
-  x.fillStyle=dark;x.globalAlpha=0.05;for(let i=0;i<5;i++)x.fillRect(0,Math.random()*H,W,1+Math.random()*2);x.globalAlpha=1;
-  return c;
-}
-function plasterTex(){
-  const W=256,H=256,c=cvs(W,H),x=c.getContext('2d');
-  const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,'#f1ebdf');g.addColorStop(1,'#e6ddcc');
-  x.fillStyle=g;x.fillRect(0,0,W,H);
-  for(let i=0;i<2200;i++){x.fillStyle='rgba(150,120,90,'+(Math.random()*0.04)+')';x.fillRect(Math.random()*W,Math.random()*H,1,1);}
-  return c;
-}
-function rugTex(){
-  const S=512,c=cvs(S,S),x=c.getContext('2d');
-  x.fillStyle='#d6cbb7';x.fillRect(0,0,S,S);
-  for(let i=0;i<9000;i++){x.fillStyle='rgba(120,100,74,'+(Math.random()*0.05)+')';x.fillRect(Math.random()*S,Math.random()*S,2,2);}
-  x.strokeStyle='#b9ac92';x.lineWidth=5;x.strokeRect(34,34,S-68,S-68);
-  x.strokeStyle='#9d4f3a';x.lineWidth=2;x.strokeRect(52,52,S-104,S-104);
-  return c;
-}
-function paperResumeTex(){
-  const W=560,H=740,c=cvs(W,H),x=c.getContext('2d');
-  x.fillStyle='#fdfbf4';x.fillRect(0,0,W,H);
-  x.fillStyle='#b5654d';x.fillRect(0,0,W,8);
-  x.fillStyle='#241f19';x.font='600 46px Fraunces, Georgia, serif';x.textBaseline='alphabetic';x.fillText('Rao Fenggui',44,92);
-  x.fillStyle='#9d4f3a';x.font='600 17px Inter, Helvetica, sans-serif';x.fillText('DESIGNER · RESEARCHER · FOUNDER',46,122);
-  x.strokeStyle='#e2d8c6';x.lineWidth=1.5;x.beginPath();x.moveTo(44,150);x.lineTo(W-44,150);x.stroke();
-  function sect(y,t){x.fillStyle='#b5654d';x.font='600 14px Inter, sans-serif';x.fillText(t.toUpperCase(),44,y);}
-  function ln(y,t,col,sz){x.fillStyle=col||'#3a3026';x.font=(sz||'500 17px')+' Inter, Helvetica, sans-serif';x.fillText(t,44,y);}
-  sect(192,'Education');
-  ln(222,'PhD · The Hong Kong Polytechnic University','#241f19','600 18px');ln(247,'School of Design · AED Lab · 2024–Present','#6f5e47','400 15px');
-  ln(286,'B.Design · China Academy of Art','#241f19','600 18px');ln(311,'Innovative Design · GPA 90/100 · 2020–2024','#6f5e47','400 15px');
-  sect(372,'Research & Practice');
-  ['Generative AI × art-design workflows','HCI research — CHI / DIS publications','Founder & lead, DesignAnything Lab','Public cultural & exhibition experience'].forEach((t,i)=>ln(402+i*29,'·  '+t,'#3a3026','400 16px'));
-  sect(548,'Contact');
-  ln(578,'robbie.rao@connect.polyu.hk','#241f19','600 17px');ln(603,'robbierao.github.io · ORCID 0009-0000-8990-1515','#6f5e47','400 14px');
-  ln(648,'Hong Kong · Mandarin · English · Cantonese','#6f5e47','400 14px');
-  return c;
-}
-function terminalTex(blink){
-  const W=640,H=400,c=cvs(W,H),x=c.getContext('2d');
-  x.fillStyle='#0c1410';x.fillRect(0,0,W,H);
-  x.fillStyle='#0a0f0c';x.fillRect(0,0,W,34);['#ff6b5e','#ffc93c','#3ad06a'].forEach((col,i)=>{x.fillStyle=col;x.beginPath();x.arc(24+i*26,17,7,0,7);x.fill();});
-  x.fillStyle='#5f8a72';x.font='600 16px "SF Mono", Menlo, monospace';x.fillText('robbie@office: ~',104,22);
-  x.font='16px "SF Mono", Menlo, monospace';
-  const L=[['#86e6ad','$ whoami'],['#d6e9da','Rao Fenggui — designer · researcher · founder'],
-    ['#86e6ad','$ cat role.txt'],['#d6e9da','PhD, HK PolyU · founder, DesignAnything Lab'],
-    ['#86e6ad','$ ls projects/'],['#9fd6b4','ContextCam  CityCure  DIVA  Plast-ocean ...'],
-    ['#86e6ad','$ open cv --interactive']];
-  L.forEach((l,i)=>{x.fillStyle=l[0];x.fillText(l[1],22,74+i*34);});
-  if(blink){x.fillStyle='#86e6ad';x.fillRect(290,74+6*34-13,11,18);}
-  return c;
-}
-function spineTex(title,base){
-  const W=140,H=600,c=cvs(W,H),x=c.getContext('2d');
-  x.fillStyle=base;x.fillRect(0,0,W,H);
-  const g=x.createLinearGradient(0,0,W,0);g.addColorStop(0,'rgba(255,255,255,.16)');g.addColorStop(.25,'rgba(255,255,255,0)');g.addColorStop(.9,'rgba(0,0,0,.18)');
-  x.fillStyle=g;x.fillRect(0,0,W,H);
-  x.fillStyle='rgba(255,255,255,.5)';x.fillRect(20,46,W-40,3);x.fillRect(20,H-50,W-40,3);
-  x.save();x.translate(W/2,H-72);x.rotate(-Math.PI/2);x.fillStyle='#f7f2e8';x.font='600 26px Fraunces, Georgia, serif';x.textBaseline='middle';
-  let t=title.length>22?title.slice(0,21)+'…':title;x.fillText(t,0,0);x.restore();
-  return c;
-}
-function certTex(title,sub){
-  const W=440,H=560,c=cvs(W,H),x=c.getContext('2d');
-  x.fillStyle='#efe6cb';x.fillRect(0,0,W,H);              // mat
-  x.fillStyle='#3a3a3d';x.fillRect(10,10,W-20,H-20);       // thin charcoal frame
-  x.fillStyle='#fbf7ec';x.fillRect(22,22,W-44,H-44);       // paper
-  x.strokeStyle='#cdb389';x.lineWidth=2;x.strokeRect(40,40,W-80,H-80);
-  x.fillStyle='#9c7b3a';x.font='600 14px Inter, sans-serif';x.textAlign='center';x.fillText('CERTIFICATE',W/2,82);
-  x.fillStyle='#3a3026';x.font='600 30px Fraunces, Georgia, serif';wrap(x,title,W/2,150,W-110,36);
-  x.strokeStyle='#b08d57';x.lineWidth=2;x.beginPath();x.arc(W/2,H/2+36,40,0,7);x.stroke();
-  x.fillStyle='#b08d57';x.font='600 30px Fraunces, serif';x.fillText('★',W/2,H/2+48);
-  x.fillStyle='#6f5e47';x.font='400 17px Inter, sans-serif';wrap(x,sub,W/2,H-92,W-110,24);
-  x.textAlign='left';return c;
-}
-function artTex(){
-  const W=420,H=300,c=cvs(W,H),x=c.getContext('2d');
-  x.fillStyle='#2c2c2e';x.fillRect(0,0,W,H);x.fillStyle='#f4efe4';x.fillRect(16,16,W-32,H-32);
-  // minimal abstract — clay + sage planes
-  x.fillStyle='#e7dccb';x.fillRect(16,16,W-32,H-32);
-  x.fillStyle='#b5654d';x.beginPath();x.arc(150,170,72,0,7);x.fill();
-  x.fillStyle='#7d8a6a';x.fillRect(220,80,150,150);
-  x.strokeStyle='#2c2c2e';x.lineWidth=2;x.beginPath();x.moveTo(40,250);x.lineTo(W-40,250);x.stroke();
-  return c;
-}
-function contactCardTex(){
-  const W=480,H=280,c=cvs(W,H),x=c.getContext('2d');
-  x.fillStyle='#fbf7ee';x.fillRect(0,0,W,H);
-  x.fillStyle='#b5654d';x.fillRect(0,0,12,H);
-  x.fillStyle='#241f19';x.font='600 34px Fraunces, Georgia, serif';x.fillText('Rao Fenggui',46,76);
-  x.fillStyle='#9d4f3a';x.font='600 14px Inter, sans-serif';x.fillText('DESIGNER · RESEARCHER · FOUNDER',48,104);
-  x.fillStyle='#3a3026';x.font='400 18px Inter, sans-serif';
-  x.fillText('robbie.rao@connect.polyu.hk',48,156);
-  x.fillText('+852 8403 2765',48,188);
-  x.fillText('robbierao.github.io',48,220);
-  x.fillStyle='#7d8a6a';x.font='400 15px Inter, sans-serif';x.fillText('Hong Kong',48,250);
-  return c;
-}
+function getCSS(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim();}
 
 /* =====================================================================
-   MATERIAL / MESH HELPERS
+   LAYOUT  (logical 1200 × 800 canvas, deterministic placement)
    ===================================================================== */
-const lam=(color,opts={})=>new THREE.MeshStandardMaterial(Object.assign({color:new THREE.Color(color),roughness:0.88,metalness:0.0},opts));
-const metal=(c='#b08d57',r=0.45)=>new THREE.MeshStandardMaterial({color:new THREE.Color(c),roughness:r,metalness:0.7});
-function box(w,h,d,material){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),material.isMaterial?material:lam(material));m.castShadow=true;m.receiveShadow=true;return m;}
-function cyl(rt,rb,h,seg,material){const m=new THREE.Mesh(new THREE.CylinderGeometry(rt,rb,h,seg||20),material.isMaterial?material:lam(material));m.castShadow=true;m.receiveShadow=true;return m;}
-function at(o,x,y,z){o.position.set(x,y,z);return o;}
+const CX=600, CY=400;
+const DPOS={ ai:{x:352,y:196}, hci:{x:848,y:196}, art:{x:352,y:610}, pub:{x:848,y:610} };
+const nodes=[]; // {id,kind,x,y,fixed,data,el}
+const edges=[]; // {a,b,color,cls,el}
 
-/* =====================================================================
-   LIGHTS  (modern, soft daylight — values modulated by day/night)
-   ===================================================================== */
-const amb=new THREE.AmbientLight(0xfff3e2,0.5); scene.add(amb);
-const hemi=new THREE.HemisphereLight(0xfff6e8,0x6a5240,0.6); scene.add(hemi);
-const sun=new THREE.DirectionalLight(0xffe8c8, 2.2);
-sun.position.set(2.5,6.5,-4); sun.castShadow=true;
-sun.shadow.mapSize.set(MOBILE?1024:2048, MOBILE?1024:2048);
-sun.shadow.camera.near=1; sun.shadow.camera.far=30;
-sun.shadow.camera.left=-9; sun.shadow.camera.right=9; sun.shadow.camera.top=8; sun.shadow.camera.bottom=-5;
-sun.shadow.bias=-0.0009; sun.shadow.normalBias=0.02; scene.add(sun);
-const fill=new THREE.DirectionalLight(0xcfe0ec, 0.35); fill.position.set(-5,4,6); scene.add(fill);
-const deskLamp=new THREE.PointLight(0xffcf8f, 4, 6, 2); deskLamp.position.set(-1.0,1.55,-2.85);
-deskLamp.castShadow=!MOBILE; if(deskLamp.shadow){deskLamp.shadow.mapSize.set(512,512);deskLamp.shadow.bias=-0.004;} scene.add(deskLamp);
-const pendant=new THREE.PointLight(0xffe6c2, 4.5, 14, 2); pendant.position.set(0,3.5,-1.4); scene.add(pendant);
-const shelfLight=new THREE.PointLight(0xffe2bc, 3.5, 8, 2); shelfLight.position.set(-3.7,2.7,0.2); scene.add(shelfLight);
+nodes.push({id:'center',kind:'center',x:CX,y:CY,fixed:true});
+for(const k in DOMAINS){const p=DPOS[k];nodes.push({id:'dom:'+k,kind:'domain',x:p.x,y:p.y,fixed:true,dom:k});}
+// aux nodes — a tight inner ring around the centre
+AUX.forEach(([id,label],i)=>{const a=-Math.PI/2 + i/AUX.length*Math.PI*2; const r=92;
+  nodes.push({id:'aux:'+id,kind:'aux',x:CX+Math.cos(a)*r,y:CY+Math.sin(a)*r*0.78,fixed:true,aux:id,label});});
+// work nodes — seed on a clean ring (radially outward from the centre between
+// their domains), then relax so nothing overlaps the hub.
+DATA.projects.forEach((p,i)=>{const ds=PROJ_DOMAINS[i];
+  let sx=0,sy=0;ds.forEach(d=>{sx+=DPOS[d].x;sy+=DPOS[d].y;});
+  let x=sx/ds.length, y=sy/ds.length, dx=x-CX, dy=y-CY, r=Math.hypot(dx,dy);
+  if(r<60){const a=-Math.PI/2 + i*(Math.PI*2/9); dx=Math.cos(a); dy=Math.sin(a);} else {dx/=r; dy/=r;}
+  const RR=Math.max(r,210)+(i%3)*16;
+  nodes.push({id:'work:'+i,kind:'work',x:CX+dx*RR, y:CY+dy*RR*0.86, fixed:false, work:i, dom:ds});});
 
-/* =====================================================================
-   ROOM SHELL   (walls at x +/-6, z +/-6; floor y0, ceil 4.2)
-   ===================================================================== */
-const RW=6, RD=6, RH=4.2;
-const floorT=tex(woodTex('#c2a06e','#9c7b4e'),true); floorT.repeat.set(5,5);
-const floor=new THREE.Mesh(new THREE.PlaneGeometry(RW*2,RD*2), lam('#c2a06e',{map:floorT,roughness:0.62,metalness:0.04}));
-floor.rotation.x=-Math.PI/2; floor.receiveShadow=true; scene.add(floor);
-const ceil=new THREE.Mesh(new THREE.PlaneGeometry(RW*2,RD*2), lam('#f3ecdd'));
-ceil.rotation.x=Math.PI/2; ceil.position.y=RH; scene.add(ceil);
-
-const wallT=tex(plasterTex(),true); wallT.repeat.set(3,1.6);
-const wallMat=lam('#ebe2cf',{map:wallT,roughness:0.97});
-function wall(w,h,x,y,z,ry){const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),wallMat);m.position.set(x,y,z);m.rotation.y=ry;m.receiveShadow=true;scene.add(m);}
-// front + sides solid; back wall built around a window opening below
-wall(RW*2,RH,0,RH/2,RD,Math.PI);
-wall(RD*2,RH,-RW,RH/2,0,Math.PI/2); wall(RD*2,RH,RW,RH/2,0,-Math.PI/2);
-
-// back wall pieces framing window opening: x[-3,3], y[0.95,3.55]
-const OX=3.0, OY0=0.95, OY1=3.55;
-function backPiece(w,h,x,y){const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),wallMat);m.position.set(x,y,-RD);m.receiveShadow=true;scene.add(m);}
-backPiece(RW*2, OY0, 0, OY0/2);                         // below
-backPiece(RW*2, RH-OY1, 0, (OY1+RH)/2);                 // above
-backPiece(RW-OX, OY1-OY0, -(OX+RW)/2, (OY0+OY1)/2);     // left
-backPiece(RW-OX, OY1-OY0,  (OX+RW)/2, (OY0+OY1)/2);     // right
-
-// modern slim baseboard
-const baseMat=lam('#cdbf9f',{roughness:0.85});
-function baseboard(w,x,z,ry){const m=box(w,0.12,0.04,baseMat);m.position.set(x,0.06,z);m.rotation.y=ry;scene.add(m);}
-baseboard(RW*2,0,RD-0.03,Math.PI);baseboard(RD*2,-RW+0.03,0,Math.PI/2);baseboard(RD*2,RW-0.03,0,-Math.PI/2);
-baseboard(RW-OX,-(OX+RW)/2,-RD+0.03,0);baseboard(RW-OX,(OX+RW)/2,-RD+0.03,0);
-
-const rug=new THREE.Mesh(new THREE.PlaneGeometry(4.6,3.4), lam('#d6cbb7',{map:tex(rugTex()),roughness:0.95}));
-rug.rotation.x=-Math.PI/2; rug.position.set(0,0.02,-1.4); rug.receiveShadow=true; scene.add(rug);
-
-/* slim linear pendant over desk */
-const pendG=new THREE.Group();
-pendG.add(at(cyl(0.008,0.008,0.5,6,lam('#3a3a3d')),0,RH-0.25,0));
-const tube=box(1.5,0.06,0.08,lam('#2c2c2e'));at(tube,0,RH-0.5,0);pendG.add(tube);
-const glowBar=new THREE.Mesh(new THREE.PlaneGeometry(1.4,0.05),new THREE.MeshBasicMaterial({color:0xfff0d2,toneMapped:false}));
-at(glowBar,0,RH-0.54,0);glowBar.rotation.x=Math.PI/2;pendG.add(glowBar);
-at(pendG,0,0,-1.4);scene.add(pendG);
-
-/* =====================================================================
-   WINDOW (opening) + slim frame/mullions + glass
-   ===================================================================== */
-const frM=lam('#3a3a3d',{roughness:0.5,metalness:0.2});
-// reveal jamb (depth) so the opening reads as a real wall thickness
-[[OX*2,0.12,0,OY0],[OX*2,0.12,0,OY1],[0.12,OY1-OY0,-OX,(OY0+OY1)/2],[0.12,OY1-OY0,OX,(OY0+OY1)/2]]
- .forEach(([w,h,x,y])=>{const m=box(w,h,0.34,frM);at(m,x,y,-RD-0.16);scene.add(m);});
-// slim mullions
-[[0.05,OY1-OY0,-1.0,(OY0+OY1)/2],[0.05,OY1-OY0,1.0,(OY0+OY1)/2],[OX*2,0.05,0,2.25]]
- .forEach(([w,h,x,y])=>{const m=box(w,h,0.05,frM);at(m,x,y,-RD+0.02);scene.add(m);});
-const sill=box(OX*2+0.2,0.1,0.34,lam('#cdbf9f'));at(sill,0,OY0-0.02,-RD-0.02);scene.add(sill);
-const glass=new THREE.Mesh(new THREE.PlaneGeometry(OX*2,OY1-OY0), new THREE.MeshStandardMaterial({color:0xdff0fb,transparent:true,opacity:0.05,roughness:0.08,metalness:0}));
-at(glass,0,(OY0+OY1)/2,-RD+0.04); scene.add(glass);
-const winHit=new THREE.Mesh(new THREE.PlaneGeometry(OX*2,OY1-OY0),new THREE.MeshBasicMaterial({visible:false}));at(winHit,0,(OY0+OY1)/2,-RD+0.06);scene.add(winHit);
-
-/* =====================================================================
-   EXTERIOR — Hong Kong Central, dimensional (parallax) behind window
-   ===================================================================== */
-const cityG=new THREE.Group(); scene.add(cityG);
-const bldgBase=[], bldgGlow=[], cabins=[], glitters=[];
-const BD=new THREE.Color('#cdd6dd'), BN=new THREE.Color('#27323f');     // building day/night
-const HILL_D=new THREE.Color('#7a9a7e'), HILL_N=new THREE.Color('#1b271f');
-const WATER_D=new THREE.Color('#7ba8c6'), WATER_N=new THREE.Color('#16243a');
-const RIM_D=new THREE.Color('#e2e8ec'), RIM_N=new THREE.Color('#ffe3b0');
-const CAB_D=new THREE.Color('#eceae4'), CAB_N=new THREE.Color('#ffd08a');
-
-function facadeTex(){
-  const W=128,H=256,c=cvs(W,H),x=c.getContext('2d');
-  x.fillStyle='#b9c2c9';x.fillRect(0,0,W,H);
-  const g=x.createLinearGradient(0,0,W,0);g.addColorStop(0,'rgba(255,255,255,.14)');g.addColorStop(.5,'rgba(0,0,0,0)');g.addColorStop(1,'rgba(0,0,0,.24)');
-  x.fillStyle=g;x.fillRect(0,0,W,H);
-  x.fillStyle='rgba(44,58,72,.5)';for(let yy=12;yy<H-8;yy+=16)for(let xx=10;xx<W-8;xx+=15)x.fillRect(xx,yy,9,10);
-  return c;
-}
-function winTex(){
-  const W=128,H=256,c=cvs(W,H),x=c.getContext('2d');x.clearRect(0,0,W,H);
-  for(let yy=12;yy<H-8;yy+=16)for(let xx=10;xx<W-8;xx+=15){if(Math.random()<0.8){x.fillStyle='rgba(255,221,150,'+(0.6+Math.random()*0.4)+')';x.fillRect(xx,yy,9,10);}}
-  return c;
-}
-const facadeT=tex(facadeTex(),true), winT=tex(winTex(),true);
-function building(x0,z0,w,h,d,hue){
-  const grp=new THREE.Group();
-  const rep=Math.max(1,Math.round(h/1.3)), repx=Math.max(1,Math.round(w/0.8));
-  const ft=facadeT.clone();ft.needsUpdate=true;ft.wrapS=ft.wrapT=THREE.RepeatWrapping;ft.repeat.set(repx,rep);
-  const baseMat=new THREE.MeshBasicMaterial({map:ft});baseMat.color.copy(BD);if(hue)baseMat.color.multiply(new THREE.Color(hue));
-  const bx=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),baseMat);bx.position.set(x0,h/2,z0);grp.add(bx);
-  const wt=winT.clone();wt.needsUpdate=true;wt.wrapS=wt.wrapT=THREE.RepeatWrapping;wt.repeat.set(repx,rep);
-  const glowMat=new THREE.MeshBasicMaterial({map:wt,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,color:0xffd9a0});
-  const gl=new THREE.Mesh(new THREE.PlaneGeometry(w*0.96,h*0.97),glowMat);gl.position.set(x0,h/2,z0+d/2+0.02);grp.add(gl);
-  cityG.add(grp);bldgBase.push(baseMat);bldgGlow.push(glowMat);
-  return {grp,bx,baseMat};
-}
-
-/* far hazy row */
-for(let i=0;i<10;i++){const w=0.7+Math.random()*0.9, h=2.2+Math.random()*2.0;
-  const b=building(-8.5+i*1.9+Math.random()*0.4,-11.4,w,h,0.7,'#dfe7ec');}
-/* mid row */
-for(let i=0;i<7;i++){const w=0.9+Math.random()*0.7, h=2.8+Math.random()*1.8;
-  building(-7+i*2.2+Math.random()*0.3,-10.0,w,h,0.8);}
-/* near signature towers */
-building(-5.4,-9.0,1.1,3.6,0.95);
-building(3.9,-9.0,1.2,4.0,0.95);
-building(-0.2,-9.1,1.0,3.4,0.9);
-/* IFC-like: tall, tapered, masted */
-(function(){const r=building(1.7,-9.0,1.0,6.0,0.85);
-  const cap=new THREE.Mesh(new THREE.BoxGeometry(0.6,0.5,0.55),r.bx.material);cap.position.set(1.7,6.05,-9.0);cityG.add(cap);
-  const mast=new THREE.Mesh(new THREE.CylinderGeometry(0.02,0.04,0.7,6),new THREE.MeshBasicMaterial({color:0x8a96a2}));mast.position.set(1.7,6.6,-9.0);cityG.add(mast);})();
-/* BoC-like: triangular crown */
-(function(){const r=building(-2.4,-9.0,0.95,5.0,0.85);
-  const crown=new THREE.Mesh(new THREE.ConeGeometry(0.5,0.9,4),r.bx.material);crown.rotation.y=Math.PI/4;crown.position.set(-2.4,5.45,-9.0);cityG.add(crown);})();
-
-/* The Peak hills — a low, wide ridge well behind the skyline */
-function hill(x0,z0,rx,ry,rz){const m=new THREE.Mesh(new THREE.SphereGeometry(1,28,18),new THREE.MeshBasicMaterial({color:HILL_D.clone()}));
-  m.scale.set(rx,ry,rz);m.position.set(x0,-0.4,z0);cityG.add(m);return m;}
-const hillMats=[hill(-3.5,-13.8,7,2.6,1.4).material,hill(3.6,-14.2,8,3.0,1.5).material,hill(0.2,-14,6,2.1,1.3).material];
-
-/* harbour water */
-const waterMat=new THREE.MeshBasicMaterial({color:WATER_D.clone()});
-const water=new THREE.Mesh(new THREE.PlaneGeometry(60,12),waterMat);
-water.rotation.x=-Math.PI/2;water.position.set(0,-0.06,-9.3);cityG.add(water);
-// sun/moon glitter strip
-function glitterTex(){const W=128,H=256,c=cvs(W,H),x=c.getContext('2d');x.clearRect(0,0,W,H);
-  for(let i=0;i<150;i++){const yy=Math.random()*H;x.fillStyle='rgba(255,240,210,'+(Math.random()*0.5)+')';x.fillRect(Math.random()*W,yy,6+Math.random()*16,2);}return c;}
-const glitMat=new THREE.MeshBasicMaterial({map:tex(glitterTex()),transparent:true,opacity:0.5,blending:THREE.AdditiveBlending,depthWrite:false,color:0xffe7b0});
-const glit=new THREE.Mesh(new THREE.PlaneGeometry(4,7),glitMat);glit.rotation.x=-Math.PI/2;glit.position.set(2.2,-0.05,-8.4);cityG.add(glit);glitters.push(glitMat);
-
-/* cruise ship on the harbour */
-const ship=new THREE.Group();
-const white=new THREE.MeshBasicMaterial({color:0xf2efe8});
-const hull=new THREE.Mesh(new THREE.BoxGeometry(3.0,0.42,0.66),new THREE.MeshBasicMaterial({color:0x2b3138}));hull.position.y=0.21;ship.add(hull);
-const hullw=new THREE.Mesh(new THREE.BoxGeometry(2.6,0.2,0.6),white);hullw.position.y=0.5;ship.add(hullw);
-[[2.3,0.34,0.58,0.74],[1.7,0.3,0.54,1.0]].forEach(([w,h,d,y])=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),white);m.position.y=y;ship.add(m);});
-const bridge=new THREE.Mesh(new THREE.BoxGeometry(0.6,0.22,0.5),white);bridge.position.set(-0.7,1.26,0);ship.add(bridge);
-[[-0.1],[0.5]].forEach(([fx])=>{const f=new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.12,0.34,12),new THREE.MeshBasicMaterial({color:0xb5654d}));f.position.set(fx,1.3,0);ship.add(f);});
-const shipGlowMat=new THREE.MeshBasicMaterial({color:0xffe0a0,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false});
-const shipGlow=new THREE.Mesh(new THREE.PlaneGeometry(2.5,0.5),shipGlowMat);shipGlow.position.set(0,0.62,0.33);ship.add(shipGlow);
-ship.scale.setScalar(1.04);at(ship,0.4,0.06,-8.9);ship.rotation.y=-0.12;cityG.add(ship);
-
-/* Central observation wheel (Ferris wheel) */
-const wheel=new THREE.Group();
-const R=1.45;
-const rimMat=new THREE.MeshBasicMaterial({color:RIM_D.clone()});
-const rimA=new THREE.Mesh(new THREE.TorusGeometry(R,0.04,8,44),rimMat);wheel.add(rimA);
-const rimB=new THREE.Mesh(new THREE.TorusGeometry(R,0.04,8,44),rimMat);rimB.position.z=0.28;wheel.add(rimB);
-const cabMat=new THREE.MeshBasicMaterial({color:CAB_D.clone()});
-const NSP=16;
-for(let i=0;i<NSP;i++){const a=i/NSP*Math.PI*2;
-  const sp=new THREE.Mesh(new THREE.BoxGeometry(0.02,R,0.02),new THREE.MeshBasicMaterial({color:0xb9c2c9}));
-  sp.position.set(Math.cos(a)*R/2,Math.sin(a)*R/2,0.14);sp.rotation.z=a-Math.PI/2;wheel.add(sp);}
-for(let i=0;i<12;i++){const a=i/12*Math.PI*2;const cb=new THREE.Mesh(new THREE.BoxGeometry(0.16,0.14,0.16),cabMat);
-  cb.position.set(Math.cos(a)*R,Math.sin(a)*R,0.14);wheel.add(cb);cabins.push(cb);}
-wheel.add(new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.08,0.34,12),new THREE.MeshBasicMaterial({color:0x8a96a2})).rotateX(Math.PI/2));
-// support legs
-[[-0.7],[0.7]].forEach(([lx])=>{const lg=new THREE.Mesh(new THREE.BoxGeometry(0.05,R+0.4,0.05),new THREE.MeshBasicMaterial({color:0xa6b0b8}));
-  lg.position.set(lx,-(R+0.4)/2+0.05,0.14);lg.rotation.z=lx>0?0.32:-0.32;wheel.add(lg);});
-at(wheel,-2.9,1.5,-7.3);cityG.add(wheel);
-
-/* sky backdrop — day plane + night plane crossfade */
-function skyTex(night){
-  const W=1536,H=768,c=cvs(W,H),x=c.getContext('2d');
-  const g=x.createLinearGradient(0,0,0,H);
-  if(night){g.addColorStop(0,'#0b1330');g.addColorStop(.5,'#16264a');g.addColorStop(.8,'#23406a');g.addColorStop(1,'#2c4f7a');}
-  else{g.addColorStop(0,'#8fb6d8');g.addColorStop(.45,'#cfe0e6');g.addColorStop(.74,'#ffe6c2');g.addColorStop(1,'#ffd29c');}
-  x.fillStyle=g;x.fillRect(0,0,W,H);
-  const sx=W*0.7,sy=H*0.4;
-  if(night){
-    for(let i=0;i<260;i++){x.fillStyle='rgba(255,255,255,'+(Math.random()*0.7)+')';x.fillRect(Math.random()*W,Math.random()*H*0.62,Math.random()<0.1?2:1,1);}
-    const moon=x.createRadialGradient(sx,sy,4,sx,sy,90);moon.addColorStop(0,'rgba(245,247,255,1)');moon.addColorStop(.4,'rgba(220,228,250,.5)');moon.addColorStop(1,'rgba(200,210,240,0)');
-    x.fillStyle=moon;x.fillRect(0,0,W,H);x.fillStyle='#f2f5ff';x.beginPath();x.arc(sx,sy,34,0,7);x.fill();
-  }else{
-    const sun=x.createRadialGradient(sx,sy,6,sx,sy,300);sun.addColorStop(0,'rgba(255,250,228,.98)');sun.addColorStop(.5,'rgba(255,236,186,.45)');sun.addColorStop(1,'rgba(255,228,170,0)');
-    x.fillStyle=sun;x.fillRect(0,0,W,H);x.fillStyle='rgba(255,252,235,.95)';x.beginPath();x.arc(sx,sy,40,0,7);x.fill();
-    for(const [cx,cy,s] of [[260,150,180],[1120,120,200],[700,110,140]]){const cg=x.createRadialGradient(cx,cy,0,cx,cy,s);cg.addColorStop(0,'rgba(255,250,242,.7)');cg.addColorStop(1,'rgba(255,246,236,0)');x.fillStyle=cg;x.beginPath();x.ellipse(cx,cy,s,s*0.46,0,0,7);x.fill();}
+function relax(){ // repulsion + spring-to-anchor for work nodes
+  const works=nodes.filter(n=>n.kind==='work');
+  works.forEach(w=>{w.ax=w.x;w.ay=w.y;}); // anchor = ring seed
+  for(let it=0;it<300;it++){
+    works.forEach(w=>{let fx=0,fy=0;
+      nodes.forEach(o=>{if(o===w)return;const dx=w.x-o.x,dy=w.y-o.y;let d2=dx*dx+dy*dy;if(d2<1)d2=1;
+        const min=(o.kind==='center'?195:o.kind==='domain'?118:o.kind==='aux'?78:120);
+        const f=(o.kind==='center'?70000:o.kind==='domain'?20000:o.kind==='aux'?8000:17000)/d2;
+        const d=Math.sqrt(d2); fx+=dx/d*f; fy+=dy/d*f;
+        if(d<min){fx+=dx/d*(min-d)*1.6;fy+=dy/d*(min-d)*1.6;}});
+      fx+=(w.ax-w.x)*0.018; fy+=(w.ay-w.y)*0.018;     // gentle tether to the ring
+      w.vx=((w.vx||0)+fx*0.0016)*0.82; w.vy=((w.vy||0)+fy*0.0016)*0.82;
+      w.x+=w.vx; w.y+=w.vy;
+      w.x=Math.max(120,Math.min(1080,w.x)); w.y=Math.max(116,Math.min(700,w.y));});
   }
-  // faint distant skyline silhouette along the bottom
-  x.fillStyle=night?'rgba(10,18,36,0.8)':'rgba(150,168,184,0.55)';
-  for(let i=0;i<46;i++){const bw=10+Math.random()*26,bx=i*34,bh=40+Math.random()*150;x.fillRect(bx,H-bh,bw,bh);
-    if(night&&Math.random()<0.7){x.fillStyle='rgba(255,220,150,'+(0.3+Math.random()*0.4)+')';x.fillRect(bx+3,H-bh+6,2,3);x.fillStyle='rgba(10,18,36,0.8)';}}
-  return c;
+  works.forEach(w=>{w.bx=w.x;w.by=w.y;}); // base for idle drift
 }
-const skyDay=new THREE.Mesh(new THREE.PlaneGeometry(70,34),new THREE.MeshBasicMaterial({map:tex(skyTex(false))}));
-at(skyDay,0,9,-17);cityG.add(skyDay);
-const skyNightMat=new THREE.MeshBasicMaterial({map:tex(skyTex(true)),transparent:true,opacity:0});
-const skyNight=new THREE.Mesh(new THREE.PlaneGeometry(70,34),skyNightMat);at(skyNight,0,9,-16.9);cityG.add(skyNight);
+relax();
+nodes.forEach(n=>{if(n.bx==null){n.bx=n.x;n.by=n.y;}});
 
-cityG.traverse(o=>{if(o.isMesh){o.castShadow=false;o.receiveShadow=false;}});
+// edges: spine (centre→domain), works→domains, faint centre→aux
+for(const k in DOMAINS) edges.push({a:'center',b:'dom:'+k,color:DOMAINS[k].c,cls:'spine'});
+DATA.projects.forEach((p,i)=>PROJ_DOMAINS[i].forEach(d=>edges.push({a:'work:'+i,b:'dom:'+d,color:DOMAINS[d].c})));
+AUX.forEach(([id])=>edges.push({a:'center',b:'aux:'+id,color:'',cls:'aux'}));
 
-/* =====================================================================
-   DESK + items  (moved away from the window: top at z ~ -2.6)
-   ===================================================================== */
-const deskG=new THREE.Group(); deskG.position.z=1.7; scene.add(deskG);
-const deskWood=lam('#b98f5e',{map:tex(woodTex('#b98f5e','#8a6840')),roughness:0.5,metalness:0.04});
-const tabletop=box(3.3,0.1,1.4,deskWood); at(tabletop,0,1.05,-4.3); deskG.add(tabletop);
-const feltPad=box(1.5,0.012,0.95, lam('#3a3a3d',{roughness:0.85})); at(feltPad,0.1,1.106,-4.25); deskG.add(feltPad);
-// slim modern legs / side panels
-[[-1.55],[1.55]].forEach(([x])=>{const side=box(0.06,1.0,1.2,lam('#2c2c2e',{roughness:0.5,metalness:0.2}));at(side,x,0.5,-4.3);deskG.add(side);});
-const stretch=box(3.0,0.06,0.06,lam('#2c2c2e',{roughness:0.5,metalness:0.2}));at(stretch,0,0.18,-4.3);deskG.add(stretch);
-
-// résumé paper (front-left)
-const paper=new THREE.Group();
-paper.add(box(0.6,0.016,0.82,lam('#fdfbf4',{roughness:0.9})));
-const print=new THREE.Mesh(new THREE.PlaneGeometry(0.58,0.8),art(paperResumeTex()));print.rotation.x=-Math.PI/2;at(print,0,0.011,0);paper.add(print);
-at(paper,-0.92,1.11,-4.0);paper.rotation.y=0.12;paper.userData.baseY=1.11;deskG.add(paper);
-
-// computer / monitor — hosts the terminal
-const monitor=new THREE.Group();
-monitor.add(at(box(0.18,0.42,0.18,lam('#2a2a2e',{roughness:0.5})),0,-0.2,0));
-monitor.add(at(box(0.5,0.04,0.3,lam('#2a2a2e',{roughness:0.5})),0,-0.42,0));
-monitor.add(at(box(1.5,0.9,0.06,lam('#17171b',{roughness:0.4})),0,0.4,0));
-let monMat=new THREE.MeshBasicMaterial({map:tex(terminalTex(true)),toneMapped:false});
-monitor.add(at(new THREE.Mesh(new THREE.PlaneGeometry(1.4,0.8),monMat),0,0.4,0.032));
-// keyboard
-monitor.add(at(box(0.78,0.03,0.26,lam('#2a2a2e',{roughness:0.5})),0,-0.41,0.55));
-at(monitor,0,1.12,-4.62);deskG.add(monitor);
-
-// contact card (front-right, on the felt) — opens Contact
-const ccard=new THREE.Group();
-ccard.add(box(0.4,0.012,0.24,lam('#fbf7ee',{roughness:0.85})));
-const ccprint=new THREE.Mesh(new THREE.PlaneGeometry(0.38,0.22),art(contactCardTex()));ccprint.rotation.x=-Math.PI/2;at(ccprint,0,0.009,0);ccard.add(ccprint);
-at(ccard,0.95,1.108,-3.96);ccard.rotation.y=-0.18;deskG.add(ccard);
-
-// framed photo — opens "about me"
-const photoG=new THREE.Group();
-photoG.add(box(0.42,0.5,0.04,lam('#2c2c2e',{roughness:0.4})));
-const photo=new THREE.Mesh(new THREE.PlaneGeometry(0.34,0.42),new THREE.MeshBasicMaterial({color:0xd9cba6,toneMapped:false}));at(photo,0,0.02,0.025);photoG.add(photo);
-at(photoG,1.18,1.3,-4.5);photoG.rotation.y=-0.45;deskG.add(photoG);
-
-// minimalist desk lamp (matte black arc + warm glow)
-const lampG=new THREE.Group();
-lampG.add(cyl(0.11,0.13,0.04,18,lam('#2c2c2e',{roughness:0.4})));
-lampG.add(at(cyl(0.018,0.018,0.5,10,lam('#2c2c2e',{roughness:0.4})),0,0.27,0));
-const head=cyl(0.05,0.09,0.16,16,lam('#2c2c2e',{roughness:0.4}));head.rotation.z=Math.PI/2.6;at(head,0.08,0.5,0);lampG.add(head);
-const bulb=new THREE.Mesh(new THREE.SphereGeometry(0.05,12,12),new THREE.MeshBasicMaterial({color:0xfff0d2,toneMapped:false}));at(bulb,0.13,0.46,0);lampG.add(bulb);
-at(lampG,-1.18,1.1,-4.5);deskG.add(lampG);
-
-// small ceramic mug + pen cup + planter
-const mug=cyl(0.06,0.055,0.12,18,lam('#e7dccb'));at(mug,0.55,1.17,-3.98);deskG.add(mug);
-mug.add(at(new THREE.Mesh(new THREE.TorusGeometry(0.045,0.011,8,14),lam('#e7dccb')),0.07,0,0));
-const penc=cyl(0.055,0.05,0.14,16,lam('#7d8a6a'));at(penc,-0.45,1.18,-4.2);deskG.add(penc);
-[[-0.015,0.15,'#b08d57'],[0.015,0.12,'#9d4f3a'],[0,0.17,'#2c2c2e']].forEach(([dx,h,col])=>{const p=cyl(0.006,0.006,h,6,lam(col));at(p,-0.45+dx,1.24,-4.2);deskG.add(p);});
-const planter=new THREE.Group();planter.add(cyl(0.09,0.1,0.1,18,lam('#cdbf9f')));
-[[0,0.18,0.09,'#7d8a6a'],[0.07,0.16,0.07,'#6a7a58'],[-0.07,0.15,0.06,'#8a9a72']].forEach(([dx,y,r,col])=>{planter.add(at(new THREE.Mesh(new THREE.SphereGeometry(r,10,10),lam(col)),dx,y,0));});
-at(planter,1.45,1.15,-3.95);deskG.add(planter);
+const byId=Object.fromEntries(nodes.map(n=>[n.id,n]));
+function neighbors(id){const s=new Set();edges.forEach(e=>{if(e.a===id)s.add(e.b);if(e.b===id)s.add(e.a);});return s;}
 
 /* =====================================================================
-   CHAIRS — a task chair at the desk + a lounge chair by the window
+   RENDER
    ===================================================================== */
-// modern task chair (door side of desk, faces window)
-const task=new THREE.Group();
-const tFab=lam('#3a3a3d',{roughness:0.7});
-task.add(at(box(0.56,0.12,0.54,tFab),0,0.56,0));
-const tBack=box(0.54,0.78,0.1,tFab);at(tBack,0,1.0,0.26);tBack.rotation.x=0.12;task.add(tBack);
-task.add(at(cyl(0.04,0.05,0.42,12,lam('#1f1f22')),0,0.32,0));
-const tStar=new THREE.Group();for(let i=0;i<5;i++){const a=i/5*Math.PI*2;const leg=at(box(0.06,0.04,0.3,lam('#1f1f22')),Math.cos(a)*0.16,0.05,Math.sin(a)*0.16);leg.rotation.y=-a;tStar.add(leg);
-  tStar.add(at(new THREE.Mesh(new THREE.SphereGeometry(0.045,8,8),lam('#111')),Math.cos(a)*0.3,0.04,Math.sin(a)*0.3));}
-task.add(tStar);
-at(task,0,0,-1.55);scene.add(task);
+const stage=document.getElementById('stage'), edgeSvg=document.getElementById('edges');
+const SVGNS='http://www.w3.org/2000/svg';
+edges.forEach((e,i)=>{const ln=document.createElementNS(SVGNS,'line');
+  ln.setAttribute('class','edge draw'+(e.cls?' '+e.cls:''));
+  if(e.color)ln.setAttribute('stroke',e.color);
+  ln.setAttribute('pathLength','1');
+  ln.style.animationDelay=(0.3+i*0.018)+'s';
+  edgeSvg.appendChild(ln); e.el=ln;});
 
-// lounge / accent chair between desk and window (faces the harbour)
-const lounge=new THREE.Group();
-const lFab=lam('#b5654d',{roughness:0.8});
-const oak=lam('#9c7b4e',{roughness:0.6});
-lounge.add(at(box(0.74,0.14,0.7,lFab),0,0.42,0));        // seat
-const lBack=box(0.74,0.62,0.12,lFab);at(lBack,0,0.74,-0.3);lBack.rotation.x=-0.2;lounge.add(lBack);
-[[-0.34],[0.34]].forEach(([x])=>{const arm=box(0.1,0.1,0.66,oak);at(arm,x,0.56,0);lounge.add(arm);});
-// splayed wooden legs
-[[-0.3,-0.28],[0.3,-0.28],[-0.3,0.28],[0.3,0.28]].forEach(([x,z])=>{const lg=cyl(0.02,0.03,0.42,8,oak);at(lg,x,0.2,z);lg.rotation.x=z>0?0.12:-0.12;lg.rotation.z=x>0?0.1:-0.1;lounge.add(lg);});
-const cushion=box(0.68,0.1,0.6,lam('#c8745a',{roughness:0.85}));at(cushion,0,0.52,0.02);lounge.add(cushion);
-at(lounge,0.7,0,-4.6);lounge.rotation.y=Math.PI;scene.add(lounge);
+function mkNode(n){const b=document.createElement('button');b.className='node '+n.kind;
+  let c='var(--gold)',glow='rgba(231,207,166,.5)',lab='',sub='';
+  if(n.kind==='center'){c='#fff';glow='rgba(231,207,166,.65)';lab=DATA.person.name;sub='the work';}
+  else if(n.kind==='domain'){const d=DOMAINS[n.dom];c=d.c;glow=d.c;lab=d.name;sub=d.sub;}
+  else if(n.kind==='work'){const p=DATA.projects[n.work];const d0=DOMAINS[n.dom[0]];c=d0.c;glow=d0.c;lab=p.t;sub=p.v;}
+  else if(n.kind==='aux'){lab=n.label;}
+  b.style.setProperty('--c',c); b.style.setProperty('--glow',glow);
+  b.innerHTML='<span class="dot"></span><span class="lab">'+lab+'</span>'+(sub?'<span class="sub">'+sub+'</span>':'');
+  b.style.transitionDelay=(0.25+Math.random()*0.5)+'s';
+  b.addEventListener('pointerdown',ev=>ev.stopPropagation());  // don't let the viewport capture the click
+  b.addEventListener('pointerenter',()=>trace(n.id));
+  b.addEventListener('pointerleave',clearTrace);
+  b.addEventListener('click',ev=>{ev.stopPropagation();openFor(n);});
+  stage.appendChild(b); n.el=b; position(n);}
+function position(n){n.el.style.left=n.x+'px';n.el.style.top=n.y+'px';}
+nodes.forEach(mkNode);
 
-// slim side table beside the lounge
-const sideT=new THREE.Group();
-sideT.add(at(cyl(0.2,0.2,0.04,20,oak),0,0.5,0));
-sideT.add(at(cyl(0.03,0.03,0.5,10,lam('#2c2c2e')),0,0.25,0));
-at(sideT,2.0,0,-4.3);scene.add(sideT);
+function drawEdges(){edges.forEach(e=>{const A=byId[e.a],B=byId[e.b];
+  e.el.setAttribute('x1',A.x);e.el.setAttribute('y1',A.y);e.el.setAttribute('x2',B.x);e.el.setAttribute('y2',B.y);});}
+drawEdges();
+requestAnimationFrame(()=>stage.classList.add('ready'));
+
+/* hover / focus trace */
+let focusDom=null;
+function trace(id){const nb=neighbors(id);nb.add(id);
+  stage.classList.add('focus');
+  nodes.forEach(n=>n.el.classList.toggle('lit',nb.has(n.id)));
+  edges.forEach(e=>{const on=(e.a===id||e.b===id);e.el.classList.toggle('lit',on);e.el.classList.toggle('dim',!on);});}
+function clearTrace(){if(focusDom){focusByDomain(focusDom);return;}
+  stage.classList.remove('focus');
+  nodes.forEach(n=>n.el.classList.remove('lit'));
+  edges.forEach(e=>{e.el.classList.remove('lit');e.el.classList.remove('dim');});}
+function focusByDomain(k){const did='dom:'+k;const set=neighbors(did);set.add(did);set.add('center');
+  stage.classList.add('focus');
+  nodes.forEach(n=>n.el.classList.toggle('lit',set.has(n.id)));
+  edges.forEach(e=>{const on=(e.a===did||e.b===did||((e.cls==='spine')&&(e.a===did||e.b===did)));
+    e.el.classList.toggle('lit',on);e.el.classList.toggle('dim',!on);});}
 
 /* =====================================================================
-   BOOKSHELF (left wall) — books = projects
+   PAN / ZOOM
    ===================================================================== */
-const shelfG=new THREE.Group(); scene.add(shelfG);
-const caseMat=lam('#b98f5e',{map:tex(woodTex('#b98f5e','#8a6840')),roughness:0.66});
-const SX=-5.74;
-shelfG.add(at(box(0.42,3.3,3.7,caseMat),SX-0.13,1.65,0));
-[0.42,1.18,1.94,2.7].forEach(y=>shelfG.add(at(box(0.52,0.06,3.7,caseMat),SX,y,0)));
-shelfG.add(at(box(0.52,3.3,0.08,caseMat),SX,1.65,-1.85));
-shelfG.add(at(box(0.52,3.3,0.08,caseMat),SX,1.65,1.85));
-shelfG.add(at(box(0.52,0.09,3.7,caseMat),SX,3.28,0));
-shelfG.add(at(new THREE.Mesh(new THREE.PlaneGeometry(3.5,3.1),new THREE.MeshBasicMaterial({color:0x2a1c12,toneMapped:false})),SX-0.31,1.65,0));
-shelfG.children[shelfG.children.length-1].rotation.y=Math.PI/2;
-
-const books=[];
-const fillerCols=['#9c7b4e','#34557f','#2f6b62','#9d4f3a','#4f6b2f','#8a5a2b','#5f3f78','#2b6b8a','#7d8a6a','#3a3a3d'];
-const surfaces=[1.94,1.18,0.42];
-const rows=[[0,3],[3,6],[6,9]];
-function projBook(idx,z,surface){
-  const p=DATA.projects[idx];const h=0.62,th=0.2;
-  const b=new THREE.Group();
-  b.add(box(0.34,h,th,lam(p.c,{roughness:0.62})));
-  const sp=new THREE.Mesh(new THREE.PlaneGeometry(th-0.012,h-0.03),art(spineTex(p.t,p.c)));sp.rotation.y=Math.PI/2;at(sp,0.171,0,0);b.add(sp);
-  at(b,SX,surface+h/2,z+th/2);b.userData.rest=SX;b.userData.proj=idx;
-  shelfG.add(b);books.push(b);return th;
-}
-function fillerBook(z,surface,seed){const h=0.48+((seed)%3)*0.07,th=0.1+((seed)%2)*0.05;
-  const fb=box(0.31,h,th,lam(fillerCols[seed%fillerCols.length],{roughness:0.72}));at(fb,SX-0.016,surface+h/2,z+th/2);shelfG.add(fb);return th;}
-rows.forEach((rng,ri)=>{const surface=surfaces[ri];const projIdx=[];for(let i=rng[0];i<rng[1]&&i<DATA.projects.length;i++)projIdx.push(i);
-  const segW=3.0/projIdx.length;
-  projIdx.forEach((idx,si)=>{let z=-1.5+si*segW;const segEnd=z+segW;const nf=1+(si%2);
-    for(let f=0;f<nf;f++){z+=fillerBook(z,surface,idx+f+ri)+0.025;}
-    z+=projBook(idx,z,surface)+0.035;
-    let g=0;while(segEnd-z>0.18&&g<3){z+=fillerBook(z,surface,idx+10+g+ri)+0.025;g++;}});});
-// tasteful shelf decor (non-interactive)
-const sObj=new THREE.Group();sObj.add(cyl(0.0,0.09,0.18,12,metal('#b08d57')));sObj.add(at(cyl(0.06,0.02,0.05,12,lam('#2c2c2e')),0,-0.11,0));at(sObj,SX,2.85,1.45);shelfG.add(sObj);
-const vase=cyl(0.06,0.09,0.26,16,lam('#7d8a6a'));at(vase,SX,2.13,1.5);shelfG.add(vase);
-
-/* corner plant (modern) */
-const cplant=new THREE.Group();cplant.add(cyl(0.26,0.2,0.5,18,lam('#cdbf9f')));
-for(let i=0;i<9;i++){const lf=box(0.1,0.95,0.05,lam(i%2?'#6a7a58':'#7d8a6a'));lf.position.set(Math.cos(i*0.9)*0.12,0.66,Math.sin(i*0.9)*0.12);lf.rotation.set(0.25,i,(i%2?1:-1)*0.4);cplant.add(lf);}
-at(cplant,5.1,0.25,5.0);scene.add(cplant);
-
-/* console / sideboard by the door (replaces the old arcade cabinet) */
-const sideboard=new THREE.Group();
-sideboard.add(at(box(1.6,0.7,0.5,deskWood),0,0.35,0));
-sideboard.add(at(box(1.66,0.04,0.54,lam('#2c2c2e',{roughness:0.5})),0,0.72,0));
-[[-0.4],[0.4]].forEach(([x])=>{sideboard.add(at(cyl(0.02,0.02,0.06,8,metal('#b08d57')),x,0.4,0.26).rotateX(Math.PI/2));});
-const sbPlant=new THREE.Group();sbPlant.add(cyl(0.1,0.12,0.14,16,lam('#e7dccb')));
-[[0,0.2,0.1,'#7d8a6a'],[0.08,0.17,0.08,'#6a7a58']].forEach(([dx,y,r,col])=>{sbPlant.add(at(new THREE.Mesh(new THREE.SphereGeometry(r,10,10),lam(col)),dx,y,0));});
-at(sbPlant,-0.5,0.74,0);sideboard.add(sbPlant);
-at(sideboard,3.6,0,RD-0.36);sideboard.rotation.y=Math.PI;scene.add(sideboard);
+const viewport=document.getElementById('viewport');
+let view={x:0,y:0,s:1}, fit={x:0,y:0,s:1};
+function computeFit(){const w=innerWidth,h=innerHeight;const pad=window.innerWidth<620?20:80;
+  const s=Math.min((w-pad*2)/1200,(h-pad*2)/800);
+  fit={s, x:(w-1200*s)/2, y:(h-800*s)/2};
+  if(!dragged){view={...fit};applyView();}}
+function applyView(){stage.style.transform=`translate(${view.x}px,${view.y}px) scale(${view.s})`;}
+let dragging=false,dragged=false,lx=0,ly=0,moved=0;
+viewport.addEventListener('pointerdown',e=>{dragging=true;moved=0;lx=e.clientX;ly=e.clientY;viewport.classList.add('grabbing');viewport.setPointerCapture(e.pointerId);});
+viewport.addEventListener('pointermove',e=>{if(!dragging)return;const dx=e.clientX-lx,dy=e.clientY-ly;lx=e.clientX;ly=e.clientY;moved+=Math.abs(dx)+Math.abs(dy);
+  view.x+=dx;view.y+=dy;dragged=true;applyView();});
+function endDrag(){dragging=false;viewport.classList.remove('grabbing');}
+viewport.addEventListener('pointerup',endDrag);viewport.addEventListener('pointercancel',endDrag);
+viewport.addEventListener('wheel',e=>{e.preventDefault();const f=Math.exp(-e.deltaY*0.0014);zoomAt(e.clientX,e.clientY,f);},{passive:false});
+function zoomAt(cx,cy,f){const ns=Math.max(fit.s*0.7,Math.min(fit.s*3.2,view.s*f));const k=ns/view.s;
+  view.x=cx-(cx-view.x)*k;view.y=cy-(cy-view.y)*k;view.s=ns;dragged=true;applyView();}
+// pinch
+let pinch=null;
+viewport.addEventListener('touchstart',e=>{if(e.touches.length===2){pinch=dist(e.touches);}},{passive:true});
+viewport.addEventListener('touchmove',e=>{if(e.touches.length===2&&pinch){const d=dist(e.touches);const mx=(e.touches[0].clientX+e.touches[1].clientX)/2,my=(e.touches[0].clientY+e.touches[1].clientY)/2;
+  zoomAt(mx,my,d/pinch);pinch=d;e.preventDefault();}},{passive:false});
+viewport.addEventListener('touchend',()=>{pinch=null;});
+function dist(t){return Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY);}
+viewport.addEventListener('click',()=>{if(moved<6&&!focusDom)return;});
 
 /* =====================================================================
-   AWARDS WALL (right wall) — tidy modern gallery (no clipping)
+   READING PANEL
    ===================================================================== */
-const wallG=new THREE.Group(); scene.add(wallG);
-const AX=RW-0.06;
-function makeFrame(w,h,y,z,t,sub){const f=new THREE.Mesh(new THREE.PlaneGeometry(w,h),art(certTex(t,sub)));
-  f.rotation.y=-Math.PI/2;at(f,AX,y,z);wallG.add(f);return f;}
-function makeArt(w,h,y,z){const f=new THREE.Mesh(new THREE.PlaneGeometry(w,h),art(artTex()));f.rotation.y=-Math.PI/2;at(f,AX,y,z);wallG.add(f);return f;}
-// top row (clear above wainscot-free wall): y 3.0
-const fDipA=makeFrame(0.94,1.16,3.0,-1.7,"PhD — HK PolyU","School of Design · AED Lab");
-const fDipB=makeFrame(0.94,1.16,3.0,-0.35,"B.Design — China Academy of Art","Innovative Design · GPA 90/100");
-const fHon =makeFrame(0.94,1.16,3.0,1.0,"Honours & Scholarships","6 awards · 2021–2024");
-// bottom row: y 1.85 (bottom edge ~1.27, well clear of baseboard)
-const fIP  =makeFrame(1.1,0.92,1.78,-1.05,"IP & Patents","copyright · patents · 2022–2024");
-const aPrint=makeArt(1.16,0.84,1.8,0.95);
-// minimal wall clock, kept away from frames
-const clock=new THREE.Group();clock.add(cyl(0.2,0.2,0.05,28,metal('#2c2c2e',0.5)));
-clock.add(at(new THREE.Mesh(new THREE.CircleGeometry(0.17,28),new THREE.MeshBasicMaterial({color:0xf4efe4,toneMapped:false})),0,0,0.03));
-clock.add(at(box(0.012,0.1,0.005,lam('#2c2c2e')),0,0.04,0.04));clock.add(at(box(0.07,0.012,0.005,lam('#9d4f3a')),0.02,0,0.04));
-clock.rotation.y=-Math.PI/2;at(clock,AX,2.45,2.5);wallG.add(clock);
-
-/* door (front wall) */
-const doorG=new THREE.Group();
-doorG.add(at(box(1.3,2.55,0.1,lam('#cdbf9f',{roughness:0.8})),0,1.28,0));
-doorG.add(at(box(1.16,2.4,0.04,lam('#d8cdb6')),0,1.32,0.05));
-const handle=cyl(0.03,0.03,0.1,12,metal('#b08d57'));handle.rotation.x=Math.PI/2;at(handle,0.46,1.25,0.08);doorG.add(handle);
-at(doorG,-2.0,0,RD-0.05);scene.add(doorG);
-
-/* =====================================================================
-   INTERACTIVES REGISTRY — every object opens its own UI
-   ===================================================================== */
-const interactives=[]; const rayTargets=[];
-function register(root,label,sub,action){root.userData.label=label;root.userData.sub=sub;root.userData.action=action;root.userData.hov=0;root.userData.sel=0;
-  const stash=[];root.traverse(o=>{if(o.isMesh){o.userData.root=root;rayTargets.push(o);const m=o.material;if(m&&m.emissive&&m.toneMapped!==false)stash.push({m,e:m.emissive.getHex()});}});
-  root.userData.emis=stash;interactives.push(root);}
-register(paper,"Résumé","read the CV",'resume');
-register(monitor,"Computer","open the terminal",'terminal');
-register(ccard,"Contact card","get in touch",'contact');
-register(photoG,"About me","who is this?",'person');
-register(winHit,"The window","Hong Kong · Central",'view');
-register(lounge,"Window seat","sit & enjoy the view",'chair');
-register(fDipA,"PhD diploma","education",'eduPhD');
-register(fDipB,"B.Design diploma","education",'eduBSc');
-register(fHon,"Honours","scholarships & awards",'honors');
-register(fIP,"IP & Patents","copyright & patents",'ip');
-books.forEach(b=>register(b,DATA.projects[b.userData.proj].t,DATA.projects[b.userData.proj].v,'project'));
-
-/* =====================================================================
-   CAMERA RIG / CONTROLS
-   ===================================================================== */
-const state={eye:new THREE.Vector3(0,1.7,3.6),yaw:0,pitch:-0.05};
-const goal={eye:state.eye.clone(),yaw:0,pitch:-0.05};
-function lookAngles(pos,target){const dx=target.x-pos.x,dy=target.y-pos.y,dz=target.z-pos.z;
-  const len=Math.hypot(dx,dy,dz)||1;return{yaw:Math.atan2(-(dx/len),-(dz/len)),pitch:Math.asin(Math.max(-1,Math.min(1,dy/len)))};}
-function unwrap(t,r){while(t-r>Math.PI)t-=2*Math.PI;while(t-r<-Math.PI)t+=2*Math.PI;return t;}
-const VIEWS={
-  overview:{pos:new THREE.Vector3(0,1.72,3.6),tgt:new THREE.Vector3(0,1.35,-3)},
-  resume:{pos:new THREE.Vector3(-0.7,1.55,-1.15),tgt:new THREE.Vector3(-0.92,1.15,-2.3)},
-  desk:{pos:new THREE.Vector3(0.2,1.6,-0.5),tgt:new THREE.Vector3(0.1,1.32,-2.8)},
-  projects:{pos:new THREE.Vector3(-2.4,1.6,0),tgt:new THREE.Vector3(-6,1.5,0)},
-  awards:{pos:new THREE.Vector3(2.7,1.95,-0.3),tgt:new THREE.Vector3(6,2.35,-0.55)},
-  chair:{pos:new THREE.Vector3(0.7,1.5,-4.95),tgt:new THREE.Vector3(0.5,1.42,-7.6)}
-};
-let flying=0;
-function flyTo(key){const v=VIEWS[key];if(!v)return;goal.eye.copy(v.pos);const a=lookAngles(v.pos,v.tgt);
-  goal.yaw=unwrap(a.yaw,state.yaw);goal.pitch=a.pitch;flying=1;}
-
-let dragging=false,moved=0,lastX=0,lastY=0;
-const ndc=new THREE.Vector2(-2,-2);
-canvas.addEventListener('pointerdown',e=>{dragging=true;moved=0;lastX=e.clientX;lastY=e.clientY;canvas.classList.add('grabbing');canvas.setPointerCapture(e.pointerId);});
-canvas.addEventListener('pointermove',e=>{const r=canvas.getBoundingClientRect();
-  ndc.x=((e.clientX-r.left)/r.width)*2-1;ndc.y=-((e.clientY-r.top)/r.height)*2+1;
-  tipEl.style.left=e.clientX+'px';tipEl.style.top=e.clientY+'px';
-  if(dragging){const dx=e.clientX-lastX,dy=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;moved+=Math.abs(dx)+Math.abs(dy);
-    goal.yaw-=dx*0.0034;goal.pitch-=dy*0.0034;goal.pitch=Math.max(-1.05,Math.min(1.05,goal.pitch));flying=0;}});
-canvas.addEventListener('pointerup',e=>{if(!dragging)return;dragging=false;canvas.classList.remove('grabbing');if(moved<7)doClick();});
-canvas.addEventListener('pointercancel',()=>{dragging=false;canvas.classList.remove('grabbing');});
-const keys={};
-addEventListener('keydown',e=>{keys[e.code]=1;if(e.code==='Escape')closePanel();});
-addEventListener('keyup',e=>{keys[e.code]=0;});
-function clampEye(){goal.eye.x=Math.max(-5.2,Math.min(5.2,goal.eye.x));goal.eye.z=Math.max(-4.5,Math.min(5.4,goal.eye.z));goal.eye.y=Math.max(1.2,Math.min(2.0,goal.eye.y));}
-function moveKeys(dt){const sp=2.6*dt;let f=0,s=0;
-  if(keys['KeyW']||keys['ArrowUp'])f+=1;if(keys['KeyS']||keys['ArrowDown'])f-=1;
-  if(keys['KeyA']||keys['ArrowLeft'])s-=1;if(keys['KeyD']||keys['ArrowRight'])s+=1;
-  if(!f&&!s)return;flying=0;setActiveDock(null);
-  const fwd=new THREE.Vector3(Math.sin(goal.yaw),0,Math.cos(goal.yaw)).multiplyScalar(-1);
-  const right=new THREE.Vector3(fwd.z,0,-fwd.x);
-  goal.eye.addScaledVector(fwd,f*sp);goal.eye.addScaledVector(right,s*sp);clampEye();}
-
-/* forward / back slider (press & hold to move) */
-const walkEl=document.getElementById('walk'),thumb=document.getElementById('walkThumb');
-let walkV=0,walkDrag=false,walkH=160,walkMid=0;
-function walkGeom(){const r=walkEl.getBoundingClientRect();walkH=r.height;walkMid=r.top+r.height/2;}
-function setThumb(){const range=walkH/2-20;thumb.style.transform='translate(-50%,calc(-50% + '+(-walkV*range)+'px))';}
-walkEl.addEventListener('pointerdown',e=>{walkDrag=true;walkGeom();walkEl.setPointerCapture(e.pointerId);
-  walkV=Math.max(-1,Math.min(1,-(e.clientY-walkMid)/(walkH/2-20)));setThumb();e.preventDefault();});
-walkEl.addEventListener('pointermove',e=>{if(!walkDrag)return;walkV=Math.max(-1,Math.min(1,-(e.clientY-walkMid)/(walkH/2-20)));setThumb();});
-function walkRelease(){walkDrag=false;}
-walkEl.addEventListener('pointerup',walkRelease);walkEl.addEventListener('pointercancel',walkRelease);
-function dolly(dt){if(!started)return;
-  if(!walkDrag){walkV+=(0-walkV)*Math.min(1,dt*9);if(Math.abs(walkV)<0.001)walkV=0;setThumb();}
-  if(Math.abs(walkV)<0.02)return;flying=0;setActiveDock(null);
-  const fwd=new THREE.Vector3(Math.sin(goal.yaw),0,Math.cos(goal.yaw)).multiplyScalar(-1);
-  goal.eye.addScaledVector(fwd,walkV*2.6*dt);clampEye();}
-
-/* hover + click */
-const ray=new THREE.Raycaster();let hovered=null;
-const tipEl=document.getElementById('tip'),reticle=document.getElementById('reticle');
-function pick(){ray.setFromCamera(ndc,camera);const hits=ray.intersectObjects(rayTargets,false);
-  for(const h of hits){let o=h.object;while(o&&!o.userData.label)o=o.parent;if(o&&o.userData.label)return o;}return null;}
-function setHover(o){if(hovered===o)return;if(hovered)hovered.userData.hov=0;hovered=o;
-  if(o){o.userData.hov=1;tipEl.style.display='block';tipEl.innerHTML=o.userData.label+'<small>'+(o.userData.sub||'click to open')+'</small>';reticle.classList.add('hot');canvas.classList.add('point');}
-  else{tipEl.style.display='none';reticle.classList.remove('hot');canvas.classList.remove('point');}}
-function applyEmis(o,hex){(o.userData.emis||[]).forEach(s=>{s.m.emissive.setHex(hex);s.m.emissiveIntensity=hex?0.45:1;});}
-function doClick(){const o=pick()||hovered;if(!o)return;act(o.userData.action,o);}
-
-/* fly first, then open the matching panel ~1.8s later */
-let panelTimer=null;
-function schedulePanel(type,idx,delay){clearTimeout(panelTimer);
-  panelTimer=setTimeout(()=>{openPanel(type,idx);panelTimer=null;},delay==null?1800:delay);}
-function act(action,obj){setActiveDock(null);switch(action){
-  case 'resume':flyTo('resume');selectPaper();schedulePanel('resume');break;
-  case 'terminal':flyTo('desk');schedulePanel('terminal');break;
-  case 'contact':flyTo('desk');schedulePanel('contact');break;
-  case 'person':flyTo('desk');schedulePanel('person');break;
-  case 'view':flyTo('chair');schedulePanel('view');break;
-  case 'chair':flyTo('chair');break;  // just sit & enjoy — no popup
-  case 'eduPhD':flyTo('awards');schedulePanel('eduPhD');break;
-  case 'eduBSc':flyTo('awards');schedulePanel('eduBSc');break;
-  case 'honors':flyTo('awards');schedulePanel('honors');break;
-  case 'ip':flyTo('awards');schedulePanel('ip');break;
-  case 'project':flyTo('projects');selectBook(obj);schedulePanel('project',obj.userData.proj);break;}
-  blip(520);}
-let selectedBook=null,paperSel=false;
-function selectBook(b){if(selectedBook&&selectedBook!==b)selectedBook.userData.sel=0;selectedBook=b;b.userData.sel=1;}
-function clearBook(){if(selectedBook){selectedBook.userData.sel=0;selectedBook=null;}}
-function selectPaper(){paperSel=true;paper.userData.sel=1;}
-function clearPaper(){paperSel=false;paper.userData.sel=0;}
-
-/* terminal panel content */
-const TERM={
-  help:'<p class="ln"><span class="cmd">robbie@office</span>:<span class="pr">~</span>$ help</p><p class="out">commands: whoami · about · projects · roles · contact · open</p>',
-  whoami:'<p class="ln"><span class="cmd">robbie@office</span>:<span class="pr">~</span>$ whoami</p><p class="out">Rao Fenggui (Robbie Rao)\nDesigner · researcher · founder\nPhD, HK PolyU School of Design · founder, DesignAnything Lab</p>',
-  about:'<p class="ln"><span class="cmd">robbie@office</span>:<span class="pr">~</span>$ cat about.txt</p><p class="out">'+DATA.about.bio+'</p>',
-  projects:'<p class="ln"><span class="cmd">robbie@office</span>:<span class="pr">~</span>$ ls projects/</p><p class="out">'+DATA.projects.map(p=>p.t+'  ('+p.v+')').join('\n')+'</p>',
-  roles:'<p class="ln"><span class="cmd">robbie@office</span>:<span class="pr">~</span>$ cat roles.txt</p><p class="out">'+DATA.roles.map(r=>'• '+r[0]).join('\n')+'</p>',
-  contact:'<p class="ln"><span class="cmd">robbie@office</span>:<span class="pr">~</span>$ cat contact.txt</p><p class="out">'+DATA.resume.contact.map(c=>c[0]+': '+c[1]).join('\n')+'</p>',
-  open:'<p class="ln"><span class="cmd">robbie@office</span>:<span class="pr">~</span>$ open cv --full</p><p class="out">launching the full terminal CV → <a href="/terminal/" target="_blank" rel="noopener">/terminal/</a></p>'
-};
-window.__term=function(cmd){const b=document.getElementById('termBody');if(!b)return;b.innerHTML=(TERM[cmd]||TERM.help)+termChips();b.scrollTop=b.scrollHeight;};
-function termChips(){return '<div class="chips">'+['whoami','about','projects','roles','contact'].map(c=>'<span class="chip" onclick="__term(\''+c+'\')">'+c+'</span>').join('')+'<span class="chip" onclick="window.open(\'/terminal/\',\'_blank\')">open full ↗</span></div>';}
-
-/* panel */
-const overlay=document.getElementById('overlay'),cardEl=document.getElementById('card');
-const cardTitle=document.getElementById('cardTitle'),cardSub=document.getElementById('cardSub'),cardBody=document.getElementById('cardBody');
-document.getElementById('cardX').onclick=closePanel;
-overlay.addEventListener('pointerdown',e=>{if(e.target===overlay)closePanel();});
-function closePanel(){clearTimeout(panelTimer);panelTimer=null;overlay.classList.remove('show');clearBook();clearPaper();}
+const scrim=document.getElementById('scrim'),panel=document.getElementById('panel');
+const pKick=document.getElementById('pKick'),pTitle=document.getElementById('pTitle'),pBody=document.getElementById('pBody');
+document.getElementById('pClose').onclick=closePanel;
+scrim.onclick=closePanel;
+addEventListener('keydown',e=>{if(e.key==='Escape')closePanel();});
 function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function setVariant(v,pcol){cardEl.className='card'+(v?' v-'+v:'');if(pcol)cardEl.style.setProperty('--pcol',pcol);}
-function openPanel(type,idx){let title='',sub='',html='',variant='list';
-  if(type==='resume'){variant='resume';title='Résumé';sub='Rao Fenggui · CV';
-    html='<p class="lead">'+esc(DATA.resume.summary)+'</p><h3>Education</h3>'+
-      DATA.resume.education.map(e=>'<div class="row"><div><div class="l">'+esc(e.school)+'</div><div class="d">'+esc(e.detail)+'</div></div><div class="r">'+esc(e.years)+'</div></div>').join('')+
-      '<h3>Contact</h3><div class="kv">'+DATA.resume.contact.map(c=>'<div class="k">'+esc(c[0])+'</div><div>'+esc(c[1])+'</div>').join('')+'</div>';}
-  else if(type==='terminal'){variant='terminal';title='robbie@office';sub='terminal';
-    html='<div id="termBody">'+TERM.whoami+TERM.projects+termChips()+'</div>';}
-  else if(type==='contact'){variant='contact';title='Get in touch';sub='Hong Kong · open to collaborate';
-    html='<p class="lead">Based in '+esc(DATA.person.based)+'. '+esc(DATA.person.langs)+'.</p><div class="kv">'+DATA.resume.contact.map(c=>'<div class="k">'+esc(c[0])+'</div><div>'+linkify(c)+'</div>').join('')+'</div><div class="tags" style="margin-top:16px"><a class="meta clay" href="mailto:robbie.rao@connect.polyu.hk">✉ Email me</a><a class="meta" href="https://github.com/RobbieRao" target="_blank" rel="noopener">GitHub</a><a class="meta bronze" href="/cv/">Academic CV</a></div>';}
-  else if(type==='person'){variant='person';title='Rao Fenggui';sub='Robbie Rao';
-    html='<p class="lead">'+esc(DATA.person.tagline)+'</p><div class="tags"><span class="meta">Hong Kong</span><span class="meta clay">PhD · HK PolyU</span><span class="meta bronze">Founder · D&A Lab</span></div><p>'+esc(DATA.about.bio)+'</p><h3>Selected roles</h3>'+DATA.roles.slice(0,3).map(r=>'<div class="row"><div><div class="l">'+esc(r[0])+'</div><div class="d">'+esc(r[1])+'</div></div></div>').join('')+'<p class="d">'+esc(DATA.person.langs)+'</p>';}
-  else if(type==='view'){variant='view';title='Hong Kong · Central';sub='Victoria Harbour';
-    html='<p class="lead">The desk looks straight out over Victoria Harbour — the IFC tower, the observation wheel on the waterfront, and the ferries and cruise ships crossing to Kowloon.</p><p>This is where the work happens: design research between Hong Kong and the mainland, with the harbour changing from morning to night.</p><div class="tags" style="margin-top:8px"><button class="meta clay" id="toDay">☀ Daytime</button><button class="meta" id="toNight">☾ Nighttime</button></div>';}
-  else if(type==='eduPhD'){variant='cert';title='PhD in Design';sub='The Hong Kong Polytechnic University';
-    const e=DATA.resume.education[0];html='<div class="seal">★</div><p class="lead">'+esc(e.school)+'</p><p>'+esc(e.detail)+'</p><p class="r" style="text-align:center">'+esc(e.years)+'</p>';}
-  else if(type==='eduBSc'){variant='cert';title='B.Design';sub='China Academy of Art';
-    const e=DATA.resume.education[1];html='<div class="seal">★</div><p class="lead">'+esc(e.school)+'</p><p>'+esc(e.detail)+'</p><p class="r" style="text-align:center">'+esc(e.years)+'</p>';}
-  else if(type==='honors'){variant='cert';title='Honours & Scholarships';sub='2021–2024';
-    html=DATA.honors.map(h=>'<div class="row"><div class="l">'+esc(h[0])+'</div><div class="r">'+esc(h[1])+'</div></div>').join('');}
-  else if(type==='ip'){variant='cert';title='IP & Patents';sub='copyright · patents';
-    html=DATA.ip.map(h=>'<div class="row"><div class="l">'+esc(h[0])+'</div><div class="r">'+esc(h[1])+'</div></div>').join('');}
-  else if(type==='about'){variant='list';title='About · Skills';sub='what I do';
-    html='<p class="lead">'+esc(DATA.about.bio)+'</p>'+DATA.about.skills.map(s=>'<div class="row"><div><div class="l">'+esc(s[0])+'</div><div class="d">'+esc(s[1])+'</div></div></div>').join('')+'<h3>Roles & leadership</h3>'+DATA.roles.map(r=>'<div class="row"><div><div class="l">'+esc(r[0])+'</div><div class="d">'+esc(r[1])+'</div></div></div>').join('');}
-  else if(type==='project'){const p=DATA.projects[idx];variant='project';title=p.t;sub=p.v;setVariant('project',p.c);
-    html='<div class="tags"><span class="meta" style="background:'+p.c+'">'+esc(p.v)+'</span></div><p class="lead">'+esc(p.d)+'</p><p class="d">More on the <a href="/publications/">publications page</a>.</p>';
-    cardTitle.textContent=title;cardSub.textContent=sub;cardBody.innerHTML=html;overlay.classList.add('show');return;}
-  setVariant(variant);
-  cardTitle.textContent=title;cardSub.textContent=sub;cardBody.innerHTML=html;overlay.classList.add('show');
-  if(type==='view'){const d=document.getElementById('toDay'),n=document.getElementById('toNight');if(d)d.onclick=()=>setNight(0);if(n)n.onclick=()=>setNight(1);}}
-function linkify(c){const v=esc(c[1]);if(c[0]==='Email')return '<a href="mailto:'+v+'">'+v+'</a>';if(c[0]==='GitHub')return '<a href="https://github.com/RobbieRao" target="_blank" rel="noopener">'+v+'</a>';return v;}
+function kicker(text,color){return color?'<span class="d" style="background:'+color+'"></span>'+esc(text):esc(text);}
+function openPanel(kickHTML,title,bodyHTML){pKick.innerHTML=kickHTML;pTitle.textContent=title;pBody.innerHTML=bodyHTML;
+  scrim.classList.add('show');panel.classList.add('show');panel.scrollTop=0;pBody.scrollTop=0;}
+function closePanel(){scrim.classList.remove('show');panel.classList.remove('show');}
 
-/* dock */
-const DOCK=[['Overview','overview'],['Résumé','resume'],['Projects','projects'],['About','about'],['Awards','awards'],['Contact','contact'],['The View','view']];
-const dockEl=document.getElementById('dock');
-DOCK.forEach(([label,key])=>{const b=document.createElement('button');b.className='navbtn';b.dataset.key=key;
-  b.textContent=label;
-  b.onclick=()=>{blip(440);clearTimeout(panelTimer);overlay.classList.remove('show');clearBook();clearPaper();setActiveDock(key);
-    if(key==='overview'){flyTo('overview');}
-    else if(key==='resume'){flyTo('resume');selectPaper();schedulePanel('resume');}
-    else if(key==='projects'){flyTo('projects');}
-    else if(key==='about'){flyTo('desk');schedulePanel('about');}
-    else if(key==='awards'){flyTo('awards');schedulePanel('honors');}
-    else if(key==='contact'){flyTo('desk');schedulePanel('contact');}
-    else if(key==='view'){flyTo('chair');}};
-  dockEl.appendChild(b);});
-function setActiveDock(key){[...dockEl.children].forEach(b=>b.classList.toggle('active',b.dataset.key===key));}
-
-/* day / night */
-let nightMix=0,targetNight=0;
-const timeBtn=document.getElementById('timebtn');
-timeBtn.onclick=()=>{setNight(targetNight>0.5?0:1);};
-function setNight(v){targetNight=v?1:0;timeBtn.innerHTML=(targetNight>0.5?'&#9790; Night':'&#9728; Day');}
-const _c=new THREE.Color();
-function lerpCol(mat,d,n,m){_c.copy(d).lerp(n,m);mat.color.copy(_c);}
-const daySky=new THREE.Color(0xcdd9df), nightSky=new THREE.Color(0x0c1220);
-const sunDay=new THREE.Color(0xffe8c8), sunNight=new THREE.Color(0x9fb4d6);
-const ambDay=new THREE.Color(0xfff3e2), ambNight=new THREE.Color(0x33405e);
-function applyTime(m){
-  scene.background.copy(daySky).lerp(nightSky,m);
-  renderer.toneMappingExposure=1.04+0.12*m;
-  sun.intensity=2.2-1.85*m; sun.color.copy(sunDay).lerp(sunNight,m);
-  amb.intensity=0.5-0.3*m; amb.color.copy(ambDay).lerp(ambNight,m);
-  hemi.intensity=0.6-0.36*m; fill.intensity=0.35-0.2*m;
-  pendant.intensity=4.5+5.5*m; deskLamp.intensity=4+8*m; shelfLight.intensity=3.5+3*m;
-  // exterior
-  skyNightMat.opacity=m;
-  bldgBase.forEach(mat=>{mat.color.copy(BD).lerp(BN,m);});
-  bldgGlow.forEach(mat=>{mat.opacity=m;});
-  hillMats.forEach(mat=>{mat.color.copy(HILL_D).lerp(HILL_N,m);});
-  waterMat.color.copy(WATER_D).lerp(WATER_N,m);
-  glitMat.opacity=0.5-0.15*m; glitMat.color.set(m>0.5?0xcfe0ff:0xffe7b0);
-  rimMat.color.copy(RIM_D).lerp(RIM_N,m);
-  cabins.forEach(c=>{c.material.color.copy(CAB_D).lerp(CAB_N,m);});
-  shipGlowMat.opacity=m;
+function openFor(n){
+  if(n.kind==='center')return openCenter();
+  if(n.kind==='domain')return openDomain(n.dom);
+  if(n.kind==='work')return openProject(n.work);
+  if(n.kind==='aux')return openAux(n.aux);
 }
+function openProject(i){const p=DATA.projects[i];const doms=PROJ_DOMAINS[i];
+  const chips=doms.map(d=>'<span class="chip" data-dom="'+d+'"><span class="d" style="background:'+DOMAINS[d].c+'"></span>'+esc(DOMAINS[d].name)+'</span>').join('');
+  openPanel(kicker(p.v.split(' · ')[0],DOMAINS[doms[0]].c),p.t,
+    '<p class="lead">'+esc(p.d)+'</p><h3>Bridges</h3><div>'+chips+'</div>'+
+    '<h3>Published</h3><p>'+esc(p.v)+'</p><p style="margin-top:18px"><a href="/publications/">See the publications page →</a></p>');
+  wireDomChips();}
+function openDomain(k){const d=DOMAINS[k];
+  const works=DATA.projects.map((p,i)=>[p,i]).filter(([p,i])=>PROJ_DOMAINS[i].includes(k));
+  const list=works.map(([p,i])=>'<div class="worklink" data-work="'+i+'"><div class="wt">'+esc(p.t)+'</div><div class="wv">'+esc(p.v)+'</div></div>').join('');
+  openPanel(kicker('Research domain',d.c),d.name,
+    '<p class="lead">'+esc(d.blurb)+'</p><h3>'+works.length+' projects here</h3>'+list);
+  wireWorkLinks();}
+function openCenter(){
+  openPanel(kicker('Designer · Researcher · Founder',getCSS('--gold')),DATA.person.name,
+    '<p class="lead">'+esc(DATA.person.tagline)+'</p><p>'+esc(DATA.about.bio)+'</p>'+
+    '<h3>Quick facts</h3>'+
+    '<div class="linkrow"><span class="k">Based</span><span class="v">'+esc(DATA.person.based)+'</span></div>'+
+    '<div class="linkrow"><span class="k">Languages</span><span class="v">'+esc(DATA.person.langs)+'</span></div>'+
+    '<div class="linkrow"><span class="k">PhD</span><span class="v">HK PolyU · School of Design</span></div>'+
+    '<div class="linkrow"><span class="k">Lab</span><span class="v">DesignAnything Lab — founder</span></div>'+
+    '<h3>Selected roles</h3>'+DATA.roles.slice(0,3).map(r=>'<div class="prow"><div class="l">'+esc(r[0])+'</div><div class="d">'+esc(r[1])+'</div></div>').join('')+
+    '<p style="margin-top:18px"><a href="/office.html">Visit the 3D room ◉</a> &nbsp;·&nbsp; <a href="/terminal/">terminal CV</a></p>');}
+function openAux(id){
+  if(id==='about'){openPanel(kicker('What I do',getCSS('--gold')),'About & Skills',
+    '<p class="lead">'+esc(DATA.about.bio)+'</p>'+DATA.about.skills.map(s=>'<div class="prow"><div class="l">'+esc(s[0])+'</div><div class="d">'+esc(s[1])+'</div></div>').join(''));}
+  else if(id==='education'){openPanel(kicker('Education',getCSS('--gold')),'Education',
+    DATA.resume.education.map(e=>'<div class="prow"><div class="l">'+esc(e.school)+'<span class="yr">'+esc(e.years)+'</span></div><div class="d">'+esc(e.detail)+'</div></div>').join(''));}
+  else if(id==='roles'){openPanel(kicker('Leadership',getCSS('--gold')),'Roles & Leadership',
+    DATA.roles.map(r=>'<div class="prow"><div class="l">'+esc(r[0])+'</div><div class="d">'+esc(r[1])+'</div></div>').join(''));}
+  else if(id==='honours'){openPanel(kicker('2021–2024',getCSS('--gold')),'Honours & Scholarships',
+    DATA.honors.map(h=>'<div class="linkrow"><span class="k" style="color:#eef1fa;font-weight:600">'+esc(h[0])+'</span><span class="v">'+esc(h[1])+'</span></div>').join(''));}
+  else if(id==='ip'){openPanel(kicker('Copyright · patents',getCSS('--gold')),'IP & Patents',
+    DATA.ip.map(h=>'<div class="prow"><div class="l">'+esc(h[0])+'</div><div class="d">'+esc(h[1])+'</div></div>').join(''));}
+  else if(id==='contact'){openPanel(kicker('Open to collaborate',getCSS('--gold')),'Get in touch',
+    '<p class="lead">Based in '+esc(DATA.person.based)+'. '+esc(DATA.person.langs)+'.</p>'+
+    DATA.resume.contact.map(c=>'<div class="linkrow"><span class="k">'+esc(c[0])+'</span><span class="v">'+linkify(c)+'</span></div>').join('')+
+    '<p style="margin-top:18px"><a class="chip" href="mailto:robbie.rao@connect.polyu.hk">✉ Email me</a> <a class="chip" href="https://github.com/RobbieRao" target="_blank" rel="noopener">GitHub</a></p>');}
+}
+function linkify(c){const v=esc(c[1]);if(c[0]==='Email')return '<a href="mailto:'+v+'">'+v+'</a>';if(c[0]==='GitHub')return '<a href="https://github.com/RobbieRao" target="_blank" rel="noopener">'+v+'</a>';return v;}
+function wireDomChips(){pBody.querySelectorAll('[data-dom]').forEach(el=>el.onclick=()=>openDomain(el.dataset.dom));}
+function wireWorkLinks(){pBody.querySelectorAll('[data-work]').forEach(el=>el.onclick=()=>openProject(+el.dataset.work));}
 
-/* sound */
-let actx=null,soundOn=false;const soundBtn=document.getElementById('sound');
-soundBtn.onclick=()=>{soundOn=!soundOn;soundBtn.innerHTML='&#9834; Sound: '+(soundOn?'On':'Off');if(soundOn&&!actx)try{actx=new(window.AudioContext||window.webkitAudioContext)();}catch(e){}};
-function blip(freq){if(!soundOn||!actx)return;try{const o=actx.createOscillator(),g=actx.createGain();o.type='sine';o.frequency.value=freq;g.gain.value=0.05;o.connect(g);g.connect(actx.destination);o.start();g.gain.exponentialRampToValueAtTime(0.0001,actx.currentTime+0.13);o.stop(actx.currentTime+0.14);}catch(e){}}
-let lastHoverEmit=null;
+/* =====================================================================
+   LEGEND  (click a domain to focus the map)
+   ===================================================================== */
+const legend=document.getElementById('legend');
+for(const k in DOMAINS){const d=DOMAINS[k];const b=document.createElement('button');b.className='leg';b.dataset.dom=k;
+  b.innerHTML='<span class="d" style="--c:'+d.c+';background:'+d.c+'"></span>'+d.name;
+  b.onclick=()=>{if(focusDom===k){focusDom=null;b.classList.remove('on');clearTrace();}
+    else{focusDom=k;[...legend.children].forEach(x=>x.classList.remove('on'));b.classList.add('on');focusByDomain(k);}};
+  legend.appendChild(b);}
 
-/* profile photo */
-new THREE.TextureLoader().load('/images/profile.png',t=>{t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=MAXA;photo.material.map=t;photo.material.color.setHex(0xffffff);photo.material.needsUpdate=true;},undefined,()=>{});
+/* =====================================================================
+   INDEX (list) VIEW + mode toggle
+   ===================================================================== */
+const indexWrap=document.getElementById('indexWrap');
+function buildIndex(){let h='<div style="margin-bottom:8px"><div style="font-family:var(--display);font-size:30px;color:#fff;font-weight:500">Rao Fenggui</div>'+
+  '<div style="color:var(--mut);font-size:13.5px;margin-top:6px;max-width:54ch;line-height:1.6">'+esc(DATA.resume.summary)+'</div></div>';
+  h+='<h2>Selected Work</h2>';
+  DATA.projects.forEach((p,i)=>{const d0=DOMAINS[PROJ_DOMAINS[i][0]];
+    h+='<div class="ix" data-k="work" data-i="'+i+'"><div class="t"><span class="dom" style="background:'+d0.c+'"></span>'+esc(p.t)+'<small>'+esc(p.d.slice(0,72))+'…</small></div><div class="r">'+esc(p.v)+'</div></div>';});
+  h+='<h2>Research Domains</h2>';
+  for(const k in DOMAINS){const d=DOMAINS[k];const n=PROJ_DOMAINS.filter(a=>a.includes(k)).length;
+    h+='<div class="ix" data-k="dom" data-dk="'+k+'"><div class="t"><span class="dom" style="background:'+d.c+'"></span>'+esc(d.name)+'<small>'+esc(d.sub)+'</small></div><div class="r">'+n+' projects</div></div>';}
+  h+='<h2>Education</h2>';
+  DATA.resume.education.forEach(e=>{h+='<div class="ix" data-k="aux" data-a="education"><div class="t">'+esc(e.school)+'</div><div class="r">'+esc(e.years)+'</div></div>';});
+  h+='<h2>Roles &amp; Leadership</h2>';
+  DATA.roles.forEach(r=>{h+='<div class="ix" data-k="aux" data-a="roles"><div class="t">'+esc(r[0])+'</div></div>';});
+  h+='<h2>Honours</h2>';
+  DATA.honors.forEach(o=>{h+='<div class="ix" data-k="aux" data-a="honours"><div class="t">'+esc(o[0])+'</div><div class="r">'+esc(o[1])+'</div></div>';});
+  h+='<h2>IP &amp; Patents</h2>';
+  DATA.ip.forEach(o=>{h+='<div class="ix" data-k="aux" data-a="ip"><div class="t">'+esc(o[0])+'</div><div class="r">'+esc(o[1])+'</div></div>';});
+  h+='<h2>Contact</h2>';
+  DATA.resume.contact.forEach(c=>{h+='<div class="ix" data-k="aux" data-a="contact"><div class="t">'+esc(c[0])+'<small>'+esc(c[1])+'</small></div></div>';});
+  h+='<div style="margin:36px 0 10px;display:flex;gap:14px;flex-wrap:wrap">'+
+     '<a class="chip" href="/office.html">◉ Enter the 3D room</a><a class="chip" href="/terminal/">▸ Terminal CV</a><a class="chip" href="/cv/">▸ Academic CV</a><a class="chip" href="/publications/">▸ Publications</a></div>';
+  indexWrap.innerHTML=h;
+  indexWrap.querySelectorAll('.ix').forEach(el=>{el.onclick=()=>{const k=el.dataset.k;
+    if(k==='work')openProject(+el.dataset.i);else if(k==='dom')openDomain(el.dataset.dk);else openAux(el.dataset.a);};});}
+buildIndex();
 
-/* resize / loop */
-function resize(){const w=innerWidth,h=innerHeight;camera.aspect=w/h;camera.updateProjectionMatrix();
-  renderer.setPixelRatio(Math.min(devicePixelRatio||1,MOBILE?1.5:2));renderer.setSize(w,h);walkGeom();}
-addEventListener('resize',resize);addEventListener('orientationchange',()=>setTimeout(resize,200));resize();setThumb();
+const modeBtn=document.getElementById('modeBtn'),modeLabel=document.getElementById('modeLabel');
+function setMode(m){document.body.classList.toggle('mode-index',m==='index');
+  modeLabel.textContent=m==='index'?'Map':'Index';
+  modeBtn.querySelector('.g').innerHTML=m==='index'?'&#9673;':'&#9776;';
+  if(m==='map'){closePanel();computeFit();}}
+let mode = (innerWidth<620?'index':'map');
+modeBtn.onclick=()=>{mode=(mode==='index'?'map':'index');setMode(mode);};
 
-let started=false,monBlink=true,monT=0,t0=performance.now();
-function animate(now){requestAnimationFrame(animate);const dt=Math.min(0.05,(now-t0)/1000);t0=now;
-  if(started){moveKeys(dt);dolly(dt);}
-  const le=flying?0.055:0.16,la=flying?0.055:0.2;
-  state.eye.lerp(goal.eye,le);state.yaw+=(goal.yaw-state.yaw)*la;state.pitch+=(goal.pitch-state.pitch)*la;
-  if(flying&&state.eye.distanceTo(goal.eye)<0.02&&Math.abs(goal.yaw-state.yaw)<0.005)flying=0;
-  const bob=started?Math.sin(now*0.0011)*0.005:0;
-  camera.position.set(state.eye.x,state.eye.y+bob,state.eye.z);camera.rotation.set(state.pitch,state.yaw,0);
-  if(started&&!overlay.classList.contains('show')){const o=pick();setHover(o);if(o&&o!==lastHoverEmit){lastHoverEmit=o;blip(680);}else if(!o)lastHoverEmit=null;}else setHover(null);
-  for(const o of interactives)applyEmis(o,(o.userData.hov||o.userData.sel)?0x5a3a18:0x000000);
-  for(const b of books){const out=b.userData.sel?0.34:(b.userData.hov?0.12:0);b.position.x+=((b.userData.rest+out)-b.position.x)*0.2;}
-  const py=paper.userData.baseY+(paperSel?0.22:(paper.userData.hov?0.035:0));paper.position.y+=(py-paper.position.y)*0.2;
-  paper.rotation.x+=((paperSel?-0.5:0)-paper.rotation.x)*0.15;
-  // day/night
-  nightMix+=(targetNight-nightMix)*Math.min(1,dt*1.1);applyTime(nightMix);
-  // exterior animation
-  wheel.rotation.z+=dt*0.06;cabins.forEach(c=>{c.rotation.z=-wheel.rotation.z;});
-  ship.position.y=0.05+Math.sin(now*0.0006)*0.015;
-  glit.material.opacity=(0.5-0.15*nightMix)*(0.82+0.18*Math.sin(now*0.002));
-  // monitor cursor
-  monT+=dt;if(monT>0.6){monT=0;monBlink=!monBlink;monMat.map=tex(terminalTex(monBlink));monMat.needsUpdate=true;}
-  renderer.render(scene,camera);}
-requestAnimationFrame(animate);
+/* =====================================================================
+   STARFIELD
+   ===================================================================== */
+const sky=document.getElementById('sky'),sx=sky.getContext('2d');
+let stars=[],dpr=1;
+function initSky(){dpr=Math.min(devicePixelRatio||1,2);sky.width=innerWidth*dpr;sky.height=innerHeight*dpr;
+  sky.style.width=innerWidth+'px';sky.style.height=innerHeight+'px';
+  const N=Math.round(innerWidth*innerHeight/5200);stars=[];
+  for(let i=0;i<N;i++)stars.push({x:Math.random()*sky.width,y:Math.random()*sky.height,
+    r:(Math.random()*1.3+0.25)*dpr,a:Math.random()*0.6+0.2,tw:Math.random()*Math.PI*2,sp:Math.random()*0.6+0.2,
+    z:Math.random()*0.6+0.4});}
+function drawSky(t){sx.clearRect(0,0,sky.width,sky.height);
+  const ox=(view.x-fit.x)*0.04*dpr, oy=(view.y-fit.y)*0.04*dpr;
+  for(const s of stars){const tw=0.6+0.4*Math.sin(t*0.001*s.sp+s.tw);
+    sx.globalAlpha=s.a*tw; sx.fillStyle='#eef2ff';
+    sx.beginPath();sx.arc(s.x+ox*s.z,s.y+oy*s.z,s.r,0,7);sx.fill();}
+  sx.globalAlpha=1;}
 
-/* enter gate */
-const gate=document.getElementById('gate'),bar=document.querySelector('#bar i'),loadTxt=document.getElementById('loadTxt');
-let prog=0;const pint=setInterval(()=>{prog=Math.min(100,prog+12+Math.random()*16);bar.style.width=prog+'%';
-  loadTxt.textContent=prog<50?'building the room…':prog<90?'opening the harbour view…':'ready.';if(prog>=100)clearInterval(pint);},120);
-document.getElementById('enter').onclick=()=>{started=true;gate.classList.add('hide');flyTo('overview');setTimeout(()=>gate.style.display='none',700);};
+/* =====================================================================
+   IDLE DRIFT + RAF
+   ===================================================================== */
+let t0=performance.now();
+function frame(now){requestAnimationFrame(frame);const t=now;
+  // gentle drift of work nodes around their relaxed base
+  for(const n of nodes){if(n.kind==='work'){const ph=n.work*1.7;
+    n.x=n.bx+Math.sin(t*0.00022+ph)*3; n.y=n.by+Math.cos(t*0.00019+ph)*3; position(n);}
+    else if(n.kind==='aux'){const ph=nodes.indexOf(n);n.x=n.bx+Math.sin(t*0.00018+ph)*2.4;n.y=n.by+Math.cos(t*0.0002+ph)*2.4;position(n);}}
+  drawEdges();
+  drawSky(t);
+}
+requestAnimationFrame(frame);
+
+/* =====================================================================
+   RESIZE + BOOT
+   ===================================================================== */
+function resize(){initSky();computeFit();}
+addEventListener('resize',resize);addEventListener('orientationchange',()=>setTimeout(resize,200));
+initSky();computeFit();applyView();
+setMode(mode);
+
+const gate=document.getElementById('gate');
+document.getElementById('enter').onclick=()=>{mode='map';setMode('map');gate.classList.add('hide');setTimeout(()=>gate.style.display='none',800);};
+document.getElementById('skip').onclick=()=>{mode='index';setMode('index');gate.classList.add('hide');setTimeout(()=>gate.style.display='none',800);};
 </script>
 </body>
 </html>
