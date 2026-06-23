@@ -181,6 +181,87 @@
   #fail a{color:#fff;background:#3550a0;padding:12px 18px;border-radius:999px;text-decoration:none;margin:8px;display:inline-block;font-weight:600}
 
   .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  /* ══ GATE: two-column layout, particle bg, animations ══ */
+  #gate{text-align:left;overflow:hidden}
+  @media(max-width:720px){#gate{text-align:center}}
+  #gateCanvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+  .gate-layout{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;gap:52px;max-width:940px;width:100%}
+  @media(max-width:720px){.gate-layout{flex-direction:column;gap:20px}}
+  /* bio sidebar (A1) */
+  .gate-bio-col{flex:none;display:flex;flex-direction:column;align-items:center;gap:10px;min-width:130px}
+  @media(max-width:720px){.gate-bio-col{display:none}}
+  .gate-avatar{width:90px;height:90px;border-radius:50%;object-fit:cover;border:2px solid rgba(231,207,166,.35);box-shadow:0 0 28px rgba(231,207,166,.14)}
+  .gate-bio-name{font-family:var(--display);font-size:14px;font-weight:500;color:#fff;text-align:center}
+  .gate-bio-role{font-size:11px;color:var(--mut);text-align:center;line-height:1.5}
+  .gate-bio-inst{font-size:10.5px;color:var(--faint);text-align:center}
+  /* social pills — gate & fail (A2) */
+  .gate-socials,.fail-socials{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:6px}
+  .gate-socials a,.fail-socials a{font-size:10.5px;font-weight:600;color:var(--faint);text-decoration:none;padding:4px 9px;border:1px solid rgba(160,180,240,.18);border-radius:999px;transition:.15s}
+  .gate-socials a:hover,.fail-socials a:hover{color:var(--gold);border-color:rgba(231,207,166,.4)}
+  .gate-main-col{flex:1;display:flex;flex-direction:column;align-items:flex-start;max-width:520px}
+  @media(max-width:720px){.gate-main-col{align-items:center}}
+  /* NOW badge (B3) */
+  .gate-now{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:500;color:var(--mut);margin:14px 0 12px;padding:5px 12px;background:rgba(120,145,230,.08);border:1px solid rgba(120,145,230,.2);border-radius:999px}
+  .now-pulse{width:8px;height:8px;border-radius:50%;background:#5dbb7a;box-shadow:0 0 7px #5dbb7a;flex:none;animation:npulse 2s infinite}
+  @keyframes npulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
+  /* domain tag pills (B2) */
+  .gate-tags{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 16px}
+  .gtag{font-size:11px;font-weight:600;color:var(--c,var(--mut));background:rgba(120,145,230,.06);border:1px solid rgba(160,180,240,.16);border-radius:999px;padding:5px 11px;letter-spacing:.3px}
+  /* hero paper card (B1) */
+  .gate-hero-paper{display:inline-flex;align-items:center;flex-wrap:wrap;gap:7px;padding:9px 14px;background:rgba(47,107,98,.15);border:1px solid rgba(98,198,198,.22);border-radius:10px;margin-bottom:22px;max-width:100%}
+  .hero-badge{font-size:10.5px;font-weight:700;letter-spacing:.8px;color:#62c6c6;white-space:nowrap}
+  .hero-sep{color:var(--faint);font-size:11px}
+  .hero-title{font-family:var(--display);font-size:15px;color:#fff;font-weight:400}
+  .hero-desc{font-size:11.5px;color:var(--mut)}
+  /* stagger fade-in (C2) */
+  .gate-bio-col{animation:gFU .65s ease .06s both}
+  #gate .logo{animation:gFU .55s ease .08s both}
+  #gate h1{animation:gFU .65s ease .18s both}
+  .gate-now{animation:gFU .55s ease .28s both}
+  #gate .sub{animation:gFU .55s ease .38s both}
+  .gate-tags{animation:gFU .55s ease .46s both}
+  .gate-hero-paper{animation:gFU .55s ease .54s both}
+  #enter{animation:gFU .55s ease .64s both}
+  #gate .skip{animation:gFU .45s ease .72s both}
+  #gate .loadwrap{animation:gFU .45s ease .80s both}
+  @keyframes gFU{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+  /* ══ FAIL fallback cards (A4, C3) ══ */
+  #fail.show{display:block;overflow:auto;text-align:left;padding:48px max(24px,env(safe-area-inset-left)) 80px}
+  .fail-inner{max-width:860px;margin:0 auto;width:100%}
+  .fail-bio{display:flex;gap:22px;align-items:flex-start;margin-bottom:32px;padding:22px;background:rgba(255,255,255,.03);border:1px solid rgba(160,180,240,.14);border-radius:14px}
+  @media(max-width:540px){.fail-bio{flex-direction:column}}
+  .fail-avatar{width:70px;height:70px;border-radius:50%;object-fit:cover;border:2px solid rgba(231,207,166,.28);flex:none}
+  .fail-bio h2{font-family:var(--display);font-size:22px;font-weight:500;color:#fff;margin:0 0 6px}
+  .fail-bio p{font-size:13px;color:var(--mut);margin:0 0 3px;line-height:1.6}
+  .fail-now{display:inline-flex;align-items:center;gap:7px;font-size:11px;color:var(--mut);margin-top:6px;margin-bottom:8px}
+  .fail-socials{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}
+  .fail-inner h3{font-family:var(--display);font-size:11px;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin:28px 0 14px;border-bottom:1px solid rgba(160,180,240,.12);padding-bottom:8px}
+  .fail-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+  .fail-card{padding:16px;border:1px solid rgba(160,180,240,.14);border-radius:12px;background:rgba(255,255,255,.025);cursor:pointer;transition:.18s}
+  .fail-card:hover{background:rgba(120,145,230,.1);border-color:rgba(160,180,240,.3);transform:translateY(-2px)}
+  .fc-header{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+  .fc-dot{width:9px;height:9px;border-radius:50%;flex:none}
+  .fc-venue{font-size:10px;font-weight:700;letter-spacing:.4px;color:var(--faint)}
+  .fc-title{font-family:var(--display);font-size:15px;color:#eef1fa;font-weight:400;margin-bottom:5px;line-height:1.3}
+  .fc-desc{font-size:11.5px;color:var(--mut);line-height:1.55;margin-bottom:8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .fc-tags{display:flex;flex-wrap:wrap;gap:5px}
+  .fc-tag{font-size:10px;font-weight:600;color:var(--faint);background:rgba(255,255,255,.04);border:1px solid rgba(160,180,240,.12);border-radius:999px;padding:3px 8px}
+
+  /* ══ HOVER TOOLTIP (C4) ══ */
+  #htip{position:fixed;z-index:25;pointer-events:none;background:rgba(10,14,28,.94);border:1px solid rgba(160,180,240,.22);border-radius:12px;padding:13px 15px;max-width:220px;box-shadow:0 8px 32px rgba(0,0,0,.55);backdrop-filter:blur(12px);opacity:0;transform:translateY(6px) scale(.97);transition:opacity .18s,transform .18s}
+  #htip.show{opacity:1;transform:none}
+  .tip-kicker{font-size:9.5px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;margin-bottom:5px}
+  .tip-title{font-family:var(--display);font-size:15px;color:#fff;font-weight:400;line-height:1.2;margin-bottom:4px}
+  .tip-venue{font-size:10.5px;color:var(--mut);font-weight:600;margin-bottom:6px}
+  .tip-desc{font-size:11px;color:var(--mut);line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+
+  /* ══ BRAND social links in galaxy view (A2) ══ */
+  #brand-links{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+  #brand-links a{font-size:10px;font-weight:600;color:var(--faint);text-decoration:none;padding:3px 9px;border:1px solid rgba(160,180,240,.14);border-radius:999px;transition:.15s}
+  #brand-links a:hover{color:var(--gold);border-color:rgba(231,207,166,.3)}
+
 </style>
 </head>
 <body>
@@ -195,6 +276,12 @@
     <div id="brand">
       <div class="nm">Rao&nbsp;Fenggui&nbsp;<span>· Robbie Rao</span></div>
       <div class="tl">A 3D map of the work — each project a star, grouped into the fields it lives in. Orbit it, filter by tag, click a star to read.</div>
+      <div id="brand-links">
+        <a href="https://orcid.org/0009-0000-8990-1515" target="_blank" rel="noopener">ORCiD</a>
+        <a href="mailto:robbie.rao@connect.polyu.hk">Email</a>
+        <a href="https://designanything.design" target="_blank" rel="noopener">D&amp;A Lab</a>
+        <a href="/publications/">Publications</a>
+      </div>
     </div>
 
     <div id="tagsPanel" class="panelable">
@@ -214,6 +301,7 @@
   </div>
 
   <div id="scrim"></div>
+  <div id="htip"></div>
   <aside id="panel" role="dialog" aria-modal="true" aria-label="Details">
     <div class="top"><div class="kicker" id="pKick"></div><h2 id="pTitle"></h2><div class="meta" id="pMeta"></div>
       <button class="x" id="pClose" aria-label="Close">&#10005;</button></div>
@@ -221,21 +309,66 @@
   </aside>
 
   <div id="gate">
-    <div class="logo">Rao Fenggui · Robbie Rao</div>
-    <h1>A <em>Research</em> Galaxy</h1>
-    <div class="sub">Not a CV page — a <b>3D star-map of the work</b>. Each project is a star, clustered into the fields it lives in: generative&nbsp;AI, HCI, art&nbsp;&amp;&nbsp;design and public&nbsp;culture. Orbit it, filter by tag, or open the plain index.</div>
-    <button id="enter">Enter the galaxy &nbsp;&rarr;</button>
-    <button class="skip" id="skip">or read the index instead</button>
-    <div class="loadwrap"><i id="loadbar"></i></div>
+    <canvas id="gateCanvas"></canvas>
+    <div class="gate-layout">
+      <div class="gate-bio-col">
+        <img src="/images/profile.png" class="gate-avatar" alt="Rao Fenggui" onerror="this.style.display='none'">
+        <div class="gate-bio-name">Rao Fenggui</div>
+        <div class="gate-bio-role">PhD Researcher · Designer · Founder</div>
+        <div class="gate-bio-inst">HK PolyU · School of Design</div>
+        <div class="gate-socials">
+          <a href="https://orcid.org/0009-0000-8990-1515" target="_blank" rel="noopener">ORCiD</a>
+          <a href="https://github.com/RobbieRao" target="_blank" rel="noopener">GitHub</a>
+          <a href="mailto:robbie.rao@connect.polyu.hk">Email</a>
+          <a href="https://designanything.design" target="_blank" rel="noopener">D&amp;A Lab</a>
+        </div>
+      </div>
+      <div class="gate-main-col">
+        <div class="logo">Rao&nbsp;Fenggui · Robbie&nbsp;Rao</div>
+        <h1>A <em>Research</em> Galaxy</h1>
+        <div class="gate-now"><span class="now-pulse"></span>PhD Y2 @ HK PolyU &nbsp;·&nbsp; Building DIVA &amp; CityCure</div>
+        <div class="sub">Not a CV page — a <b>3D star-map of the work</b>. Each project is a star, clustered into the fields it lives in: generative&nbsp;AI, HCI, art&nbsp;&amp;&nbsp;design and public&nbsp;culture. Orbit it, filter by tag, or open the plain index.</div>
+        <div class="gate-tags">
+          <span class="gtag" style="--c:var(--ai)">Generative AI</span>
+          <span class="gtag" style="--c:var(--hci)">HCI</span>
+          <span class="gtag" style="--c:var(--art)">Art &amp; Design</span>
+          <span class="gtag" style="--c:var(--pub)">Public Culture</span>
+        </div>
+        <div class="gate-hero-paper">
+          <span class="hero-badge">★ CHI 2024</span><span class="hero-sep">·</span>
+          <span class="hero-title">ContextCam</span><span class="hero-sep">—</span>
+          <span class="hero-desc">context-aware human-AI image co-creation</span>
+        </div>
+        <button id="enter">Enter the galaxy &nbsp;&rarr;</button>
+        <button class="skip" id="skip">or read the index instead</button>
+        <div class="loadwrap"><i id="loadbar"></i></div>
+      </div>
+    </div>
   </div>
-
   <div id="fail">
-    <h2>This map needs WebGL</h2>
-    <p>Your browser couldn't start the 3D galaxy — here's the same content:</p>
-    <div><a href="/terminal/">Terminal CV</a><a href="/cv/">Academic CV</a><a href="/publications/">Publications</a></div>
+    <div class="fail-inner">
+      <div class="fail-bio">
+        <img src="/images/profile.png" class="fail-avatar" alt="Rao Fenggui" onerror="this.style.display='none'">
+        <div>
+          <h2>Rao Fenggui — Research Galaxy</h2>
+          <p>PhD Researcher · HK PolyU School of Design · Founder of DesignAnything Lab</p>
+          <p>Generative AI × art-design workflows, HCI &amp; public cultural experience.</p>
+          <div class="fail-now"><span class="now-pulse"></span>PhD Y2 @ HK PolyU &nbsp;·&nbsp; Building DIVA Framework &amp; CityCure</div>
+          <div class="fail-socials">
+            <a href="/terminal/">Terminal CV</a>
+            <a href="/cv/">Academic CV</a>
+            <a href="/publications/">Publications</a>
+            <a href="https://github.com/RobbieRao" target="_blank" rel="noopener">GitHub</a>
+            <a href="https://orcid.org/0009-0000-8990-1515" target="_blank" rel="noopener">ORCiD</a>
+            <a href="mailto:robbie.rao@connect.polyu.hk">Email</a>
+          </div>
+        </div>
+      </div>
+      <h3>Selected Work</h3>
+      <div class="fail-cards" id="failCards"></div>
+    </div>
   </div>
-
-  <noscript><div style="position:fixed;inset:0;background:#05070f;color:#fff;display:flex;align-items:center;justify-content:center;text-align:center;font-family:sans-serif;padding:24px">This interactive galaxy needs JavaScript. View the <a style="color:#e7cfa6" href="/terminal/">terminal CV</a> or <a style="color:#e7cfa6" href="/cv/">academic CV</a> instead.</div></noscript>
+<noscript><div style="position:fixed;inset:0;background:#05070f;color:#fff;display:flex;align-items:center;justify-content:center;text-align:center;font-family:sans-serif;padding:24px">This interactive galaxy needs JavaScript. View the <a style="color:#e7cfa6" href="/terminal/">terminal CV</a> or <a style="color:#e7cfa6" href="/cv/">academic CV</a> instead.</div></noscript>
 
   <div class="sr">
     <h1>Rao Fenggui (Robbie Rao) — Designer, Researcher, Founder</h1>
@@ -249,6 +382,81 @@
 
 <script type="importmap">
 { "imports": { "three": "/assets/game/lib/three.module.min.js" } }
+/* =====================================================================
+   C1: GATE PARTICLE CANVAS
+   ===================================================================== */
+(function(){
+  const c=document.getElementById('gateCanvas');
+  if(!c)return;
+  const ctx=c.getContext('2d');
+  let W,H,pts=[];
+  function sz(){W=c.width=c.offsetWidth||innerWidth;H=c.height=c.offsetHeight||innerHeight;}
+  function mkP(){return{x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.1+.25,
+    vx:(Math.random()-.5)*.22,vy:(Math.random()-.5)*.22,op:Math.random()*.55+.15};}
+  function init(){sz();pts=[];for(let i=0;i<140;i++)pts.push(mkP());}
+  function draw(){const g=document.getElementById('gate');
+    if(!g||g.classList.contains('hide'))return;
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle='rgba(180,205,255,'+p.op+')';ctx.fill();});
+    requestAnimationFrame(draw);}
+  window.addEventListener('resize',()=>{sz();pts.forEach(p=>{if(p.x>W)p.x=Math.random()*W;if(p.y>H)p.y=Math.random()*H;});});
+  init();draw();
+})();
+
+/* =====================================================================
+   A4: FAIL PROJECT CARDS
+   ===================================================================== */
+(function(){
+  const fc=document.getElementById('failCards');
+  if(!fc)return;
+  DATA.projects.forEach((p,i)=>{
+    const ds=PROJ_DOMAINS[i],d0=DOMAINS[ds[0]];
+    const card=document.createElement('div');
+    card.className='fail-card';
+    card.innerHTML='<div class="fc-header"><span class="fc-dot" style="background:'+d0.c+'"></span>'
+      +'<span class="fc-venue">'+esc(p.venue)+'</span></div>'
+      +'<div class="fc-title">'+esc(p.t)+'</div>'
+      +'<div class="fc-desc">'+esc(p.d)+'</div>'
+      +'<div class="fc-tags">'+p.tags.map(t=>'<span class="fc-tag">'+esc(t)+'</span>').join('')+'</div>';
+    card.onclick=()=>{
+      const failEl=document.getElementById('fail');
+      failEl.classList.remove('show');
+      setTimeout(()=>openProject(i),80);
+    };
+    fc.appendChild(card);
+  });
+})();
+
+/* =====================================================================
+   C4: HOVER TOOLTIP
+   ===================================================================== */
+const htip=document.getElementById('htip');
+let htipT;
+function showTip(n,ev){
+  clearTimeout(htipT);
+  if(!htip)return;
+  if(n.kind==='work'){
+    const p=DATA.projects[n.work],ds=PROJ_DOMAINS[n.work],d0=DOMAINS[ds[0]];
+    htip.innerHTML='<div class="tip-kicker" style="color:'+d0.c+'">'+esc(p.type)+'</div>'
+      +'<div class="tip-title">'+esc(p.t)+'</div>'
+      +'<div class="tip-venue">'+esc(p.venue)+' · '+p.year+'</div>'
+      +'<div class="tip-desc">'+esc(p.d)+'</div>';
+  } else if(n.kind==='domain'){
+    const d=DOMAINS[n.dom];
+    htip.innerHTML='<div class="tip-kicker" style="color:'+d.c+'">Constellation</div>'
+      +'<div class="tip-title">'+esc(d.name)+'</div>'
+      +'<div class="tip-venue">'+esc(d.sub)+'</div>'
+      +'<div class="tip-desc">'+esc(d.blurb)+'</div>';
+  } else {htip.classList.remove('show');return;}
+  const tx=Math.min(ev.clientX+16,innerWidth-240),ty=Math.max(10,Math.min(ev.clientY-10,innerHeight-175));
+  htip.style.left=tx+'px';htip.style.top=ty+'px';
+  htip.classList.add('show');
+}
+function hideTip(){htipT=setTimeout(()=>{if(htip)htip.classList.remove('show');},100);}
+
 </script>
 
 <script type="module">
@@ -437,8 +645,8 @@ nodes.forEach(n=>{const b=document.createElement('button');b.className='node '+n
   b.innerHTML='<span class="lab">'+lab+'</span>'+(sub?'<span class="sub">'+sub+'</span>':'');
   b.style.fontSize=(n.kind==='center'?22:n.kind==='domain'?13:n.kind==='work'?14.5:11)+'px';
   b.addEventListener('pointerdown',ev=>ev.stopPropagation());
-  b.addEventListener('pointerenter',()=>{if(!filterTag)trace(n.id);});
-  b.addEventListener('pointerleave',()=>{if(!filterTag)clearTrace();});
+  b.addEventListener('pointerenter',ev=>{if(!filterTag)trace(n.id);showTip(n,ev);});
+  b.addEventListener('pointerleave',()=>{if(!filterTag)clearTrace();hideTip();});
   b.addEventListener('click',ev=>{ev.stopPropagation();openFor(n);});
   labelLayer.appendChild(b);n.el=b;});
 
