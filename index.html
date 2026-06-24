@@ -382,82 +382,6 @@
 
 <script type="importmap">
 { "imports": { "three": "/assets/game/lib/three.module.min.js" } }
-/* =====================================================================
-   C1: GATE PARTICLE CANVAS
-   ===================================================================== */
-(function(){
-  const c=document.getElementById('gateCanvas');
-  if(!c)return;
-  const ctx=c.getContext('2d');
-  let W,H,pts=[];
-  function sz(){W=c.width=c.offsetWidth||innerWidth;H=c.height=c.offsetHeight||innerHeight;}
-  function mkP(){return{x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.1+.25,
-    vx:(Math.random()-.5)*.22,vy:(Math.random()-.5)*.22,op:Math.random()*.55+.15};}
-  function init(){sz();pts=[];for(let i=0;i<140;i++)pts.push(mkP());}
-  function draw(){const g=document.getElementById('gate');
-    if(!g||g.classList.contains('hide'))return;
-    ctx.clearRect(0,0,W,H);
-    pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;
-      if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;
-      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fillStyle='rgba(180,205,255,'+p.op+')';ctx.fill();});
-    requestAnimationFrame(draw);}
-  window.addEventListener('resize',()=>{sz();pts.forEach(p=>{if(p.x>W)p.x=Math.random()*W;if(p.y>H)p.y=Math.random()*H;});});
-  function init(){sz();pts=[];for(let i=0;i<140;i++)pts.push(mkP());}
-  init();requestAnimationFrame(draw);
-})();
-
-/* =====================================================================
-   A4: FAIL PROJECT CARDS
-   ===================================================================== */
-(function(){
-  const fc=document.getElementById('failCards');
-  if(!fc)return;
-  DATA.projects.forEach((p,i)=>{
-    const ds=PROJ_DOMAINS[i],d0=DOMAINS[ds[0]];
-    const card=document.createElement('div');
-    card.className='fail-card';
-    card.innerHTML='<div class="fc-header"><span class="fc-dot" style="background:'+d0.c+'"></span>'
-      +'<span class="fc-venue">'+esc(p.venue)+'</span></div>'
-      +'<div class="fc-title">'+esc(p.t)+'</div>'
-      +'<div class="fc-desc">'+esc(p.d)+'</div>'
-      +'<div class="fc-tags">'+p.tags.map(t=>'<span class="fc-tag">'+esc(t)+'</span>').join('')+'</div>';
-    card.onclick=()=>{
-      const failEl=document.getElementById('fail');
-      failEl.classList.remove('show');
-      setTimeout(()=>openProject(i),80);
-    };
-    fc.appendChild(card);
-  });
-})();
-
-/* =====================================================================
-   C4: HOVER TOOLTIP
-   ===================================================================== */
-const htip=document.getElementById('htip');
-let htipT;
-function showTip(n,ev){
-  clearTimeout(htipT);
-  if(!htip)return;
-  if(n.kind==='work'){
-    const p=DATA.projects[n.work],ds=PROJ_DOMAINS[n.work],d0=DOMAINS[ds[0]];
-    htip.innerHTML='<div class="tip-kicker" style="color:'+d0.c+'">'+esc(p.type)+'</div>'
-      +'<div class="tip-title">'+esc(p.t)+'</div>'
-      +'<div class="tip-venue">'+esc(p.venue)+' · '+p.year+'</div>'
-      +'<div class="tip-desc">'+esc(p.d)+'</div>';
-  } else if(n.kind==='domain'){
-    const d=DOMAINS[n.dom];
-    htip.innerHTML='<div class="tip-kicker" style="color:'+d.c+'">Constellation</div>'
-      +'<div class="tip-title">'+esc(d.name)+'</div>'
-      +'<div class="tip-venue">'+esc(d.sub)+'</div>'
-      +'<div class="tip-desc">'+esc(d.blurb)+'</div>';
-  } else {htip.classList.remove('show');return;}
-  const tx=Math.min(ev.clientX+16,innerWidth-240),ty=Math.max(10,Math.min(ev.clientY-10,innerHeight-175));
-  htip.style.left=tx+'px';htip.style.top=ty+'px';
-  htip.classList.add('show');
-}
-function hideTip(){htipT=setTimeout(()=>{if(htip)htip.classList.remove('show');},100);}
-
 </script>
 
 <script type="module">
@@ -832,6 +756,82 @@ function enterGalaxy(){started=true;mode='galaxy';setMode('galaxy');gate.classLi
 document.getElementById('enter').onclick=enterGalaxy;
 document.getElementById('skip').onclick=()=>{started=true;mode='index';setMode('index');gate.classList.add('hide');setTimeout(()=>gate.style.display='none',850);};
 setMode(mode);
+
+/* =====================================================================
+   C1 · GATE PARTICLE CANVAS  (runs inside module for scope access)
+   ===================================================================== */
+(function(){
+  const c=document.getElementById('gateCanvas');
+  if(!c)return;
+  const ctx=c.getContext('2d');
+  let W,H,pts=[];
+  function sz(){W=c.width=c.offsetWidth||innerWidth;H=c.height=c.offsetHeight||innerHeight;}
+  function mkP(){return{x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.1+.25,
+    vx:(Math.random()-.5)*.22,vy:(Math.random()-.5)*.22,op:Math.random()*.55+.15};}
+  function init(){sz();pts=[];for(let i=0;i<140;i++)pts.push(mkP());}
+  function tick(){
+    const g=document.getElementById('gate');
+    if(!g||g.classList.contains('hide'))return; // stop when gate gone
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle='rgba(180,205,255,'+p.op+')';ctx.fill();});
+    requestAnimationFrame(tick);}
+  addEventListener('resize',()=>{sz();pts.forEach(p=>{if(p.x>W)p.x=Math.random()*W;if(p.y>H)p.y=Math.random()*H;});});
+  init();requestAnimationFrame(tick);
+})();
+
+/* =====================================================================
+   A4 · FAIL PROJECT CARDS
+   ===================================================================== */
+(function(){
+  const fc=document.getElementById('failCards');
+  if(!fc)return;
+  DATA.projects.forEach((p,i)=>{
+    const ds=PROJ_DOMAINS[i],d0=DOMAINS[ds[0]];
+    const card=document.createElement('div');
+    card.className='fail-card';
+    card.innerHTML='<div class="fc-header"><span class="fc-dot" style="background:'+d0.c+'"></span>'
+      +'<span class="fc-venue">'+esc(p.venue)+'</span></div>'
+      +'<div class="fc-title">'+esc(p.t)+'</div>'
+      +'<div class="fc-desc">'+esc(p.d)+'</div>'
+      +'<div class="fc-tags">'+p.tags.map(t=>'<span class="fc-tag">'+esc(t)+'</span>').join('')+'</div>';
+    card.onclick=()=>{
+      document.getElementById('fail').classList.remove('show');
+      setTimeout(()=>openProject(i),80);
+    };
+    fc.appendChild(card);
+  });
+})();
+
+/* =====================================================================
+   C4 · HOVER TOOLTIP
+   ===================================================================== */
+const htip=document.getElementById('htip');
+let htipT;
+function showTip(n,ev){
+  clearTimeout(htipT);
+  if(!htip)return;
+  if(n.kind==='work'){
+    const p=DATA.projects[n.work],ds=PROJ_DOMAINS[n.work],d0=DOMAINS[ds[0]];
+    htip.innerHTML='<div class="tip-kicker" style="color:'+d0.c+'">'+esc(p.type)+'</div>'
+      +'<div class="tip-title">'+esc(p.t)+'</div>'
+      +'<div class="tip-venue">'+esc(p.venue)+' \u00b7 '+p.year+'</div>'
+      +'<div class="tip-desc">'+esc(p.d)+'</div>';
+  }else if(n.kind==='domain'){
+    const d=DOMAINS[n.dom];
+    htip.innerHTML='<div class="tip-kicker" style="color:'+d.c+'">Constellation</div>'
+      +'<div class="tip-title">'+esc(d.name)+'</div>'
+      +'<div class="tip-venue">'+esc(d.sub)+'</div>'
+      +'<div class="tip-desc">'+esc(d.blurb)+'</div>';
+  }else{htip.classList.remove('show');return;}
+  const tx=Math.min(ev.clientX+16,innerWidth-240),ty=Math.max(10,Math.min(ev.clientY-10,innerHeight-175));
+  htip.style.left=tx+'px';htip.style.top=ty+'px';
+  htip.classList.add('show');
+}
+function hideTip(){htipT=setTimeout(()=>{if(htip)htip.classList.remove('show');},100);}
+
 </script>
 </body>
 </html>
