@@ -403,7 +403,8 @@
       ctx.fillStyle='rgba(180,205,255,'+p.op+')';ctx.fill();});
     requestAnimationFrame(draw);}
   window.addEventListener('resize',()=>{sz();pts.forEach(p=>{if(p.x>W)p.x=Math.random()*W;if(p.y>H)p.y=Math.random()*H;});});
-  init();draw();
+  function init(){sz();pts=[];for(let i=0;i<140;i++)pts.push(mkP());}
+  init();requestAnimationFrame(draw);
 })();
 
 /* =====================================================================
