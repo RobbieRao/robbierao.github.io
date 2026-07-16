@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (commands[value]) {
       typeText(commands[value], printLine(''));
     } else {
-      typeText('Command not found', printLine(''));
+      typeText('Command not found. Please enter "help" to view available commands.', printLine(''));
     }
   }
 
