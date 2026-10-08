@@ -13,7 +13,7 @@ body { margin: 0; background: var(--paper); color: var(--ink); font: 15px/1.65 v
 ::selection { background: #dbe8f8; }
 a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; overflow-wrap: anywhere; }
 a:hover { color: #142b4e; }
-a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 p, h1, h2, h3, h4, figure { margin: 0; }
 h1, h2 { font-size: 23px; line-height: 1.35; font-weight: 650; letter-spacing: -.35px; }
 h3 { font-size: 17px; line-height: 1.4; font-weight: 600; }
@@ -47,6 +47,9 @@ nav a:hover, nav a[aria-current="page"] { color: var(--accent); }
 .section > p { margin-bottom: 12px; }
 .section > p:last-child { margin-bottom: 0; }
 .section-note, .section-heading > p { color: var(--muted); font-size: 13px; }
+.bio-translation { margin-top: 14px; font-size: 14px; }
+.bio-translation summary { color: var(--accent); cursor: pointer; }
+.bio-translation p { margin-top: 10px; line-height: 1.85; }
 .section-heading { margin-bottom: 5px; }
 .news-list { margin: 0; padding: 0; list-style: none; }
 .news-list li { display: grid; grid-template-columns: 49px minmax(0, 1fr); gap: 14px; margin-bottom: 10px; }
@@ -81,6 +84,7 @@ nav a:hover, nav a[aria-current="page"] { color: var(--accent); }
 .cv-intro h1 { margin: 12px 0 15px; font-size: 32px; }
 .cv-alias { font-size: 22px; color: var(--muted); }
 .cv-intro > p { max-width: 720px; }
+.cv-intro .section-note { margin-top: 10px; }
 .intro-links { display: flex; flex-wrap: wrap; gap: 22px; margin-top: 18px; font-size: 13px; }
 .intro-links a { text-decoration: none; }
 .cv-section { padding: 26px 0; border-top: 1px solid var(--line); }
