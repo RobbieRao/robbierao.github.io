@@ -1,0 +1,332 @@
+[
+  {
+    "key": "facial-review",
+    "title": [
+      "Facial Social Trait Perception, Interpretation, and Prediction: A State-of-the-Art Review"
+    ],
+    "DOI": "10.1109/taffc.2026.3711959",
+    "author": [
+      {
+        "given": "Fenggui",
+        "family": "Rao",
+        "sequence": "first",
+        "affiliation": [
+          {
+            "name": "School of Design, The Hong Kong Polytechnic University, Hong Kong, China"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Yuhao",
+        "family": "He",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "School of Design, The Hong Kong Polytechnic University, Hong Kong, China"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Yan",
+        "family": "Luximon",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "School of Design, The Hong Kong Polytechnic University, Hong Kong, China"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Jie",
+        "family": "Zhang",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Faculty of Applied Sciences, Macao Polytechnic University, Macau, China"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "container-title": [
+      "IEEE Transactions on Affective Computing"
+    ],
+    "publisher": "Institute of Electrical and Electronics Engineers (IEEE)",
+    "type": "journal-article",
+    "published": {
+      "date-parts": [
+        [
+          2026
+        ]
+      ]
+    },
+    "published-online": null,
+    "published-print": {
+      "date-parts": [
+        [
+          2026
+        ]
+      ]
+    },
+    "created": {
+      "date-parts": [
+        [
+          2026,
+          7,
+          9
+        ]
+      ],
+      "date-time": "2026-07-09T19:43:59Z",
+      "timestamp": 1783626239000
+    },
+    "event": null,
+    "volume": null,
+    "issue": null,
+    "page": "1-20"
+  },
+  {
+    "key": "shared-canvases",
+    "title": [
+      "Streets as Shared Canvases: An In-Situ Mixed Reality Platform for Citizen-Led Urban Restorative Design"
+    ],
+    "DOI": "10.52842/conf.caadria.2026.3.103",
+    "author": [
+      {
+        "given": "Yuhao",
+        "family": "He",
+        "sequence": "first",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Tian Tian",
+        "family": "Lo",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Fenggui",
+        "family": "Rao",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "container-title": [
+      "CAADRIA proceedings",
+      "Proceedings of the 31st International Conference on Computer-Aided Architectural Design  Research in Asia (CAADRIA) [Volume 3]"
+    ],
+    "publisher": "CAADRIA",
+    "type": "proceedings-article",
+    "published": {
+      "date-parts": [
+        [
+          2026
+        ]
+      ]
+    },
+    "published-online": null,
+    "published-print": {
+      "date-parts": [
+        [
+          2026
+        ]
+      ]
+    },
+    "created": {
+      "date-parts": [
+        [
+          2026,
+          9,
+          21
+        ]
+      ],
+      "date-time": "2026-09-21T18:11:10Z",
+      "timestamp": 1790014270000
+    },
+    "event": {
+      "name": "CAADRIA 2026: Humanistic Computation & Intelligence",
+      "theme": "Computer Aided Architectural Design",
+      "location": "Hsinchu",
+      "acronym": "CAADRIA 2026",
+      "number": "31",
+      "start": {
+        "date-parts": [
+          [
+            2026,
+            4,
+            26
+          ]
+        ]
+      },
+      "end": {
+        "date-parts": [
+          [
+            2026,
+            5,
+            2
+          ]
+        ]
+      }
+    },
+    "volume": "3",
+    "issue": null,
+    "page": "103-112"
+  },
+  {
+    "key": "streetcure",
+    "title": [
+      "Crowdsourcing StreetCure: A Workshop-Derived Human-AI Pipeline for Restorative Street Micro-Interventions"
+    ],
+    "DOI": "10.52842/conf.ecaade.2026.1.589",
+    "author": [
+      {
+        "given": "Yuhao",
+        "family": "He",
+        "sequence": "first",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Tiantian",
+        "family": "Lo",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Yongming",
+        "family": "Chen",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Fenggui",
+        "family": "Rao",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "container-title": [
+      "eCAADe proceedings",
+      "Proceedings of the 44th International Conference on Education and Research in Computer Aided Architectural Design in Europe (eCAADe)  [Volume 2]"
+    ],
+    "publisher": "eCAADe",
+    "type": "proceedings-article",
+    "published": {
+      "date-parts": [
+        [
+          2026
+        ]
+      ]
+    },
+    "published-online": null,
+    "published-print": {
+      "date-parts": [
+        [
+          2026
+        ]
+      ]
+    },
+    "created": {
+      "date-parts": [
+        [
+          2026,
+          9,
+          21
+        ]
+      ],
+      "date-time": "2026-09-21T19:03:27Z",
+      "timestamp": 1790017407000
+    },
+    "event": {
+      "name": "eCAADe 2026 Informed Creativity and Fabrication in Architecture and Engineering",
+      "theme": "Computer Aided Architectural Design",
+      "location": "Lubeck, Germany",
+      "acronym": "eCAADe 2026",
+      "number": "44",
+      "start": {
+        "date-parts": [
+          [
+            2026,
+            9,
+            9
+          ]
+        ]
+      },
+      "end": {
+        "date-parts": [
+          [
+            2026,
+            9,
+            11
+          ]
+        ]
+      }
+    },
+    "volume": "1",
+    "issue": null,
+    "page": "589-598"
+  }
+]

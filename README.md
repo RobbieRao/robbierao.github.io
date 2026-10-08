@@ -27,3 +27,5 @@ The pre-rebuild website is preserved on `archive/pre-rebuild-2026-10-08` at comm
 Original publication-year inconsistencies and role/degree differences are recorded in the inventory. The art-therapy paper (2025) and ICLC paper (2024) were checked against Crossref and Zenodo. The Flowing Ink Resonator, CityCure, and ContextCam DOI records were checked against Crossref. The personal statement comes directly from the owner; see `content/PERSONAL-NOTES.md`.
 
 Legacy publication, portfolio, CV, terminal, and office URLs remain as simple redirects to the relevant section or CV. The CV supports the browser’s Print / Save as PDF command.
+
+The 2026 ResearchGate audit and profile draft are in `content/RESEARCHGATE-AUDIT.md`. Three additional publications were verified through Crossref and institutional records and added to the homepage and CV; their exact metadata is in `content/researchgate-publication-verification.json`. The TAFFC review is labeled Accepted / In press, and no unverified publication month is displayed.
