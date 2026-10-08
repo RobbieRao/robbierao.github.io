@@ -1,10 +1,10 @@
-# Robbie Rao — personal website
+# Robbie Fenggui Rao — personal website
 
 A static personal website with research, design projects, creative practice, and a printable CV. The public site is in `site/`; it uses HTML and CSS with no JavaScript or build dependencies.
 
 The homepage uses a desktop profile sidebar and compact topical publication lists, following the owner's reference to [Jie Zhang's homepage](https://easy-shu.github.io/). See `content/DESIGN-REFERENCE.md` for the layout decisions.
 
-`content/PROFILE.md` records the owner's latest bilingual biography, professional roles, memberships, and teaching experience. Public profile text uses Robbie Rao / 饶柏; publications retain the verified author name Fenggui Rao.
+`content/PROFILE.md` records the owner's latest bilingual biography, professional roles, memberships, and teaching experience. Public profile text uses Robbie Fenggui Rao / 饶柏; publications retain the verified author name Fenggui Rao.
 
 ## Edit and preview
 
