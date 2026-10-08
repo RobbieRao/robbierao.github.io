@@ -11,7 +11,7 @@ The homepage uses a desktop profile sidebar and compact topical publication list
 - `site/index.html`: homepage and project descriptions.
 - `site/cv/index.html`: detailed CV.
 - `site/assets/styles.css`: shared layout and typography.
-- `site/images/profile.png`: original portrait.
+- `site/images/profile-2026.png`: portrait supplied by Robbie on October 8, 2026.
 
 From the repository root:
 
