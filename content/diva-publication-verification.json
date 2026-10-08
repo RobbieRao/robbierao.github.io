@@ -1,0 +1,183 @@
+{
+  "indexed": {
+    "date-parts": [
+      [
+        2026,
+        2,
+        27
+      ]
+    ],
+    "date-time": "2026-02-27T23:10:49Z",
+    "timestamp": 1772233849612,
+    "version": "3.50.1"
+  },
+  "reference-count": 0,
+  "publisher": "eCAADe",
+  "content-domain": {
+    "domain": [],
+    "crossmark-restriction": false
+  },
+  "published-print": {
+    "date-parts": [
+      [
+        2025
+      ]
+    ]
+  },
+  "DOI": "10.52842/conf.ecaade.2025.1.111",
+  "type": "proceedings-article",
+  "created": {
+    "date-parts": [
+      [
+        2026,
+        2,
+        27
+      ]
+    ],
+    "date-time": "2026-02-27T22:47:01Z",
+    "timestamp": 1772232421000
+  },
+  "page": "111-120",
+  "source": "Crossref",
+  "is-referenced-by-count": 0,
+  "title": [
+    "Between Real and Imagined: Developing a dynamic immersive virtual auditing framework for high-density urban health trails"
+  ],
+  "prefix": "10.52842",
+  "volume": "1",
+  "author": [
+    {
+      "given": "Yuhao",
+      "family": "He",
+      "sequence": "first",
+      "affiliation": [],
+      "role": [
+        {
+          "role": "author",
+          "vocabulary": "crossref"
+        }
+      ]
+    },
+    {
+      "given": "Tian Tian",
+      "family": "Lo",
+      "sequence": "additional",
+      "affiliation": [],
+      "role": [
+        {
+          "role": "author",
+          "vocabulary": "crossref"
+        }
+      ]
+    },
+    {
+      "given": "Fenggui",
+      "family": "Rao",
+      "sequence": "additional",
+      "affiliation": [],
+      "role": [
+        {
+          "role": "author",
+          "vocabulary": "crossref"
+        }
+      ]
+    },
+    {
+      "given": "Yuhao",
+      "family": "Li",
+      "sequence": "additional",
+      "affiliation": [],
+      "role": [
+        {
+          "role": "author",
+          "vocabulary": "crossref"
+        }
+      ]
+    },
+    {
+      "given": "Hanzhe",
+      "family": "Bao",
+      "sequence": "additional",
+      "affiliation": [],
+      "role": [
+        {
+          "role": "author",
+          "vocabulary": "crossref"
+        }
+      ]
+    }
+  ],
+  "member": "30589",
+  "event": {
+    "name": "eCAADe 2025: Confluence",
+    "theme": "Computer Aided Architectural Design",
+    "location": "Ankara, Turkey",
+    "acronym": "eCAADe 2025",
+    "number": "42",
+    "start": {
+      "date-parts": [
+        [
+          2025,
+          9,
+          3
+        ]
+      ]
+    },
+    "end": {
+      "date-parts": [
+        [
+          2025,
+          9,
+          5
+        ]
+      ]
+    }
+  },
+  "container-title": [
+    "eCAADe proceedings",
+    "Proceedings of the 43rd International Conference on Education and Research in Computer Aided Architectural Design in Europe (eCAADe)  [Volume 1]"
+  ],
+  "deposited": {
+    "date-parts": [
+      [
+        2026,
+        2,
+        27
+      ]
+    ],
+    "date-time": "2026-02-27T22:47:05Z",
+    "timestamp": 1772232425000
+  },
+  "score": 77.344055,
+  "resource": {
+    "primary": {
+      "URL": "http://papers.cumincad.org/cgi-bin/works/paper/ecaade2025_524"
+    }
+  },
+  "proceedings-subject": "Computer Aided Architectural Design",
+  "issued": {
+    "date-parts": [
+      [
+        2025
+      ]
+    ]
+  },
+  "references-count": 0,
+  "URL": "https://doi.org/10.52842/conf.ecaade.2025.1.111",
+  "ISSN": [
+    "2684-1843"
+  ],
+  "issn-type": [
+    {
+      "value": "2684-1843",
+      "type": "print"
+    }
+  ],
+  "published": {
+    "date-parts": [
+      [
+        2025
+      ]
+    ]
+  }
+}

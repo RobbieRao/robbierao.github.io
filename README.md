@@ -2,6 +2,8 @@
 
 A static personal website with research, design projects, creative practice, and a printable CV. The public site is in `site/`; it uses HTML and CSS with no JavaScript or build dependencies.
 
+The homepage uses a desktop profile sidebar and compact topical publication lists, following the owner's reference to [Jie Zhang's homepage](https://easy-shu.github.io/). See `content/DESIGN-REFERENCE.md` for the layout decisions.
+
 ## Edit and preview
 
 - `site/index.html`: homepage and project descriptions.
