@@ -1,0 +1,269 @@
+{
+  "person": {
+    "name": "Rao Fenggui",
+    "alias": "Robbie Rao",
+    "tagline": "Generative AI × art-design workflows, HCI & public cultural experience.",
+    "based": "Hong Kong",
+    "langs": "Mandarin · English · Cantonese (conversational)"
+  },
+  "resume": {
+    "summary": "PhD student at the HK PolyU School of Design and a China Academy of Art-trained designer. Founder & lead of DesignAnything Lab (D&A Lab), working across generative AI, art-design workflows, HCI, public culture and creative education.",
+    "education": [
+      {
+        "school": "The Hong Kong Polytechnic University — School of Design",
+        "detail": "PhD Student in Design · Asian Ergonomics Design (AED) Lab · Supervisor: Yan Tina Luximon",
+        "years": "2024–Present"
+      },
+      {
+        "school": "China Academy of Art — School of Design & Innovation",
+        "detail": "B.Eng / B.Design in Innovative Design · GPA 90/100 · Ranked #1 in comprehensive assessment (2021–22 & 2022–23)",
+        "years": "2020–2024"
+      }
+    ],
+    "contact": [
+      [
+        "Email",
+        "robbie.rao@connect.polyu.hk"
+      ],
+      [
+        "Tel",
+        "+852 8403 2765"
+      ],
+      [
+        "Web",
+        "robbierao.github.io · designanything.design"
+      ],
+      [
+        "ORCID",
+        "0009-0000-8990-1515"
+      ],
+      [
+        "GitHub",
+        "github.com/RobbieRao"
+      ]
+    ]
+  },
+  "about": {
+    "bio": "I'm a designer-researcher who also builds. I take AI + design ideas from studio practice into working prototypes, public-facing experiences, papers and teachable workflows.",
+    "skills": [
+      [
+        "AI Workflow Construction",
+        "Generative image/video pipelines, prompt systems, multimodal ideation, RAG / knowledge-base structuring, agentic workflow design and evaluation."
+      ],
+      [
+        "Design Research",
+        "HCI study design, qualitative & quantitative analysis, design probes, interaction prototypes, CHI/DIS framing, academic writing."
+      ],
+      [
+        "Creative Direction",
+        "AI art direction, speculative design, public cultural experience, exhibition narrative, product & interaction design."
+      ],
+      [
+        "Technical Practice",
+        "Python, data analysis, frontend prototyping, interactive systems, Rhino / Blender / Unity, ControlNet / IP-Adapter visual workflows."
+      ]
+    ]
+  },
+  "projects": [
+    {
+      "t": "ContextCam",
+      "v": "CHI 2024 · Full Paper",
+      "c": "#2f6b62",
+      "d": "A context-aware human-AI image co-creation system that brings real-world context into the generative loop.",
+      "venue": "CHI 2024",
+      "year": 2024,
+      "type": "System",
+      "tags": [
+        "Human-AI Co-Creation",
+        "Context-aware",
+        "Image"
+      ]
+    },
+    {
+      "t": "Flowing Ink Resonator",
+      "v": "CHI EA 2026",
+      "c": "#9d4f3a",
+      "d": "An embodied Grand Canal soundscape installation with a provenance-aware cultural-asset workflow for authoring when historical records are scarce.",
+      "venue": "CHI EA 2026",
+      "year": 2026,
+      "type": "Installation",
+      "tags": [
+        "Cultural Heritage",
+        "Soundscape",
+        "Provenance"
+      ]
+    },
+    {
+      "t": "CityCure",
+      "v": "CHI EA 2026",
+      "c": "#34557f",
+      "d": "In-situ MR + generative-AI workflow for walking, capturing and reimagining small street micro-interventions.",
+      "venue": "CHI EA 2026",
+      "year": 2026,
+      "type": "MR Workflow",
+      "tags": [
+        "Urban",
+        "Mixed Reality",
+        "Micro-intervention"
+      ]
+    },
+    {
+      "t": "Immersive Art Therapy",
+      "v": "CHI EA 2026",
+      "c": "#8a5a2b",
+      "d": "An AIGC-driven immersive art-therapy approach designed to help children cope with nyctophobia (fear of the dark).",
+      "venue": "CHI EA 2026",
+      "year": 2026,
+      "type": "AIGC System",
+      "tags": [
+        "Health",
+        "Children",
+        "Art Therapy"
+      ]
+    },
+    {
+      "t": "DIVA Framework",
+      "v": "eCAADe 2025",
+      "c": "#4f6b2f",
+      "d": "Between Real & Imagined — a Dynamic Immersive Virtual Auditing framework for high-density urban health trails.",
+      "venue": "eCAADe 2025",
+      "year": 2025,
+      "type": "Framework",
+      "tags": [
+        "Urban Health",
+        "Virtual Auditing",
+        "Architecture"
+      ]
+    },
+    {
+      "t": "Enlivening Performance Art",
+      "v": "ICLC 2025",
+      "c": "#5f3f78",
+      "d": "Enhanced interactivity through embodied cognition and real-time physical visualization on swarm tangible interfaces.",
+      "venue": "ICLC 2025",
+      "year": 2025,
+      "type": "Tangible System",
+      "tags": [
+        "Embodied",
+        "Swarm",
+        "Performance"
+      ]
+    },
+    {
+      "t": "Let My Goldfish Go",
+      "v": "DIS 2025 · Art Gallery",
+      "c": "#2b6b8a",
+      "d": "A speculative AI/art installation on pet ethics and non-human ecology — a D&A Lab project selected for the DIS Art Gallery.",
+      "venue": "DIS 2025 · Art Gallery",
+      "year": 2025,
+      "type": "Installation",
+      "tags": [
+        "Speculative",
+        "Ethics",
+        "Ecology"
+      ]
+    },
+    {
+      "t": "Plast-ocean",
+      "v": "DIS 2025",
+      "c": "#2f8a6b",
+      "d": "The Creative Journey of Plast-ocean — an AIGC-driven ecological-narrative interactive system exploring ocean plastic.",
+      "venue": "DIS 2025",
+      "year": 2025,
+      "type": "Interactive System",
+      "tags": [
+        "Ecology",
+        "Ocean",
+        "Narrative"
+      ]
+    },
+    {
+      "t": "Song-Yun Culture AIGC",
+      "v": "Zhejiang TV · 2024",
+      "c": "#a05a2b",
+      "d": "Public-culture collaboration using AI image generation and AR-style play to activate Song-dynasty cultural storytelling.",
+      "venue": "Zhejiang TV · 2024",
+      "year": 2024,
+      "type": "Public Collab",
+      "tags": [
+        "Public Culture",
+        "AR",
+        "Song Dynasty"
+      ]
+    }
+  ],
+  "honors": [
+    [
+      "National Scholarship",
+      "2021–2022"
+    ],
+    [
+      "Provincial Government Scholarship",
+      "2022–2023"
+    ],
+    [
+      "Outstanding Student & Student Leader",
+      "China Academy of Art"
+    ],
+    [
+      "Lin Fengmian Design Silver Award",
+      "China Academy of Art"
+    ],
+    [
+      "“Internet+” Entrepreneurship — Bronze",
+      "Zhejiang Province"
+    ],
+    [
+      "KTK Jin Daiqiang Design Award — Finalist",
+      "Global Chinese Design Competition"
+    ]
+  ],
+  "ip": [
+    [
+      "AI-Assisted Design Creation Software",
+      "Software Copyright · Reg. 2023SR1444677 · 2023"
+    ],
+    [
+      "Generative-AI Art-Education Solution",
+      "Invention Patent · App. 202310399782X · 2023"
+    ],
+    [
+      "TrailTracking",
+      "AI-driven distributed narratives · creative IP · 2024"
+    ],
+    [
+      "“Box”",
+      "Design Patent · 2022"
+    ],
+    [
+      "Robotic Arm",
+      "Utility Model · 2022"
+    ],
+    [
+      "Image Digital Projection Device",
+      "Utility Model · 2022"
+    ]
+  ],
+  "roles": [
+    [
+      "Founder & Lead — DesignAnything Lab",
+      "China Academy of Art · 2023–Present — an ongoing AI art-design lab & community across workshops, salons, exhibitions and project incubation."
+    ],
+    [
+      "Founder & Chief Curator — Lingyuan / Soulscapes",
+      "Originated this AI art-exhibition IP and built its concept, public program, cross-school collaboration and hackathon format."
+    ],
+    [
+      "Director — Hangzhou BIZZLE Network Technology",
+      "2022–Present."
+    ],
+    [
+      "Teaching Assistant & URIS Peer Mentor — HK PolyU",
+      "Supported design teaching and mentored undergraduate research & innovation projects."
+    ],
+    [
+      "Reviewer — ACM CHI",
+      "Peer review for CHI; contribution framing, method quality and reviewer-facing writing."
+    ]
+  ]
+}

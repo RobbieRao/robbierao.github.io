@@ -1,0 +1,413 @@
+[
+  {
+    "key": "art-therapy",
+    "title": [
+      "The Immersive Art Therapy Driven by AIGC: An Innovative Approach to Alleviating Children's Nyctophobia"
+    ],
+    "DOI": "10.1145/3706599.3720312",
+    "published": {
+      "date-parts": [
+        [
+          2025,
+          4,
+          25
+        ]
+      ]
+    },
+    "venue": [
+      "Proceedings of the Extended Abstracts of the CHI Conference on Human Factors in Computing Systems"
+    ],
+    "authors": [
+      {
+        "ORCID": "https://orcid.org/0009-0006-6256-8373",
+        "authenticated-orcid": false,
+        "given": "Jinlin",
+        "family": "Miao",
+        "sequence": "first",
+        "affiliation": [
+          {
+            "name": "School of Industrial Design, China Academy of Art, Hangzhou, China and Design Anything Lab, China Academy of Art, Hangzhou, China"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0009-0000-4097-764X",
+        "authenticated-orcid": false,
+        "given": "Zhiyuan",
+        "family": "Zhou",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "School of Design &amp; Innovation, China Academy of Art, Hangzhou, China and Design Anything Lab, China Academy of Art, Hangzhou, China"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0009-0005-2364-9958",
+        "authenticated-orcid": false,
+        "given": "Yilei",
+        "family": "Wu",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "School of Industrial Design, China Academy of Art, Hangzhou, China and Design Anything Lab, China Academy of Art, Hangzhou, China"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0009-0000-8990-1515",
+        "authenticated-orcid": false,
+        "given": "Fenggui",
+        "family": "Rao",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "The Hong Kong Polytechnic University, Hong Kong, China and Design Anything Lab, China Academy of Art, Hangzhou, China"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0009-0003-9129-6360",
+        "authenticated-orcid": false,
+        "given": "Fanjing",
+        "family": "Meng",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "University College London, London, United Kingdom and Design Anything Lab, China Academy of Art, Hangzhou, China"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "citycure",
+    "title": [
+      "CityCure: Walk, Capture, and Reimagine Street Micro-Interventions with In-Situ MR and GenAI"
+    ],
+    "DOI": "10.1145/3772363.3799077",
+    "published": {
+      "date-parts": [
+        [
+          2026,
+          4,
+          13
+        ]
+      ]
+    },
+    "venue": [
+      "Proceedings of the Extended Abstracts of the 2026 CHI Conference on Human Factors in Computing Systems"
+    ],
+    "authors": [
+      {
+        "ORCID": "https://orcid.org/0009-0005-7640-492X",
+        "authenticated-orcid": false,
+        "given": "Yuhao",
+        "family": "He",
+        "sequence": "first",
+        "affiliation": [
+          {
+            "name": "School of Design, The Hong Kong Polytechnic University, Hong Kong, China"
+          }
+        ],
+        "role": [
+          {
+            "role": "author",
+            "vocabulary": "crossref"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0009-0000-8990-1515",
+        "authenticated-orcid": false,
+        "given": "Fenggui",
+        "family": "Rao",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "AED Lab, The Hong Kong Polytechnic University, Hong Kong, China"
+          }
+        ],
+        "role": [
+          {
+            "role": "author",
+            "vocabulary": "crossref"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0002-1992-0777",
+        "authenticated-orcid": false,
+        "given": "Tian Tian",
+        "family": "Lo",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "School of Design, The Hong Kong Polytechnic University, Hong Kong, China"
+          }
+        ],
+        "role": [
+          {
+            "role": "author",
+            "vocabulary": "crossref"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "iclc",
+    "title": "Enlivening Performance Art: Enhanced Interactivity through Embodied Cognition and Real-Time Physical Visualization on Swarm Tangible Interfaces",
+    "DOI": "10.5281/zenodo.11350409",
+    "published": "2024-05-27",
+    "venue": null,
+    "authors": [
+      {
+        "name": "Zhu, Yue",
+        "affiliation": "China Academy of Art"
+      },
+      {
+        "name": "Zhou, Zhiyuan",
+        "affiliation": "China Academy of Art"
+      },
+      {
+        "name": "Rao, Fenggui",
+        "affiliation": "China Academy of Art"
+      }
+    ]
+  },
+  {
+    "key": "flowing-ink",
+    "title": [
+      "Flowing Ink Resonator: An Embodied Soundscape for Culturally Grounded Authoring under Rare Records"
+    ],
+    "DOI": "10.1145/3772363.3798713",
+    "published": {
+      "date-parts": [
+        [
+          2026,
+          4,
+          13
+        ]
+      ]
+    },
+    "venue": [
+      "Proceedings of the Extended Abstracts of the 2026 CHI Conference on Human Factors in Computing Systems"
+    ],
+    "authors": [
+      {
+        "ORCID": "https://orcid.org/0009-0008-0068-6184",
+        "authenticated-orcid": false,
+        "given": "Xuefei",
+        "family": "Zhou",
+        "sequence": "first",
+        "affiliation": [
+          {
+            "name": "Design Anything Lab, China Academy of Art, Hangzhou, Zhejiang, China"
+          }
+        ],
+        "role": [
+          {
+            "role": "author",
+            "vocabulary": "crossref"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0009-0000-8990-1515",
+        "authenticated-orcid": false,
+        "given": "Fenggui",
+        "family": "Rao",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "AED Lab, The Hong Kong Polytechnic University, Kowloon, Hong Kong, China"
+          }
+        ],
+        "role": [
+          {
+            "role": "author",
+            "vocabulary": "crossref"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0009-0000-4097-764X",
+        "authenticated-orcid": false,
+        "given": "Zhiyuan",
+        "family": "Zhou",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "College of Design and Innovation, Tongji University, Shanghai, China and Design Anything Lab, China Academy of Art, Hangzhou, Zhejiang, China"
+          }
+        ],
+        "role": [
+          {
+            "role": "author",
+            "vocabulary": "crossref"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "contextcam",
+    "title": [
+      "ContextCam: Bridging Context Awareness with Creative Human-AI Image Co-Creation"
+    ],
+    "DOI": "10.1145/3613904.3642129",
+    "published": {
+      "date-parts": [
+        [
+          2024,
+          5,
+          11
+        ]
+      ]
+    },
+    "venue": [
+      "Proceedings of the CHI Conference on Human Factors in Computing Systems"
+    ],
+    "authors": [
+      {
+        "ORCID": "https://orcid.org/0009-0006-2637-2816",
+        "authenticated-orcid": false,
+        "given": "Xianzhe",
+        "family": "Fan",
+        "sequence": "first",
+        "affiliation": [
+          {
+            "name": "Tsinghua University, China"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0002-3161-2232",
+        "authenticated-orcid": false,
+        "given": "Zihan",
+        "family": "Wu",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "School of Information, University of Michigan, United States"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0003-2591-7993",
+        "authenticated-orcid": false,
+        "given": "Chun",
+        "family": "Yu",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Department of Computer Science and Technology, Tsinghua University, China"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0009-0000-8990-1515",
+        "authenticated-orcid": false,
+        "given": "Fenggui",
+        "family": "Rao",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "China Academy Of Art, China"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0002-1351-9034",
+        "authenticated-orcid": false,
+        "given": "Weinan",
+        "family": "Shi",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Department of Computer Science and Technology, Tsinghua University, China"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0009-0002-5792-0468",
+        "authenticated-orcid": false,
+        "given": "Teng",
+        "family": "Tu",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "KEG, Tsinghua University, China"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ]
+  }
+]
