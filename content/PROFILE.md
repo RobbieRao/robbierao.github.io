@@ -4,11 +4,11 @@
 
 ## 中文简介
 
-饶柏（Robbie），连续创业者，香港理工大学设计学院博士在读，杭州白昼网络科技有限公司（Bizzle Tech）首席执行官、Design Anything Lab 联合发起人，ACM 国际计算机学会专业会员、IEEE 学生会员。担任香港理工大学 URIS 项目导师、SD4410 课程教学助理，独立准备课件并以英语授课，同时担任国际人机交互会议 ACM CHI 审稿人。研究与实践聚焦 AI 驱动的数字产品与交互系统，强调以可验证的方法与流程连接学术训练和创业交付；长期从事数字产品设计、项目推进与团队协作，并持续开展 3D 建模及硬件原型开发。
+饶柏（Robbie），连续创业者，香港理工大学设计学院博士候选人，杭州白昼网络科技有限公司（Bizzle Tech）首席执行官、Design Anything Lab 联合发起人，ACM 国际计算机学会专业会员、IEEE 学生会员。担任香港理工大学 URIS 项目导师、SD4410 课程教学助理，独立准备课件并以英语授课，同时担任国际人机交互会议 ACM CHI 审稿人。研究与实践聚焦 AI 驱动的数字产品与交互系统，强调以可验证的方法与流程连接学术训练和创业交付；长期从事数字产品设计、项目推进与团队协作，并持续开展 3D 建模及硬件原型开发。
 
 ## English biography
 
-I’m Robbie Rao (饶柏), a serial entrepreneur, a PhD researcher at the School of Design, The Hong Kong Polytechnic University, CEO of Bizzle Tech, and a co-initiator of Design Anything Lab.
+I’m Robbie Rao (饶柏), a serial entrepreneur, a PhD Candidate at the School of Design, The Hong Kong Polytechnic University, CEO of Bizzle Tech, and a co-initiator of Design Anything Lab.
 
 My research and practice focus on AI-driven digital products and interactive systems. I use verifiable methods and workflows to connect academic training with entrepreneurial delivery. My experience spans digital product design, project delivery, and team collaboration, with continued practice in 3D modeling and hardware prototyping.
 
@@ -20,6 +20,7 @@ I’m an ACM Professional Member and an IEEE Student Member. At PolyU, I mentor 
 | --- | --- | --- |
 | 中文名 / 网站姓名 | 饶柏 / Robbie Rao | 用户最新说明；网站既有英文姓名 |
 | 论文署名 | Fenggui Rao | 已核实的 DOI 作者记录，保留署名 |
+| 博士身份 | 博士候选人 / PhD Candidate | 用户明确指定，替换 PhD researcher 与博士在读 |
 | 创业身份 | 连续创业者 / Serial entrepreneur | 用户明确说明“我是连续创业者” |
 | 公司职务 | Bizzle Tech 首席执行官 / Chief Executive Officer | 用户明确提供 |
 | 公司中文名 | 杭州白昼网络科技有限公司 | 用户明确提供 |
