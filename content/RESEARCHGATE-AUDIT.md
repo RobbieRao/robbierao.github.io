@@ -24,7 +24,7 @@ ResearchGate 的公开列表已有 8 项成果，包含旧站没有的 3 项 202
 
 以下英文根据网站研究方向及用户 2026-10-08 的最新身份补充更新，可用于 ResearchGate 的 Introduction；完整简介见 `PROFILE.md`：
 
-> I am Robbie Rao (饶柏), a PhD researcher at the School of Design, The Hong Kong Polytechnic University, and a member of the Asian Ergonomics Design Lab. My research and practice focus on AI-driven digital products and interactive systems, connecting academic training with entrepreneurial delivery through verifiable methods and workflows. I am CEO of Bizzle Tech and a co-initiator of Design Anything Lab. I also mentor PolyU URIS projects, serve as a Teaching Assistant for SD4410, and review for ACM CHI. I am an ACM Professional Member and an IEEE Student Member.
+> I am Robbie Rao (饶柏), a serial entrepreneur, a PhD researcher at the School of Design, The Hong Kong Polytechnic University, and a member of the Asian Ergonomics Design Lab. My research and practice focus on AI-driven digital products and interactive systems, connecting academic training with entrepreneurial delivery through verifiable methods and workflows. I am CEO of Bizzle Tech and a co-initiator of Design Anything Lab. I also mentor PolyU URIS projects, serve as a Teaching Assistant for SD4410, and review for ACM CHI. I am an ACM Professional Member and an IEEE Student Member.
 
 ## 访问状态
 
