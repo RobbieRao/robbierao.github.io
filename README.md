@@ -4,6 +4,8 @@ A static personal website with research, design projects, creative practice, and
 
 The homepage uses a desktop profile sidebar and compact topical publication lists, following the owner's reference to [Jie Zhang's homepage](https://easy-shu.github.io/). See `content/DESIGN-REFERENCE.md` for the layout decisions.
 
+`content/PROFILE.md` records the owner's latest bilingual biography, professional roles, memberships, and teaching experience. Public profile text uses Robbie Rao / 饶柏; publications retain the verified author name Fenggui Rao.
+
 ## Edit and preview
 
 - `site/index.html`: homepage and project descriptions.

@@ -6,4 +6,6 @@
 
 > 我致力于寻找世界的bug
 
-首页用 “Looking for bugs in the world.” 呈现这一表达，并在 About 中保留中文原话。不添加用户未提供的兴趣或个人经历。
+首页用 “Looking for bugs in the world.” 呈现这一表达，并在 Beyond research 中保留中文原话。不添加用户未提供的兴趣或个人经历。
+
+2026-10-08，用户补充正式中文名“饶柏（Robbie）”、创业职务、学会会员及教学服务经历。主页与 CV 按此次提供的资料更新；论文作者记录继续保留已有署名 Fenggui Rao。最新中英文简介及身份来源见 `PROFILE.md`。
