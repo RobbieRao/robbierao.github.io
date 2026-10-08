@@ -130,9 +130,9 @@ Interdisciplinary design researcher bridging art, technology, and human-centered
 - *Image Digital Projection Device*, Utility Model Patent, 2022. Patent No. ZL 2022 2 3454035.1.
 
 ## Contact
-Hung Hom, Kowloon, Hong Kong  
-Tel: (852) 8403 2765  
-Email: [robbie.rao@connect.polyu.hk](mailto:robbie.rao@connect.polyu.hk)  
+Hung Hom, Kowloon, Hong Kong
+Tel: (852) 8403 2765
+Email: [robbie.rao@connect.polyu.hk](mailto:robbie.rao@connect.polyu.hk)
 
 
 ## 已发现的原站信息冲突
