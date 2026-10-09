@@ -29,3 +29,15 @@ ResearchGate 的公开列表已有 8 项成果，包含旧站没有的 3 项 202
 ## 访问状态
 
 浏览器访问 ResearchGate 时出现设备验证页面，未进入账户编辑界面。本次仅完成公开资料核对、网站同步和简介草稿。
+
+## 2026-10-09 新增预印本同步
+
+ResearchGate 的公开总数已变为 9 项，但本次可读取的列表仍只有前述 8 项。用户提供单篇 arXiv 链接，确认新增成果为 [DisFace3DNet: Explainable Facial Attractiveness Prediction via 3D Component Disentanglement](https://arxiv.org/abs/2610.11656)。本次按 arXiv 官方摘要页及 [v1 原文](https://arxiv.org/html/2610.11656v1)核对：
+
+- 作者顺序：Fenggui Rao、Yan Luximon、Jie Zhang。Fenggui Rao 为第一作者。
+- 作者脚注明确指定 Yan Luximon 和 Jie Zhang 为通讯作者；主页与 CV 仅在两人姓名后加 `*`，不添加说明或图例。
+- arXiv 编号：2610.11656；类别：cs.CV；v1 提交时间：2026-10-08 10:33:54 UTC。官方页面未列出期刊或会议出版信息，网站明确标为预印本。
+- 原文所列 [GitHub 项目页](https://github.com/RobbieRao/DisFace3DNet)经 GitHub API 确认为公开仓库，主页与 CV 保留该入口。
+- 新增条目位于主页 Social perception 分组及 CV 研究成果列表首位，并加入 Recent updates。同步后网站共有 11 项研究成果，包含 ResearchGate 当前列表之外的 ICLC 2024 与 TrailTracking。
+
+本次仍未修改 ResearchGate 账户。
