@@ -55,6 +55,9 @@ nav a:hover, nav a[aria-current="page"] { color: var(--accent); }
 .news-list li { display: grid; grid-template-columns: 49px minmax(0, 1fr); gap: 14px; margin-bottom: 10px; }
 .news-date { color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; padding-top: 2px; }
 .topic-title { color: var(--muted); font-size: 15px; font-weight: 600; margin: 22px 0 2px; }
+.current-research { margin: 18px 0 22px; padding-left: 16px; border-left: 2px solid var(--line); }
+.current-research h3 { font-size: 15px; margin-bottom: 4px; }
+.current-research .plain-list { margin: 8px 0 0; font-size: 13px; }
 .publication { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 18px; padding: 18px 0; border-bottom: 1px solid var(--line); }
 .publication-label { padding-top: 3px; }
 .publication-label > span { display: inline-block; padding: 2px 7px; color: var(--accent); background: #eef3fa; font-size: 10px; font-weight: 650; line-height: 1.45; }
