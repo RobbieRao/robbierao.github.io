@@ -1,0 +1,424 @@
+{
+  "approved_on": "2026-10-21",
+  "source": "Owner-approved undergraduate materials and years; B05 display rotated 90 degrees counterclockwise.",
+  "projects": [
+    {
+      "slug": "liangzhu",
+      "title": "Liangzhu Generative Design",
+      "chinese": "帛纹良徵",
+      "year": 2024,
+      "category": "Generative design · Exhibition concept",
+      "review_id": "R03",
+      "summary": "Liangzhu motifs reinterpreted through generative workflows and an exhibition-table concept.",
+      "intro": "A design exploration linking Liangzhu-inspired motifs, generative workflows, digital fashion, and an interactive exhibition-table concept.",
+      "intro_cn": "以良渚纹样为起点的生成设计探索，连接纹样元素库、ComfyUI 工作流、数字服饰与交互展陈方案。",
+      "process": "The motif library provides a visual vocabulary for generation. Three-dimensional studies explore how these motifs can become objects and surfaces within an exhibition-table concept.",
+      "assets": [
+        {
+          "source": "A030",
+          "name": "exhibition-concept",
+          "caption": "Exhibition-table concept — rendered visualization.",
+          "alt": "Rendered exhibition table with interactive surfaces and textile displays",
+          "original": "D:/智能所优秀毕业生材料/饶冯桂/作品/帛纹良徵/整体效果图.jpg",
+          "source_sha256": "7b496694f0b395931fd4edeb849a015f87885b0ee0b89c71c234d923642005c3",
+          "width": 2400,
+          "height": 1697,
+          "url": "/images/design/liangzhu/exhibition-concept.webp"
+        },
+        {
+          "source": "A029",
+          "name": "motif-library",
+          "caption": "A library of representative motifs.",
+          "alt": "Grid of Liangzhu-inspired motifs and patterns",
+          "original": "D:/智能所优秀毕业生材料/饶冯桂/作品/帛纹良徵/代表性特征纹样.jpg",
+          "source_sha256": "98a7a8119250be2b21986dd33be177f61ea8c363fac1c7a59d82637d84217882",
+          "width": 2400,
+          "height": 1696,
+          "url": "/images/design/liangzhu/motif-library.webp"
+        },
+        {
+          "source": "A038",
+          "name": "generative-workflow",
+          "caption": "ComfyUI workflow for generative exploration.",
+          "alt": "ComfyUI nodes and image-generation workflow",
+          "original": "D:/智能所优秀毕业生材料/饶冯桂/作品/帛纹良徵/良渚comfyui.jpg",
+          "source_sha256": "d1b1b3266281d3af6338dc33119ae057c76d5e66f7f00e5a62486be5b046fe7b",
+          "width": 2400,
+          "height": 1697,
+          "url": "/images/design/liangzhu/generative-workflow.webp"
+        },
+        {
+          "source": "A037",
+          "name": "three-dimensional-motifs",
+          "caption": "Translating motifs into three-dimensional forms.",
+          "alt": "Three-dimensional motifs and components for an exhibition table",
+          "original": "D:/智能所优秀毕业生材料/饶冯桂/作品/帛纹良徵/纹饰立体化.png",
+          "source_sha256": "a301033c70640aaf0cb3fd3865255e8dc2daff3628466861c8ad5d1d8227a4b3",
+          "width": 2400,
+          "height": 1500,
+          "url": "/images/design/liangzhu/three-dimensional-motifs.webp"
+        }
+      ],
+      "cover": "/images/design/liangzhu/cover.webp",
+      "cover_width": 960,
+      "cover_height": 679
+    },
+    {
+      "slug": "artisense",
+      "title": "Artisense",
+      "chinese": "意绘",
+      "year": 2023,
+      "category": "AI art education · Product prototype",
+      "review_id": "R02",
+      "team": true,
+      "summary": "A generative-AI art-education prototype for reference generation, feedback, and guided practice.",
+      "intro": "A generative-AI art-education prototype exploring reference generation, conversational feedback, and guided practice across mobile and larger-screen interfaces.",
+      "intro_cn": "面向美术学习的生成式 AI 产品原型，围绕参考图生成、对话式作品反馈与练习支持组织移动端及多端学习体验。",
+      "process": "The interface studies bring reference browsing, drawing support, and feedback into a shared learning experience.",
+      "awards": [
+        "Gold Award, China Academy of Art’s 9th “Internet+” Innovation and Entrepreneurship Competition, 2023 (university level).",
+        "Third Prize, East China division, Innovation Track of the Mobile Application Innovation Contest, China Collegiate Computing Contest, 2023."
+      ],
+      "assets": [
+        {
+          "source": "A044",
+          "name": "learning-interfaces",
+          "caption": "Core learning interfaces across phone and tablet.",
+          "alt": "Artisense phone and tablet interfaces for drawing, references, and feedback",
+          "original": "D:/智能所优秀毕业生材料/饶冯桂/作品/意绘/6.jpg",
+          "source_sha256": "96fb0994a99a808dbf0df2097bbcb691cfe2774430f319918fedb8cd973c189d",
+          "width": 2400,
+          "height": 1215,
+          "url": "/images/design/artisense/learning-interfaces.webp"
+        },
+        {
+          "source": "A039",
+          "name": "project-identity",
+          "caption": "Artisense project identity.",
+          "alt": "Orange Artisense visual identity for an AI art-education product",
+          "original": "D:/智能所优秀毕业生材料/饶冯桂/作品/意绘/1.jpg",
+          "source_sha256": "de2f6cdc62aaf2da42b4fa3443f316fda6ddecadc843cf717a6e917d774c32bc",
+          "width": 2400,
+          "height": 1215,
+          "url": "/images/design/artisense/project-identity.webp"
+        }
+      ],
+      "cover": "/images/design/artisense/cover.webp",
+      "cover_width": 960,
+      "cover_height": 486
+    },
+    {
+      "slug": "swim-the-world",
+      "title": "Swim the World",
+      "chinese": "泳动世界",
+      "year": 2023,
+      "category": "Public interaction · AI co-creation",
+      "review_id": "B01",
+      "summary": "An urban co-creation concept linking mobile drawing, AI-generated characters, and public displays.",
+      "intro": "An interaction-design concept for urban co-creation around the Asian Games, connecting mobile drawing and AI-assisted character creation with shared public displays.",
+      "intro_cn": "围绕亚运主题展开的城市共创交互方案，将移动端绘画、AI 辅助角色生成与公共屏幕体验连接起来。",
+      "process": "The proposed journey moves from scanning a code and choosing a creative theme to drawing a character and sharing it in a collective visual environment.",
+      "assets": [
+        {
+          "source": "A057",
+          "name": "co-creation-system",
+          "caption": "Mobile creation, character sharing, and exhibition touchpoints.",
+          "alt": "Swim the World concept linking a mobile app, AI characters, and public displays",
+          "original": "D:/智能所优秀毕业生材料/饶冯桂/作品/泳动世界/艺术学术简历Portfolio_頁面_20.jpg",
+          "source_sha256": "6966feb76e0ecf609e4af0fa23ec9285f223dddfadf3f7716faa96bb73fb8123",
+          "width": 2400,
+          "height": 1215,
+          "url": "/images/design/swim-the-world/co-creation-system.webp"
+        },
+        {
+          "source": "A056",
+          "name": "mobile-journey",
+          "caption": "The proposed mobile interaction journey.",
+          "alt": "Mobile journey from scanning a code to drawing and sharing a swimming character",
+          "original": "D:/智能所优秀毕业生材料/饶冯桂/作品/泳动世界/艺术学术简历Portfolio_頁面_19.jpg",
+          "source_sha256": "36c7fe2a23d3ec80433e0f6b52e4af2995f9211e7bb1fe0be5cf1a79da22d758",
+          "width": 2400,
+          "height": 1215,
+          "url": "/images/design/swim-the-world/mobile-journey.webp"
+        }
+      ],
+      "cover": "/images/design/swim-the-world/cover.webp",
+      "cover_width": 960,
+      "cover_height": 486
+    },
+    {
+      "slug": "digital-human",
+      "title": "Digital Human Interaction",
+      "chinese": "数字人交互",
+      "year": 2023,
+      "category": "Digital character · Live demonstration",
+      "review_id": "B05",
+      "rotate_ccw": true,
+      "summary": "A digital-character demonstration presented through a physical display setup.",
+      "intro": "A live demonstration exploring the presentation of a digital character within a physical display setup.",
+      "intro_cn": "通过实体显示装置呈现数字角色，记录现场演示中的角色形态与视觉效果。",
+      "process": "The demonstration footage brings the character, display, and surrounding hardware into the same view. The stills below document two moments from the on-site presentation.",
+      "assets": [
+        {
+          "source": "V05F07",
+          "name": "live-demonstration",
+          "caption": "On-site digital-character demonstration.",
+          "alt": "Upright digital character in a physical display with speakers below",
+          "original": "D:/智能所优秀毕业生材料/饶冯桂/作品/实时展示-数字人交互.MP4",
+          "source_sha256": "8d9459a110f99c35364ba44002e245c92d9f3ffca5fb5da096ff09801ba2338e",
+          "width": 1280,
+          "height": 720,
+          "url": "/images/design/digital-human/live-demonstration.webp"
+        },
+        {
+          "source": "V05F03",
+          "name": "character-display",
+          "caption": "Another moment from the live presentation.",
+          "alt": "Digital character and surrounding display hardware during the demonstration",
+          "original": "D:/智能所优秀毕业生材料/饶冯桂/作品/实时展示-数字人交互.MP4",
+          "source_sha256": "4df02af4beb6cb2ab0a3f1c9ae68dbfaf8a024e186d0fc92475f5cf480cb0d78",
+          "width": 1280,
+          "height": 720,
+          "url": "/images/design/digital-human/character-display.webp"
+        }
+      ],
+      "cover": "/images/design/digital-human/cover.webp",
+      "cover_width": 960,
+      "cover_height": 540
+    },
+    {
+      "slug": "water-shadows",
+      "title": "水陌·渔影",
+      "chinese": "",
+      "year": 2023,
+      "category": "Spatial installation · Projection",
+      "review_id": "R05",
+      "summary": "Metal structure, plants, and projected imagery brought together in a physical installation.",
+      "intro": "A fish-shaped installation bringing metal structure, plants, projection, and a physical display into one spatial composition.",
+      "intro_cn": "以鱼骨状金属结构、植物和投影纱幕构成现场装置，探索自然意象与数字影像在实体空间中的共存。",
+      "process": "Photographs of the installation show the overall arrangement alongside its structural connections, planting, and projection mesh.",
+      "assets": [
+        {
+          "source": "A048",
+          "name": "installation-view",
+          "caption": "The completed physical installation.",
+          "alt": "Full-height photograph of a metal, plant, and projection installation",
+          "original": "D:/智能所优秀毕业生材料/饶冯桂/作品/水陌·渔影/_DSC7251.JPG",
+          "source_sha256": "d594622ccd582e6258b9d1910f4e56a15309777e4d3779ef0b668483c080b5db",
+          "width": 1600,
+          "height": 2400,
+          "url": "/images/design/water-shadows/installation-view.webp"
+        },
+        {
+          "source": "A052",
+          "name": "structural-detail",
+          "caption": "Structural connections and cabling.",
+          "alt": "Metal connections and cables within the installation",
+          "original": "D:/智能所优秀毕业生材料/饶冯桂/作品/水陌·渔影/_DSC7324.JPG",
+          "source_sha256": "b37c604eed22ace98768814401e3b7d4b1bc3838255edfa56d74ecd373135787",
+          "width": 2400,
+          "height": 1600,
+          "url": "/images/design/water-shadows/structural-detail.webp"
+        },
+        {
+          "source": "A054",
+          "name": "projection-detail",
+          "caption": "Projection mesh and the fish-shaped structure.",
+          "alt": "Blue projected imagery on mesh alongside the metal structure",
+          "original": "D:/智能所优秀毕业生材料/饶冯桂/作品/水陌·渔影/_DSC7340.JPG",
+          "source_sha256": "4a59a2f2e03443ea4870fbf8d7dd1d2cae00403a38546fbce0887ebaed84e61c",
+          "width": 2400,
+          "height": 1600,
+          "url": "/images/design/water-shadows/projection-detail.webp"
+        },
+        {
+          "source": "A046",
+          "name": "planting-detail",
+          "caption": "Plants and the illuminated base.",
+          "alt": "Plants and lighting at the base of the installation",
+          "original": "D:/智能所优秀毕业生材料/饶冯桂/作品/水陌·渔影/_DSC7234.JPG",
+          "source_sha256": "d5e4ca8e44e4415a8e0413b6c23d4fd442b6824a54848bd007e27c3f08358982",
+          "width": 2400,
+          "height": 1600,
+          "url": "/images/design/water-shadows/planting-detail.webp"
+        }
+      ],
+      "cover": "/images/design/water-shadows/cover.webp",
+      "cover_width": 640,
+      "cover_height": 960
+    },
+    {
+      "slug": "lightspoken",
+      "title": "LightSpoken",
+      "chinese": "光屿",
+      "year": 2022,
+      "category": "Interactive lighting · Physical prototype",
+      "review_id": "R01",
+      "summary": "A modular lighting installation developed through fabrication and programmable light behaviors.",
+      "intro": "A modular lighting-installation prototype combining physical fabrication with programmable light behaviors.",
+      "intro_cn": "围绕模块化灯光结构展开的交互装置探索，结合实体模型、灯光状态编排与通信控制，形成从结构构想到软件开发的原型过程。",
+      "process": "The project documentation follows sketches and handmade structural models through to software controls and distinct lighting states.",
+      "assets": [
+        {
+          "source": "A006",
+          "name": "lighting-installation",
+          "caption": "Modular lighting installation.",
+          "alt": "Purple and blue illuminated modules forming the LightSpoken installation",
+          "original": "D:/智能所优秀毕业生材料/饶冯桂/作品/光屿/艺术学术简历Portfolio_頁面_23.jpg",
+          "source_sha256": "1e3cec4b6a0fb001c256f4c24c89d6f04b229767f1adbee6e133776af451874a",
+          "width": 2400,
+          "height": 1215,
+          "url": "/images/design/lightspoken/lighting-installation.webp"
+        },
+        {
+          "source": "A008",
+          "name": "model-making",
+          "caption": "Structural sketches, handmade models, and assembly studies.",
+          "alt": "Sketches and physical models showing the LightSpoken fabrication process",
+          "original": "D:/智能所优秀毕业生材料/饶冯桂/作品/光屿/艺术学术简历Portfolio_頁面_25.jpg",
+          "source_sha256": "feb191376a777d0d36786a2bf9c1ed0f2c1f1a689b2bef343c3f21595923bc7a",
+          "width": 2400,
+          "height": 1215,
+          "url": "/images/design/lightspoken/model-making.webp"
+        },
+        {
+          "source": "A010",
+          "name": "lighting-controls",
+          "caption": "Interface development, communication controls, and lighting states.",
+          "alt": "Lighting-control interfaces, software code, and different illumination modes",
+          "original": "D:/智能所优秀毕业生材料/饶冯桂/作品/光屿/艺术学术简历Portfolio_頁面_27.jpg",
+          "source_sha256": "1760c254df418addea51fd90341738b4a6377b378206d6366223016e2bae143a",
+          "width": 2400,
+          "height": 1216,
+          "url": "/images/design/lightspoken/lighting-controls.webp"
+        }
+      ],
+      "cover": "/images/design/lightspoken/cover.webp",
+      "cover_width": 960,
+      "cover_height": 486
+    },
+    {
+      "slug": "lost-homeland",
+      "title": "The Lost Homeland",
+      "chinese": "家源",
+      "year": 2022,
+      "category": "Science-fiction short · 3D production",
+      "review_id": "R06",
+      "team": true,
+      "summary": "A science-fiction short exploring belonging in a data-built universe.",
+      "intro": "A science-fiction short exploring belonging in a data-built universe, supported by scene-development and material-workflow documentation.",
+      "intro_cn": "以数据宇宙中的归属感为叙事线索，将场景、材质、粒子效果与镜头语言组织为科幻短片，并保留制作过程作为作品说明。",
+      "process": "Finished scenes are presented alongside the material nodes and scene-development views used during production.",
+      "assets": [
+        {
+          "source": "A013",
+          "name": "circular-corridor",
+          "caption": "A finished scene from the short film.",
+          "alt": "A dark science-fiction environment built around a circular corridor",
+          "original": "D:/智能所优秀毕业生材料/饶冯桂/作品/家源/1709278618291.jpg",
+          "source_sha256": "4ca41af0c8ce90a9585878bfc870a1ec0f8808f982f2db124c425dca2a9cfd51",
+          "width": 2400,
+          "height": 1334,
+          "url": "/images/design/lost-homeland/circular-corridor.webp"
+        },
+        {
+          "source": "A020",
+          "name": "data-universe",
+          "caption": "A contrasting, luminous environment within the film.",
+          "alt": "Bright cyan architectural fragments in a digital universe",
+          "original": "D:/智能所优秀毕业生材料/饶冯桂/作品/家源/1709278940076.jpg.png",
+          "source_sha256": "d5a293c04394b9c6598e2295af386e546558454b9abec6ad2f9264014897ea56",
+          "width": 2400,
+          "height": 1124,
+          "url": "/images/design/lost-homeland/data-universe.webp"
+        },
+        {
+          "source": "A027",
+          "name": "material-development",
+          "caption": "Material and scene-development documentation.",
+          "alt": "3D software views and material-node graphs from the production process",
+          "original": "D:/智能所优秀毕业生材料/饶冯桂/作品/家源/作品创作过程-1.jpg",
+          "source_sha256": "287d43fb0e9256e5ae4321409056e89d8fdc0385e64b3572c4f536a68911e575",
+          "width": 2400,
+          "height": 1556,
+          "url": "/images/design/lost-homeland/material-development.webp"
+        },
+        {
+          "source": "A028",
+          "name": "scene-development",
+          "caption": "Further scene and effect development.",
+          "alt": "Production screenshots showing scenes, materials, and effects",
+          "original": "D:/智能所优秀毕业生材料/饶冯桂/作品/家源/作品创作过程-2.jpg",
+          "source_sha256": "39d7a094f4b0e32f7579789135cafae8220d9765b5f97138936da4599afa82bd",
+          "width": 2400,
+          "height": 1556,
+          "url": "/images/design/lost-homeland/scene-development.webp"
+        }
+      ],
+      "cover": "/images/design/lost-homeland/cover.webp",
+      "cover_width": 960,
+      "cover_height": 534
+    },
+    {
+      "slug": "multifunctional-cart",
+      "title": "Multifunctional Cart",
+      "chinese": "多功能购物车",
+      "year": 2021,
+      "category": "Ergonomics · Industrial design",
+      "review_id": "R04",
+      "summary": "An ergonomic shopping-cart study developed through analysis, modeling, and physical prototyping.",
+      "intro": "An ergonomic shopping-cart design study developed through posture analysis, structural drawings, 3D modeling, and hands-on prototyping.",
+      "intro_cn": "从超市购物中的负重、转向与休息需求出发，结合姿态分析、结构草图、三维建模与实体样机，对多功能购物车进行人体工学设计探索。",
+      "process": "The design process connects shopping needs and posture studies with component development, engineering drawings, and a physical prototype.",
+      "assets": [
+        {
+          "source": "A005",
+          "name": "physical-prototype",
+          "caption": "From digital model to test model and physical prototype.",
+          "alt": "Shopping-cart development shown as a 3D model, test model, and fabricated prototype",
+          "original": "D:/智能所优秀毕业生材料/饶冯桂/作品/人机工学/艺术学术简历Portfolio_頁面_16.jpg",
+          "source_sha256": "d4dc138e807aaa896e44f3d743c2df751d4f1140183930d2ff9d1c963b259b5d",
+          "width": 2400,
+          "height": 1215,
+          "url": "/images/design/multifunctional-cart/physical-prototype.webp"
+        },
+        {
+          "source": "A002",
+          "name": "product-form",
+          "caption": "The proposed product form.",
+          "alt": "Rendered multifunctional shopping cart",
+          "original": "D:/智能所优秀毕业生材料/饶冯桂/作品/人机工学/艺术学术简历Portfolio_頁面_13.jpg",
+          "source_sha256": "141024bcc61305c9a802ea911affd1632ebd12e1144d4a2598fba4c094c577be",
+          "width": 2400,
+          "height": 1215,
+          "url": "/images/design/multifunctional-cart/product-form.webp"
+        },
+        {
+          "source": "A003",
+          "name": "posture-study",
+          "caption": "Shopping needs and posture analysis used during design.",
+          "alt": "User needs and posture studies for the shopping-cart design",
+          "original": "D:/智能所优秀毕业生材料/饶冯桂/作品/人机工学/艺术学术简历Portfolio_頁面_14.jpg",
+          "source_sha256": "037c8ee0bf2259c73a99a42ab7539229191655476a91bf99a969684390ecd8c9",
+          "width": 2400,
+          "height": 1215,
+          "url": "/images/design/multifunctional-cart/posture-study.webp"
+        },
+        {
+          "source": "A004",
+          "name": "structure-drawings",
+          "caption": "Component design and engineering drawings.",
+          "alt": "Structural sketches, components, and dimensioned drawings of the cart",
+          "original": "D:/智能所优秀毕业生材料/饶冯桂/作品/人机工学/艺术学术简历Portfolio_頁面_15.jpg",
+          "source_sha256": "93a95bd906b10c28f2de1d763b67bc592195b209ae7ec058c5194bec55dc79a0",
+          "width": 2400,
+          "height": 1215,
+          "url": "/images/design/multifunctional-cart/structure-drawings.webp"
+        }
+      ],
+      "cover": "/images/design/multifunctional-cart/cover.webp",
+      "cover_width": 960,
+      "cover_height": 486
+    }
+  ]
+}

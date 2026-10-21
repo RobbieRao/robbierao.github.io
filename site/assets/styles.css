@@ -71,6 +71,41 @@ nav a:hover, nav a[aria-current="page"] { color: var(--accent); }
 .project-meta { color: var(--muted); font-size: 11px; }
 .project h3 { margin: 5px 0 6px; font-size: 16px; }
 .project > p:last-child { font-size: 13px; }
+.design-gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-top: 18px; }
+.design-card { min-width: 0; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+.work-image { display: flex; align-items: center; justify-content: center; width: 100%; aspect-ratio: 16 / 10; overflow: hidden; background: #f4f5f7; margin-bottom: 12px; }
+.work-image > img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.design-card h3 { margin: 5px 0 2px; font-size: 16px; }
+.design-card h3 a { text-decoration: none; }
+.design-card h3 a:hover { text-decoration: underline; }
+.work-chinese { color: var(--muted); font-size: 12px; }
+.work-summary { font-size: 13px; margin-top: 7px; }
+.more-projects-title { margin-top: 26px; font-size: 15px; }
+/* Preserve the source frames; correct the on-site camera orientation in layout. */
+.rotate-ccw { display: block; position: relative; aspect-ratio: 9 / 16; overflow: hidden; background: #111; }
+.rotate-ccw img { display: block; position: absolute; width: 177.7777778%; height: 56.25%; max-width: none; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-90deg); object-fit: contain; }
+.work-image:has(.rotate-ccw) { background: #111; }
+.work-image .rotate-ccw { height: 100%; width: auto; }
+.case-page { max-width: 1020px; }
+.case-intro { padding: 32px 0 26px; }
+.case-back { display: inline-block; font-size: 13px; margin-bottom: 24px; text-decoration: none; }
+.case-intro h1 { margin: 10px 0 4px; font-size: 34px; line-height: 1.2; letter-spacing: -.7px; }
+.case-chinese { color: var(--muted); font-size: 18px; }
+.case-lead { max-width: 760px; margin-top: 20px; font-size: 18px; line-height: 1.6; }
+.case-translation { max-width: 760px; margin-top: 12px; font-size: 14px; line-height: 1.9; color: var(--muted); }
+.case-figure { min-width: 0; }
+.case-media { background: #f4f5f7; }
+.case-media > img, .case-media > a > img { display: block; width: 100%; height: auto; }
+.case-media > a { display: block; }
+.case-hero .case-media > img { max-height: 680px; object-fit: contain; }
+.case-media .rotate-ccw { width: min(100%, 380px); margin: 0 auto; }
+.case-figure figcaption { padding: 9px 0 0; color: var(--muted); font-size: 12px; }
+.case-section { margin: 34px 0; }
+.case-section h2 { font-size: 21px; padding-bottom: 9px; margin-bottom: 14px; border-bottom: 1px solid var(--line); }
+.case-section > p { max-width: 760px; font-size: 15px; }
+.case-gallery { display: grid; gap: 28px; margin-top: 24px; }
+.case-navigation { display: flex; justify-content: space-between; gap: 16px 24px; padding: 22px 0; margin-top: 32px; border-top: 1px solid var(--line); font-size: 13px; }
+.case-navigation a { max-width: 38%; }
 .personal-note { color: var(--accent); font-size: 18px; }
 .plain-list { margin: 0 0 14px; padding-left: 20px; }
 .plain-list li { padding-left: 2px; margin: 6px 0; }
@@ -140,6 +175,11 @@ nav a:hover, nav a[aria-current="page"] { color: var(--accent); }
   .publication-label { display: flex; align-items: center; gap: 9px; padding-top: 0; }
   .publication-label time { margin: 0; }
   .project-grid { grid-template-columns: minmax(0, 1fr); }
+  .design-gallery { grid-template-columns: minmax(0, 1fr); }
+  .case-intro h1 { font-size: 29px; }
+  .case-lead { font-size: 16px; }
+  .case-navigation { flex-wrap: wrap; }
+  .case-navigation a { max-width: 100%; }
   .cv-alias { display: block; margin-top: 4px; font-size: 20px; }
 }
 @media print {
@@ -150,7 +190,7 @@ nav a:hover, nav a[aria-current="page"] { color: var(--accent); }
   .cv-intro { padding: 0 0 22px; }
   .cv-intro h1 { font-size: 30pt; }
   .cv-section { padding: 18px 0; }
-  .cv-entry, .publication, .project { break-inside: avoid; }
+  .cv-entry, .publication, .project, .design-card, .case-figure { break-inside: avoid; }
   h2, h3, h4 { break-after: avoid; }
   a { color: black; text-decoration: none; }
 }
