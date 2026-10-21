@@ -36,9 +36,9 @@ I’m an ACM Professional Member, an IEEE Member, and a member of The Hong Kong 
 ## 代表作说明与公开证据
 
 - TAFFC 综述：公开的机构记录支持 Accepted / In press；贡献说明围绕 perception、interpretation、prediction 三部分连接刺激生成、实验方法、解释框架与预测建模。来源：https://research.mpu.edu.mo/en/publications/facial-social-trait-perception-interpretation-and-prediction-a-st/
-- DisFace3DNet：保留 arXiv preprint；网页中的七成分说明及 SCUT-FBP5500 五折 Pearson correlation（与平均人类评分比较，mean ± SD）均来自公开 v1 摘要。来源：https://arxiv.org/abs/2610.11656 。不与私下 Gemini 辅助预测观察混用，不将模型解释写成心理因果机制，也不将投稿目标写为已接收期刊。
+- DisFace3DNet：保留 arXiv preprint；网页中的七成分说明及 SCUT-FBP5500 五折 Pearson correlation（与平均人类评分比较，mean ± SD）均来自公开 v1 摘要。来源：https://arxiv.org/abs/2610.11656 。指标仅描述该预印本报告的评估，模型解释与心理因果机制分别表述。
 - CV 已同步八项用户批准的本科设计作品及年份，并将整个设计作品区置于 CV 内容末尾，来源映射见 `design-projects.json`。
-- 作者标记继续遵循 `AUTHOR-ROLES.md` 已确认记录。关于 Flowing Ink 的另一位共同通讯作者，当前未核实论文脚注，不由本次研究简介批准自动增加标记。
+- 作者标记继续遵循 `AUTHOR-ROLES.md` 已确认记录，以明确作者说明及论文脚注为依据。
 
 ## 学术交流动态
 
