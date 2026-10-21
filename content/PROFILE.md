@@ -18,7 +18,7 @@ I’m an ACM Professional Member, an IEEE Member, and a member of The Hong Kong 
 
 ## 学术交流动态
 
-- 2026年第十九届高校设计研究博士论坛「设计知识之转译」——现场报告入选。来源：用户于 2026-10-21 明确提供。主页和 CV 标记为 Selected for an in-person presentation；英文论坛名称为描述性译名，CV 保留中文原名。未提供报告题目或具体报告日期，因此不补写。
+- 2026第十九届高校设计研究博士论坛——现场报告入选。正式英文名称：Doctoral forum on design research；主题：设计知识之转译 / Building Translational Design Knowledge。来源：用户于 2026-10-21 提供入选事件，并于同日明确规范中英文名称及主题，取代先前的描述性英文译名。主页和 CV 标记为 Selected for an in-person presentation；未提供报告题目或个人具体报告日期，因此不补写。
 
 ## 统一表述
 
