@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Privacy — Robbie Fenggui Rao</title>
+  <meta name="description" content="How this personal website measures visits and how to opt out of its private analytics.">
+  <link rel="canonical" href="https://robbierao.github.io/privacy/">
+  <link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="page cv-page">
+    <header class="site-header"><a class="wordmark" href="/">Robbie Fenggui Rao</a><nav aria-label="Main navigation"><a href="/">Home</a><a href="/cv/">CV</a></nav></header>
+    <main id="main">
+      <section class="cv-intro"><p class="eyebrow">Website privacy</p><h1>Understanding visits</h1><p>This site measures visits to understand which research, CV, and design pages people find useful. The detailed records are private and accessible through the site owner's Cloudflare account.</p></section>
+      <section class="cv-section"><h2>What is recorded</h2><p>Private analytics records the page path, time, referring website, public IP address, approximate country and city, network provider, browser and system information, device category, and browser language. URL query parameters and fragments are not recorded. A random identifier stored in this browser helps estimate unique browsers and return visits; a session starts again after a 30-minute gap between recorded page views.</p><p>These counts estimate browsers and sessions, rather than identifying individual people. IP-based locations may be inaccurate, and several people may share an IP address.</p></section>
+      <section class="cv-section"><h2>Your choice</h2><p>You can turn off private analytics for this browser below. Global Privacy Control and Do Not Track signals also disable it. If browser storage is unavailable, visits may be recorded without a lasting identifier and cannot be reliably deduplicated.</p><p id="analytics-status" role="status">Private analytics preferences require JavaScript.</p><p><button class="analytics-choice" id="analytics-choice" type="button">Opt out of private analytics</button></p></section>
+      <section class="cv-section"><h2>Storage and access</h2><p>Records are held in a private Cloudflare D1 database. Raw logs are kept for up to 365 days and may be exported for the site owner's traffic analysis. This site does not expose IP addresses or individual browsing records through a public endpoint. The analytics is not used for advertising or session replay.</p><p>The public Homepage views badge uses the separate <a href="https://github.com/silentsoft/hits">Hits service</a>. Loading that image contacts Hits; the private analytics preference above does not control that separate page-view counter. GitHub Pages and Cloudflare also process requests to deliver the website and analytics service.</p></section>
+      <section class="cv-section"><h2>Questions</h2><p>Contact <a href="mailto:robbie.rao@connect.polyu.hk">robbie.rao@connect.polyu.hk</a>.</p><p class="section-note">Updated October 28, 2026.</p><p lang="zh-Hans">本网站的私有访问统计用于了解内容访问情况，记录访问时间、页面、来源、公网 IP、近似地区及设备信息，以浏览器随机标识估算去重和回访。原始日志保留最长 365 天。你可以使用上方按钮关闭本浏览器的私有统计；这不会关闭独立的 Hits 页脚访问计数。</p></section>
+    </main>
+    <footer class="site-footer"><p>© 2026 Robbie Fenggui Rao</p><p><a href="/">Home</a> · <a href="/cv/">CV</a></p></footer>
+  </div>
+  <script defer src="/assets/analytics.js"></script>
+</body>
+</html>
