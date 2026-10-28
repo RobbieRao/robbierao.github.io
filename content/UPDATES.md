@@ -2,7 +2,7 @@
 
 The owner approved the activity additions, the Swim the World / 召唤海洋小精灵 merge, full dates, and a collapsible archive on 2026-10-28. The homepage keeps six recent entries visible and six older entries in native HTML `details`. No JavaScript is required. The order is descending across both lists.
 
-An update may use the event day, publication day, or public announcement day. The date does not imply an appointment started on that day. Conference entries explicitly identify the event period; no individual presentation or attendance is inferred from coauthorship.
+An update may use the event day, publication day, or public announcement day. The date does not imply an appointment started on that day. The evidence table below preserves conference periods and date provenance; public news uses short event statements. No individual presentation or attendance is inferred from coauthorship.
 
 | Homepage date | Record | Date basis |
 | --- | --- | --- |
