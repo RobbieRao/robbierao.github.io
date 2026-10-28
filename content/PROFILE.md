@@ -10,6 +10,8 @@
 
 2026-10-28 活动履历更新：用户批准补充已检索的2050报告、童画未来指导教师、校内代表汇报及作品展览/获奖记录，确认“召唤海洋小精灵”与“泳动世界”为同一项目，CHI 2025成果沿用既有论文。用户明确CoR答辩日期为2026-06-17，并于该日成为PhD Candidate。主页动态采用完整年月日，较早记录可折叠；日期依据见 `UPDATES.md`。
 
+2026-10-28 荣誉补充：用户明确本科期间获中国美术学院颁发的吴冠中奖学金（Wu Guanzhong Scholarship）。主页荣誉栏与CV列入；未提供具体年份、等级或金额，不推断。
+
 ## 中文简介
 
 饶柏（Robbie Fenggui Rao，姓饶，名冯桂，字柏），连续创业者，香港理工大学设计学院博士候选人，杭州白昼网络科技有限公司（Bizzle Tech）首席执行官、Design Anything Lab 联合发起人，ACM 国际计算机学会专业会员、IEEE 会员、香港人类工效学学会（HKES）成员。担任香港理工大学 URIS 项目导师、SD4410 课程教学助理，独立准备课件并以英语授课，同时担任国际人机交互会议 ACM CHI 及 JCCE 期刊审稿人。
@@ -20,9 +22,9 @@
 
 I’m Robbie Fenggui Rao (饶柏), a serial entrepreneur, a PhD Candidate at the School of Design, The Hong Kong Polytechnic University, CEO of Bizzle Tech, and a co-initiator of Design Anything Lab.
 
-I study how facial appearance and movement shape social impressions, including perceived attractiveness, trustworthiness, and dominance. My work connects controllable 3D stimuli, explainable machine learning, and human experiments.
+I study how facial appearance and movement shape social impressions, including perceived attractiveness, trustworthiness, and dominance. I use controllable 3D stimuli, explainable machine learning, and human experiments to study these judgments.
 
-Trained in design at the China Academy of Art, I develop software, Unity/VR prototypes, and physical systems to turn research questions into testable studies. My practice also spans AI-driven products and entrepreneurial delivery.
+Trained in design at the China Academy of Art, I develop software, Unity/VR prototypes, and physical systems to turn research questions into testable studies. I also design and build AI-driven digital products.
 
 I’m an ACM Professional Member, an IEEE Member, and a member of The Hong Kong Ergonomics Society (HKES). At PolyU, I mentor URIS projects and serve as a Teaching Assistant for SD4410, independently preparing course materials and teaching classes in English. I also review for ACM CHI and JCCE.
 
