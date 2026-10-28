@@ -6,11 +6,11 @@
 
 2026-10-21 研究简介更新：用户提供完整学术资料后，明确同意补充研究定位、方法能力、当前博士研究、代表作贡献、Confirmation 时间与 CV 设计作品。下列简介与研究记录为本次批准版本。
 
-2026-10-28 更新：用户明确新增 Journal of Computational and Cognitive Engineering（JCCE）期刊审稿人身份，紧接 ACM CHI 审稿人展示；公开页面仅列审稿身份及期刊名称。
+2026-10-28 更新：用户明确新增 Journal of Computational and Cognitive Engineering（JCCE）期刊审稿人身份，紧接 ACM CHI 审稿人展示；随后明确要求公开页面仅用缩写 JCCE，与 CHI 的简洁写法一致。
 
 ## 中文简介
 
-饶柏（Robbie Fenggui Rao，姓饶，名冯桂，字柏），连续创业者，香港理工大学设计学院博士候选人，杭州白昼网络科技有限公司（Bizzle Tech）首席执行官、Design Anything Lab 联合发起人，ACM 国际计算机学会专业会员、IEEE 会员、香港人类工效学学会（HKES）成员。担任香港理工大学 URIS 项目导师、SD4410 课程教学助理，独立准备课件并以英语授课，同时担任国际人机交互会议 ACM CHI 及 Journal of Computational and Cognitive Engineering（JCCE）期刊审稿人。
+饶柏（Robbie Fenggui Rao，姓饶，名冯桂，字柏），连续创业者，香港理工大学设计学院博士候选人，杭州白昼网络科技有限公司（Bizzle Tech）首席执行官、Design Anything Lab 联合发起人，ACM 国际计算机学会专业会员、IEEE 会员、香港人类工效学学会（HKES）成员。担任香港理工大学 URIS 项目导师、SD4410 课程教学助理，独立准备课件并以英语授课，同时担任国际人机交互会议 ACM CHI 及 JCCE期刊审稿人。
 
 我的研究关注面部外观与动态动作如何塑造吸引力、可信度和支配感等社会印象，结合可控三维刺激、可解释机器学习与人类实验研究这些关系。当前博士工作进一步探索动态面孔的知觉过程及其 EEG 反应。中国美术学院的设计训练与软件、三维和原型实践，使我能够把研究问题转化为可运行的实验系统，同时持续开展 AI 数字产品与创业实践。
 
@@ -22,7 +22,7 @@ I study how facial appearance and movement shape social impressions, including p
 
 Trained in design at the China Academy of Art, I develop software, Unity/VR prototypes, and physical systems to turn research questions into testable studies. My practice also spans AI-driven products and entrepreneurial delivery.
 
-I’m an ACM Professional Member, an IEEE Member, and a member of The Hong Kong Ergonomics Society (HKES). At PolyU, I mentor URIS projects and serve as a Teaching Assistant for SD4410, independently preparing course materials and teaching classes in English. I also review for ACM CHI and the Journal of Computational and Cognitive Engineering (JCCE).
+I’m an ACM Professional Member, an IEEE Member, and a member of The Hong Kong Ergonomics Society (HKES). At PolyU, I mentor URIS projects and serve as a Teaching Assistant for SD4410, independently preparing course materials and teaching classes in English. I also review for ACM CHI and JCCE.
 
 ## 当前博士研究与方法
 
