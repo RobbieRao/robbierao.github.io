@@ -6,6 +6,8 @@ The homepage uses a desktop profile sidebar and compact topical publication list
 
 `content/PROFILE.md` records the owner's latest bilingual biography, professional roles, memberships, and teaching experience. Public profile text uses Robbie Fenggui Rao / 饶柏; publications retain the verified author name Fenggui Rao.
 
+`content/UPDATES.md` records the sources and date meanings for the homepage updates and its collapsible archive.
+
 ## Edit and preview
 
 - `site/index.html`: homepage and project descriptions.
