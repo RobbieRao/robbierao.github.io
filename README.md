@@ -8,6 +8,8 @@ The homepage uses a desktop profile sidebar and compact topical publication list
 
 `content/UPDATES.md` records the sources and date meanings for the homepage updates and its collapsible archive.
 
+The homepage footer shows a [Hits](https://github.com/silentsoft/hits) page-view badge, started on October 28, 2026. It uses the dedicated key `robbierao.github.io`, separate from GitHub profile or repository traffic. Only the homepage embeds the badge; the CV and project pages do not increment it. The image loads eagerly so a visit can count without scrolling to the footer. Counts include repeat visits and verification requests, are subject to browser caching or blocking, and are not unique people or historical traffic. Click the badge for the service's statistics. This external image requires no account, script, or build dependency; if it cannot load, its alt text remains and the rest of the site works normally. Keep the key stable to preserve the count, and do not use the service's `extraCount` parameter to inflate it.
+
 ## Edit and preview
 
 - `site/index.html`: homepage and project descriptions.
