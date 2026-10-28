@@ -8,6 +8,8 @@
 
 2026-10-28 更新：用户明确新增 Journal of Computational and Cognitive Engineering（JCCE）期刊审稿人身份，紧接 ACM CHI 审稿人展示；随后明确要求公开页面仅用缩写 JCCE，与 CHI 的简洁写法一致。
 
+2026-10-28 活动履历更新：用户批准补充已检索的2050报告、童画未来指导教师、校内代表汇报及作品展览/获奖记录，确认“召唤海洋小精灵”与“泳动世界”为同一项目，CHI 2025成果沿用既有论文。用户明确CoR答辩日期为2026-06-17，并于该日成为PhD Candidate。主页动态采用完整年月日，较早记录可折叠；日期依据见 `UPDATES.md`。
+
 ## 中文简介
 
 饶柏（Robbie Fenggui Rao，姓饶，名冯桂，字柏），连续创业者，香港理工大学设计学院博士候选人，杭州白昼网络科技有限公司（Bizzle Tech）首席执行官、Design Anything Lab 联合发起人，ACM 国际计算机学会专业会员、IEEE 会员、香港人类工效学学会（HKES）成员。担任香港理工大学 URIS 项目导师、SD4410 课程教学助理，独立准备课件并以英语授课，同时担任国际人机交互会议 ACM CHI 及 JCCE 期刊审稿人。
@@ -32,7 +34,7 @@ I’m an ACM Professional Member, an IEEE Member, and a member of The Hong Kong 
 - 人类实验与 EEG：EEG 实验实施与数据分析、行为评分、HCI 研究设计与定性/定量分析。
 - 三维面部处理：模板注册、顶点对应、参数化刺激与动作重定向相关研究；不将统一拓扑表述为时间对齐。
 - 模型与工程：深度学习建模、训练、评估、可解释分析；全栈研究工具、Unity/VR 实验原型，以及 vLLM/SGLang 模型服务部署。
-- Confirmation：2026 年 6 月通过，保留 PhD Candidate 身份。CV 不由此推定毕业时间。
+- Confirmation of Registration（CoR）：2026-06-17 通过答辩并成为 PhD Candidate，日期由用户于2026-10-28明确提供。CV 不由此推定毕业时间。
 - 本科成绩标签：Average score: approximately 90/100；2021–22、2022–23 的第一名仍按综合测评口径表述。正式学位英文名未新增 BA/BDes 推断。
 
 ## 代表作说明与公开证据
@@ -45,6 +47,10 @@ I’m an ACM Professional Member, an IEEE Member, and a member of The Hong Kong 
 ## 学术交流动态
 
 - 2026第十九届高校设计研究博士论坛——现场报告入选。正式英文名称：Doctoral forum on design research；主题：设计知识之转译 / Building Translational Design Knowledge。来源：用户于 2026-10-21 提供入选事件，并于同日明确规范中英文名称及主题，取代先前的描述性英文译名。主页和 CV 标记为 Selected for an in-person presentation；未提供报告题目或个人具体报告日期，因此不补写。
+- 2024-04-27，2050@2024「设计人工智能」论坛受邀报告：《在AI时代构建持续知识体系的组织实践分享》。用户提供的微信原文单独列出其题目，优先于早期转载合并两位分享者的题名；实验室会后报道支持受邀分享记录。
+- 2024-01-03，代表D&A Lab参加中国美术学院2024跨年思享汇暨学生社团发展座谈会，分享朋辈教学、知识共享与学生研究实践。按校内代表汇报表述。
+- 2023-07-29至08-13，vivo「童画未来」乡村儿童美育装置展（深圳）指导教师；此为项目署名角色，不推定长期学校任教职务。
+- 2023年《泳动世界》省级数字艺术邀请展入选、公共装置落地及意绘团队竞赛记录，见 `DESIGN-WORKS.md` 与 `design-projects.json`。CHI 2025对应论文不增加重复条目。
 
 ## 统一表述
 

@@ -76,6 +76,9 @@
       "intro_cn": "面向美术学习的生成式 AI 产品原型，围绕参考图生成、对话式作品反馈与练习支持组织移动端及多端学习体验。",
       "process": "The interface studies bring reference browsing, drawing support, and feedback into a shared learning experience.",
       "awards": [
+        "Bronze, Zhejiang Province International College Student Innovation Competition, 2024 (team award).",
+        "Silver, China Academy of Art’s 10th International College Student Innovation Competition, 2024 (team award).",
+        "Bronze, 9th Zhejiang Province International “Internet+” College Student Innovation and Entrepreneurship Competition, 2023 (team award).",
         "Gold Award, China Academy of Art’s 9th “Internet+” Innovation and Entrepreneurship Competition, 2023 (university level).",
         "Third Prize, East China division, Innovation Track of the Mobile Application Innovation Contest, China Collegiate Computing Contest, 2023."
       ],
@@ -111,13 +114,24 @@
       "slug": "swim-the-world",
       "title": "Swim the World",
       "chinese": "泳动世界",
+      "aliases": ["召唤海洋小精灵"],
+      "alias_confirmed_on": "2026-10-28",
       "year": 2023,
       "category": "Public interaction · AI co-creation",
       "review_id": "B01",
-      "summary": "An urban co-creation concept linking mobile drawing, AI-generated characters, and public displays.",
-      "intro": "An interaction-design concept for urban co-creation around the Asian Games, connecting mobile drawing and AI-assisted character creation with shared public displays.",
-      "intro_cn": "围绕亚运主题展开的城市共创交互方案，将移动端绘画、AI 辅助角色生成与公共屏幕体验连接起来。",
-      "process": "The proposed journey moves from scanning a code and choosing a creative theme to drawing a character and sharing it in a collective visual environment.",
+      "summary": "AI co-creation through drawing and public displays, with installations in Hangzhou public spaces and an exhibition selection.",
+      "intro": "An AI co-creation installation connecting drawing, generated characters, and shared public displays, with installations in Hangzhou public spaces.",
+      "intro_cn": "通过绘画、AI 辅助角色生成与公共屏幕连接公众共创，在杭州亚运相关无废空间及西湖区公共场景落地。",
+      "process": "The interaction journey moves from scanning a code and choosing a creative theme to drawing a character and sharing it in a collective visual environment.",
+      "team": true,
+      "credits": ["饶冯桂", "周致远", "臧渠成", "庾智滔", "崔男", "傅蓉"],
+      "project_record": "https://5596041.cargo.site/召唤海洋小精灵",
+      "exhibition_selection": {
+        "year": 2023,
+        "title": "AI连接未来 智绘看见亚运——浙江省大学生数字艺术作品邀请展",
+        "announcement_date": "2023-09-08",
+        "source": "https://di.zjnu.edu.cn/_upload/article/files/ba/2b/e008ba2e438db2175d14b06ab1b5/cc6e8b42-5c00-461a-9a9e-2c96d184f4b8.pdf"
+      },
       "assets": [
         {
           "source": "A057",
@@ -133,7 +147,7 @@
         {
           "source": "A056",
           "name": "mobile-journey",
-          "caption": "The proposed mobile interaction journey.",
+          "caption": "The mobile interaction journey.",
           "alt": "Mobile journey from scanning a code to drawing and sharing a swimming character",
           "original": "D:/智能所优秀毕业生材料/饶冯桂/作品/泳动世界/艺术学术简历Portfolio_頁面_19.jpg",
           "source_sha256": "36c7fe2a23d3ec80433e0f6b52e4af2995f9211e7bb1fe0be5cf1a79da22d758",
