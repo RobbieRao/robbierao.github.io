@@ -2,6 +2,12 @@
 
 The website stays on GitHub Pages. A small Cloudflare Worker accepts page-view events and writes to a private D1 database. There is no public log-reading, dashboard, or export endpoint. The owner uses the Cloudflare dashboard or Wrangler account login to read records and export CSV.
 
+## Production deployment
+
+The collector is deployed at `https://robbierao-visitor-analytics.fengguirao.workers.dev`, bound to the private D1 database `robbierao-visitor-analytics`. The ten content pages use its `/collect` endpoint. Account/database IDs remain in the ignored `wrangler.local.jsonc`; reuse this config for updates rather than recreating the database. `GET /health` checks the binding. The production verification confirmed three views from two browser IDs, duplicate-event handling, connection IP recording, origin/privacy controls, private read boundaries, and CSV export; its synthetic rows were removed afterward.
+
+Cloudflare may reject Python's default `urllib` user agent on `workers.dev` with error 1010 before a request reaches the Worker. For CLI diagnostics, send a descriptive application User-Agent; normal browser requests supply their own. See [Cloudflare's explanation](https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-1xxx-errors/error-1010/). Do not change security settings to work around a diagnostic client header.
+
 ## Counting and data
 
 - One event is one content-page load. The homepage, CV, and eight design pages are eligible. Hash changes, redirect pages, local previews, and the privacy page do not create extra views.
