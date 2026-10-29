@@ -114,7 +114,9 @@
       "slug": "swim-the-world",
       "title": "Swim the World",
       "chinese": "泳动世界",
-      "aliases": ["召唤海洋小精灵"],
+      "aliases": [
+        "召唤海洋小精灵"
+      ],
       "alias_confirmed_on": "2026-10-28",
       "year": 2023,
       "category": "Public interaction · AI co-creation",
@@ -124,7 +126,14 @@
       "intro_cn": "通过绘画、AI 辅助角色生成与公共屏幕连接公众共创，在杭州亚运相关无废空间及西湖区公共场景落地。",
       "process": "The interaction journey moves from scanning a code and choosing a creative theme to drawing a character and sharing it in a collective visual environment.",
       "team": true,
-      "credits": ["饶冯桂", "周致远", "臧渠成", "庾智滔", "崔男", "傅蓉"],
+      "credits": [
+        "饶冯桂",
+        "周致远",
+        "臧渠成",
+        "庾智滔",
+        "崔男",
+        "傅蓉"
+      ],
       "project_record": "https://5596041.cargo.site/召唤海洋小精灵",
       "exhibition_selection": {
         "year": 2023,
@@ -205,12 +214,12 @@
       "title": "水陌·渔影",
       "chinese": "",
       "year": 2023,
-      "category": "Spatial installation · Projection",
+      "category": "Virtual environment · Projection installation",
       "review_id": "R05",
-      "summary": "Metal structure, plants, and projected imagery brought together in a physical installation.",
-      "intro": "A fish-shaped installation bringing metal structure, plants, projection, and a physical display into one spatial composition.",
-      "intro_cn": "以鱼骨状金属结构、植物和投影纱幕构成现场装置，探索自然意象与数字影像在实体空间中的共存。",
-      "process": "Photographs of the installation show the overall arrangement alongside its structural connections, planting, and projection mesh.",
+      "summary": "A virtual village landscape and a physical installation connected through fish swarms, point clouds, and projection.",
+      "intro": "A digital art project connecting a virtual landscape inspired by Hongfan Village, Qiandao Lake, with a fish-shaped projection installation.",
+      "intro_cn": "以千岛湖洪畈村为背景，通过虚拟场景、粒子影像和鱼骨状投影装置，探索自然景观与数字空间的连接。",
+      "process": "Virtual-scene development, technical art, structural prototyping, and projection design.",
       "assets": [
         {
           "source": "A048",
@@ -255,11 +264,134 @@
           "width": 2400,
           "height": 1600,
           "url": "/images/design/water-shadows/planting-detail.webp"
+        },
+        {
+          "source": "Owner-supplied PDF, page 1",
+          "name": "virtual-landscape",
+          "caption": "The outdoor virtual landscape, with vegetation, ruined structures, and fish moving through the sky.",
+          "alt": "An Unreal Engine landscape with vegetation, ruins, a circular structure, and fish in a starry sky",
+          "original": "D:/创作报告-饶冯桂.pdf",
+          "source_page": 1,
+          "source_sha256": "e342553df47d1b2a1ceca35ad7b716ee4cb5aacd74970b018da592a3debb8159",
+          "preparation": "Complete embedded image, WebP compression; no crop.",
+          "width": 1269,
+          "height": 585,
+          "url": "/images/design/water-shadows/virtual-landscape.webp"
+        },
+        {
+          "source": "Owner-supplied PDF, page 2",
+          "name": "niagara-workflow",
+          "caption": "Niagara development for the fish-swarm behaviors.",
+          "alt": "Unreal Engine Niagara editor showing a fish-swarm system and its scripted behavior",
+          "original": "D:/创作报告-饶冯桂.pdf",
+          "source_page": 2,
+          "source_sha256": "92741b7563ab1779b0ffb72d6e29247ec09300a4b7b1c8914c921bc1502ff875",
+          "preparation": "Complete embedded image, WebP compression; no crop.",
+          "width": 1898,
+          "height": 802,
+          "url": "/images/design/water-shadows/niagara-workflow.webp"
+        },
+        {
+          "source": "Owner-supplied PDF, page 3",
+          "name": "depth-point-cloud",
+          "caption": "A point-cloud view generated from scene-capture depth and rendered through Niagara.",
+          "alt": "A virtual village landscape represented by luminous points against a dark sky",
+          "original": "D:/创作报告-饶冯桂.pdf",
+          "source_page": 3,
+          "source_sha256": "46687a87326943ab79e409046e43b867fb8a50221152d780261e8cc562a2377e",
+          "preparation": "Complete embedded image, WebP compression; no crop.",
+          "width": 1883,
+          "height": 699,
+          "url": "/images/design/water-shadows/depth-point-cloud.webp"
+        },
+        {
+          "source": "Owner-supplied PDF, page 4",
+          "name": "structure-drawing",
+          "caption": "Fabrication drawings for the fish-shaped installation.",
+          "alt": "Cutting layout for the curved ribs and connecting pieces of the fish-shaped installation",
+          "original": "D:/创作报告-饶冯桂.pdf",
+          "source_page": 4,
+          "source_sha256": "0ef25655d0b825407151666171be09fc0c83461507a6486d87ed81dce47bdc7f",
+          "preparation": "Complete embedded image, WebP compression; no crop.",
+          "width": 1118,
+          "height": 782,
+          "url": "/images/design/water-shadows/structure-drawing.webp"
+        },
+        {
+          "source": "Owner-supplied PDF, page 4",
+          "name": "touchdesigner-projection",
+          "caption": "TouchDesigner flow-field network and the particle imagery developed for projection.",
+          "alt": "TouchDesigner node network beside a blue particle pattern",
+          "original": "D:/创作报告-饶冯桂.pdf",
+          "source_page": 4,
+          "source_sha256": "5f469d667c07bd77a446a7b658227c890ac7467eefffd46713861f9337f87509",
+          "preparation": "Complete embedded image, WebP compression; no crop.",
+          "width": 1269,
+          "height": 609,
+          "url": "/images/design/water-shadows/touchdesigner-projection.webp"
         }
       ],
       "cover": "/images/design/water-shadows/cover.webp",
       "cover_width": 640,
-      "cover_height": 960
+      "cover_height": 960,
+      "supplemented_on": "2026-10-29",
+      "sections": [
+        {
+          "title": "My contribution",
+          "paragraphs": [
+            "I developed the outdoor virtual scene, programmed its visual effects, and designed and helped fabricate the physical installation. I also worked on video editing and project writing. The interior exhibition space and architectural remodeling were developed by my teammates."
+          ],
+          "assets": [
+            "virtual-landscape"
+          ]
+        },
+        {
+          "title": "Real-time technical art",
+          "paragraphs": [
+            "In Unreal Engine, I iterated on Niagara scripts to make fish gather, disperse, blink, and follow spline paths. I also adapted the Ultra Dynamic Sky blueprint and replaced its skybox with imagery made in Stable Diffusion.",
+            "For the point-cloud scene, I stored scene-capture depth in the alpha channel and passed it into Niagara to render the landscape as particles."
+          ],
+          "assets": [
+            "niagara-workflow",
+            "depth-point-cloud"
+          ]
+        },
+        {
+          "title": "Structure and material decisions",
+          "paragraphs": [
+            "I designed the installation in Rhino and prepared fabrication drawings. Bent steel tubes produced curves that were too rigid, so we switched to hard aluminum wire inside flexible metal tubing. Sheet-metal skin required too much fabrication work and 3D printing was too costly; projection mesh became the final surface."
+          ],
+          "assets": [
+            "structure-drawing",
+            "structural-detail"
+          ]
+        },
+        {
+          "title": "Projection and fabrication",
+          "paragraphs": [
+            "I developed the projected particle imagery in TouchDesigner. Geometry COMP instancing created the particles, while Remap TOP sampled the flow field to update their acceleration and velocity. The resulting motion was projected onto the mesh surface."
+          ],
+          "assets": [
+            "touchdesigner-projection",
+            "projection-detail",
+            "planting-detail"
+          ]
+        },
+        {
+          "title": "Project writing and team",
+          "paragraphs": [
+            "I wrote a project study on MR-based immersive cultural-tourism design in Hongfan Village, bringing together the team’s design discussions and implementation work.",
+            "Project team: Fenggui Rao, 俞寒译, and 应文康."
+          ],
+          "assets": []
+        }
+      ],
+      "supplement_sources": [
+        {
+          "path": "D:/创作报告-饶冯桂.pdf",
+          "sha256": "ec909e4b04c758a30793d0c3228e15bd570da4dd7b5d4dfe669d2dc1c250e3c3"
+        }
+      ]
     },
     {
       "slug": "lightspoken",
@@ -268,10 +400,10 @@
       "year": 2022,
       "category": "Interactive lighting · Physical prototype",
       "review_id": "R01",
-      "summary": "A modular lighting installation developed through fabrication and programmable light behaviors.",
-      "intro": "A modular lighting-installation prototype combining physical fabrication with programmable light behaviors.",
-      "intro_cn": "围绕模块化灯光结构展开的交互装置探索，结合实体模型、灯光状态编排与通信控制，形成从结构构想到软件开发的原型过程。",
-      "process": "The project documentation follows sketches and handmade structural models through to software controls and distinct lighting states.",
+      "summary": "A Unity-controlled installation combining programmable light and motor-driven movement.",
+      "intro": "An interactive lighting and kinetic-installation prototype controlled through a Unity interface.",
+      "intro_cn": "通过 Unity 界面与 UniOSC 通信控制灯光及蜂巢结构的伸缩运动，将实体制作、灯光编排和机械运动结合为可运行的交互原型。",
+      "process": "Structural sketches and model-making, followed by Unity/UniOSC control of light and motor-driven motion.",
       "assets": [
         {
           "source": "A006",
@@ -305,11 +437,83 @@
           "width": 2400,
           "height": 1216,
           "url": "/images/design/lightspoken/lighting-controls.webp"
+        },
+        {
+          "source": "Owner-supplied PDF, page 7",
+          "name": "light-interface",
+          "caption": "Unity lighting interface and prototype tests in single-color, rainbow, and breathing modes.",
+          "alt": "LightSpoken development board showing Unity controls and three lighting modes",
+          "original": "D:/数字信息/光屿 饶冯桂 俞寒译.pdf",
+          "source_page": 7,
+          "source_sha256": "dda76e5cf38d5f5f628eb41dea4a1876fe9fc6ad5d545f35ac8f1b00b143447f",
+          "preparation": "Complete PDF page rendered at 2400 px, WebP compression; no crop.",
+          "width": 2261,
+          "height": 1600,
+          "url": "/images/design/lightspoken/light-interface.webp"
+        },
+        {
+          "source": "Owner-supplied PDF, page 8",
+          "name": "kinetic-interface",
+          "caption": "Movement controls and three positions of the motor-driven modules.",
+          "alt": "LightSpoken development board showing Unity movement controls and raised or lowered illuminated modules",
+          "original": "D:/数字信息/光屿 饶冯桂 俞寒译.pdf",
+          "source_page": 8,
+          "source_sha256": "b3a21b286521d3607691d0f82136cbf0dc8d4ad8a06f9a36bc482344276d8c96",
+          "preparation": "Complete PDF page rendered at 2400 px, WebP compression; no crop.",
+          "width": 2261,
+          "height": 1600,
+          "url": "/images/design/lightspoken/kinetic-interface.webp"
         }
       ],
       "cover": "/images/design/lightspoken/cover.webp",
       "cover_width": 960,
-      "cover_height": 486
+      "cover_height": 486,
+      "supplemented_on": "2026-10-29",
+      "sections": [
+        {
+          "title": "Physical form and fabrication",
+          "paragraphs": [
+            "The prototype uses a layered, open structure with separate lighting spaces. Cutouts shape the light: small openings reveal point sources, while linear openings work with LED strips. The model combines 5 mm acrylic with mirror paper to sharpen its contours and reflect light between the modules."
+          ],
+          "assets": [
+            "model-making"
+          ]
+        },
+        {
+          "title": "Lighting controls",
+          "paragraphs": [
+            "A Unity interface uses UniOSC communication to control the prototype. Single-color, rainbow, and breathing modes offer different light behaviors. Touch controls adjust hue, saturation, brightness, and breathing frequency."
+          ],
+          "assets": [
+            "light-interface"
+          ]
+        },
+        {
+          "title": "Motor-driven movement",
+          "paragraphs": [
+            "A motor-driven telescopic mechanism raises and lowers the honeycomb modules. The interface provides up, down, stop, and reset controls. Patterned shells make the changing arrangement and the light passing through it visible together."
+          ],
+          "assets": [
+            "kinetic-interface"
+          ]
+        },
+        {
+          "title": "Programming and testing",
+          "paragraphs": [
+            "The development process connects the control interface, communication code, lighting states, and physical prototype. Mechanical tests informed the clearance between moving modules, while wiring trials addressed cable tangling and unwanted light leakage.",
+            "Project team: Fenggui Rao and 俞寒译."
+          ],
+          "assets": [
+            "lighting-controls"
+          ]
+        }
+      ],
+      "supplement_sources": [
+        {
+          "path": "D:/数字信息/光屿 饶冯桂 俞寒译.pdf",
+          "sha256": "2ac6281b415a8536ddbe0d2213aabc9e5d61a0c13f1a05216595bf58c015671f"
+        }
+      ]
     },
     {
       "slug": "lost-homeland",
