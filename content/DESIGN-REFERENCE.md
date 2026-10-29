@@ -21,3 +21,7 @@ The reference homepage was inspected again after the owner flagged filler such a
 - Describe roles directly instead of using comparisons between appointments to imply importance.
 - Further presentation opportunities include a shorter introduction and research figures or artifact links for representative publications. These require content selection and assets; they are not implied by a text-only cleanup.
 - The reference contains its own grammatical and formatting errors. Borrow its information hierarchy rather than reproduce its sentences or prestige claims.
+
+## Incremental research imagery — 2026-10-29
+
+After cancelling the larger redesign, the owner asked to retain the current homepage and borrow useful details from Shuchang Xu's homepage. The full source audit is preserved outside this repository. This update retains all existing section order, profile content, topic names, publication text, and typography. It adds ten small figure previews beside the original publication entries, a full-size figure link on each image, and thin topic dividers. No new research narrative or landing-page layout is introduced. The source manifest is `research-image-sources.json`; public credit is available at `/image-credits/`.
