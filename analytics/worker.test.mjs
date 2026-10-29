@@ -9,7 +9,7 @@ const schema = readFileSync(new URL('./schema.sql', import.meta.url), 'utf8');
 function database() {
   const sqlite = new DatabaseSync(':memory:');
   sqlite.exec(schema);
-  const DB = { prepare(sql) { return { bind(...args) { return { async run() { return sqlite.prepare(sql).run(...args); } }; } }; } };
+  const DB = { prepare(sql) { return { bind(...args) { return { async run() { return sqlite.prepare(sql).run(...args); }, async all() { return { results: sqlite.prepare(sql).all(...args) }; } }; } }; } };
   return { sqlite, env: { DB, RETENTION_DAYS: '365' } };
 }
 function event(extra = {}) {
@@ -92,5 +92,45 @@ test('bots are marked and only expired records are pruned by the configured rete
   await worker.scheduled({}, env, { waitUntil(promise) { scheduled = promise; } });
   await scheduled;
   assert.equal(sqlite.prepare('SELECT COUNT(*) AS n FROM pageviews').get().n, 1);
+  sqlite.close();
+});
+
+test('public summary deduplicates browsers across pages and locations, excludes bots and expired/future views', async () => {
+  const { sqlite, env } = database();
+  const first = event();
+  await worker.fetch(request(first), env);
+  await worker.fetch(request(event({ visitor_id: first.visitor_id, path: '/cv/' })), env);
+  const secondLocation = event({ visitor_id: first.visitor_id });
+  await worker.fetch(request(secondLocation), env);
+  sqlite.prepare('UPDATE pageviews SET country=?, occurred_at=? WHERE event_id=?').run('US', Date.now() - 1000, secondLocation.event_id);
+  sqlite.prepare('UPDATE pageviews SET occurred_at=? WHERE event_id=?').run(Date.now() - 20000, first.event_id);
+  const other = event(); await worker.fetch(request(other), env);
+  sqlite.prepare('UPDATE pageviews SET country=? WHERE event_id=?').run('SG', other.event_id);
+  const unknown = event(); await worker.fetch(request(unknown), env);
+  sqlite.prepare('UPDATE pageviews SET country=? WHERE event_id=?').run('', unknown.event_id);
+  await worker.fetch(request(event(), { 'User-Agent': 'ExampleBot/1.0' }), env);
+  const expired = event(); await worker.fetch(request(expired), env);
+  sqlite.prepare('UPDATE pageviews SET occurred_at=? WHERE event_id=?').run(Date.now() - 366 * 86400000, expired.event_id);
+  const future = event(); await worker.fetch(request(future), env);
+  sqlite.prepare('UPDATE pageviews SET occurred_at=? WHERE event_id=?').run(Date.now() + 86400000, future.event_id);
+  const response = await worker.fetch(new Request('https://collector.example/summary'), env);
+  assert.equal(response.status, 200);
+  assert.equal(response.headers.get('Access-Control-Allow-Origin'), '*');
+  assert.match(response.headers.get('Cache-Control'), /s-maxage=900/);
+  assert.deepEqual(await response.json(), { periodDays: 365, trackingStarted: '2026-10-28', totalVisitors: 3, countryCount: 2,
+    countries: [{ code: 'HK', visitors: 1 }, { code: 'SG', visitors: 1 }, { code: 'ZZ', visitors: 1 }] });
+  const body = await (await worker.fetch(new Request('https://collector.example/summary'), env)).text();
+  for (const privateValue of ['192.0.2.24', first.visitor_id, first.event_id, 'example.org', 'Hong Kong']) assert.ok(!body.includes(privateValue));
+  sqlite.close();
+});
+
+test('public summary has no filters or writes and empty/unavailable results stay distinct', async () => {
+  const { sqlite, env } = database();
+  const empty = await worker.fetch(new Request('https://collector.example/summary'), env);
+  assert.equal((await empty.json()).totalVisitors, 0);
+  assert.equal((await worker.fetch(new Request('https://collector.example/summary?visitor_id=anything'), env)).status, 400);
+  assert.equal((await worker.fetch(new Request('https://collector.example/summary', { method: 'POST' }), env)).status, 405);
+  assert.equal((await worker.fetch(new Request('https://collector.example/summary'), {})).status, 503);
+  assert.equal(sqlite.prepare('SELECT COUNT(*) AS n FROM pageviews').get().n, 0);
   sqlite.close();
 });

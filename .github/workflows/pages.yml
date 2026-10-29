@@ -25,7 +25,7 @@ jobs:
           node-version: 24
       - name: Check private analytics
         run: |
-          node --test analytics/worker.test.mjs analytics/client.test.mjs
+          node --test analytics/worker.test.mjs analytics/client.test.mjs analytics/visitor-countries.test.mjs
           python3 -m unittest discover -s analytics -p 'test_*.py'
 
   deploy:
