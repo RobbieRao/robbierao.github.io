@@ -227,33 +227,3 @@ nav a:hover, nav a[aria-current="page"] { color: var(--accent); }
   h2, h3, h4 { break-after: avoid; }
   a { color: black; text-decoration: none; }
 }
-
-/* Country-level visitor totals; detailed analytics remains private. */
-.visitor-origins { flex-basis: 100%; min-width: 0; padding: 22px; margin-bottom: 12px; border: 1px solid #dfe6ef; border-radius: 10px; background: #fbfcfe; }
-.visitor-heading { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
-.visitor-eyebrow { margin-bottom: 4px; color: var(--accent); font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; }
-.visitor-heading h3 { color: var(--ink); font-size: 18px; }
-.visitor-totals { display: flex; flex-shrink: 0; gap: 26px; margin: 0; }
-.visitor-totals > div { display: flex; flex-direction: column-reverse; }
-.visitor-totals dt { font-size: 10px; white-space: nowrap; }
-.visitor-totals dd { margin: 0; color: var(--accent); font-size: 26px; line-height: 1.2; font-weight: 600; font-variant-numeric: tabular-nums; }
-.visitor-countries { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 24px; padding: 0; margin: 18px 0 0; list-style: none; }
-.visitor-countries:empty { display: none; }
-.visitor-country { display: flex; align-items: center; gap: 10px; min-width: 0; padding: 10px 0; border-bottom: 1px solid var(--line); }
-.visitor-flag { display: block; flex-shrink: 0; width: 24px; height: 18px; object-fit: cover; border-radius: 2px; box-shadow: 0 0 0 1px #0000000d; }
-.visitor-unknown { flex-shrink: 0; width: 24px; text-align: center; }
-.visitor-country-name { color: var(--ink); font-size: 12px; }
-.visitor-country-count { margin-left: auto; padding-left: 8px; color: var(--accent); font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
-.visitor-more { margin-top: 12px; }
-.visitor-more summary { color: var(--accent); cursor: pointer; }
-.visitor-more .visitor-countries { margin-top: 6px; }
-.visitor-status { margin-top: 16px; }
-.visitor-status:empty { display: none; }
-.visitor-method { margin-top: 16px; color: var(--muted); font-size: 10px; line-height: 1.8; }
-.visitor-method a { margin-left: 8px; white-space: nowrap; }
-@media (max-width: 600px) {
-  .visitor-origins { padding: 18px; }
-  .visitor-heading { align-items: flex-start; flex-direction: column; gap: 16px; }
-  .visitor-totals { gap: 32px; }
-}
-@media (max-width: 420px) { .visitor-countries { grid-template-columns: minmax(0, 1fr); } }
