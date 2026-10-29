@@ -1,0 +1,8 @@
+{
+  "package": "flag-icons",
+  "version": "7.6.0",
+  "source": "https://registry.npmjs.org/flag-icons/-/flag-icons-7.6.0.tgz",
+  "license": "MIT",
+  "archive_sha256": "99d6feb80562dcaa83700ef184094d7c7b6587cc216b3fab1546cb1643e611a9",
+  "preparation": "Unmodified two-letter 4:3 SVG flags, hosted locally; package CSS/JS not included."
+}
