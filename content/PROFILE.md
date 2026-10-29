@@ -75,3 +75,5 @@ I’m an ACM Professional Member, an IEEE Member, and a member of The Hong Kong 
 | JCCE | Journal of Computational and Cognitive Engineering — Journal reviewer | 用户于 2026-10-28 明确提供 |
 
 未提供上述任职、教学或会员身份的开始日期，因此不补写起始年份，也不以旧站公司经历日期推定 CEO 任期。
+
+2026-10-29 展示偏好：主页及 CV 中仅写 Wu Guanzhong Scholarship，删除奖学金名称后的括号中文；颁发学校及本科阶段信息保留。

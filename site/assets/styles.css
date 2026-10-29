@@ -130,6 +130,7 @@ nav a:hover, nav a[aria-current="page"] { color: var(--accent); }
 .case-section { margin: 34px 0; }
 .case-section h2 { font-size: 21px; padding-bottom: 9px; margin-bottom: 14px; border-bottom: 1px solid var(--line); }
 .case-section > p { max-width: 760px; font-size: 15px; }
+.case-section > p + p { margin-top: 12px; }
 .case-gallery { display: grid; gap: 28px; margin-top: 24px; }
 .case-navigation { display: flex; justify-content: space-between; gap: 16px 24px; padding: 22px 0; margin-top: 32px; border-top: 1px solid var(--line); font-size: 13px; }
 .case-navigation a { max-width: 38%; }
