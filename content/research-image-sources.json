@@ -29,7 +29,8 @@
     "height": 768,
     "bytes": 56878,
     "sha256": "bf8d2dfe71321a15d30da60756f949b4e5735696cfcbe5a8115ea7d4e81f195c",
-    "checked_on": "2026-10-29"
+    "checked_on": "2026-10-29",
+    "usage": "Legacy image retained at its existing URL; no longer used by the homepage."
   },
   {
     "file": "/images/research/perception/facial-social-traits.webp",
@@ -45,7 +46,8 @@
     "height": 347,
     "bytes": 41542,
     "sha256": "d6e279a716d37eb22d179b5bbe6b72d5159994cf97b3aa30333957fdff77f627",
-    "checked_on": "2026-10-29"
+    "checked_on": "2026-10-29",
+    "usage": "Legacy image retained at its existing URL; no longer used by the homepage."
   },
   {
     "file": "/images/research/cocreation/streetcure.webp",
@@ -178,5 +180,39 @@
     "sha256": "dc30188f4eff1e1c1553f08a6311d48fcfd21a76e65d7cc93525bb717ce07cf4",
     "checked_on": "2026-10-29",
     "license": "CC BY 4.0 per Zenodo metadata."
+  },
+  {
+    "file": "/images/research/experience/trailtracking.webp",
+    "publication_id": "trailtracking",
+    "paper_title": "TrailTracking: AI-Driven Distributed Narratives of Descendant Civilizations in a Digitally Encoded Cosmos",
+    "paper_url": "https://doi.org/10.3969/j.issn.1002-7394.2024.10.003",
+    "credit": "Fenggui Rao, Jiaqi Zheng, and Ziqi Wang.",
+    "source_type": "Author-supplied project presentation",
+    "source_url": null,
+    "figure": "Project progress presentation, slide 8: game setting (游戏背景).",
+    "alt": "A blue-lit laboratory scene from the TrailTracking project.",
+    "preparation": "Original embedded project image, proportionally resized and encoded as WebP; entire image retained.",
+    "width": 1092,
+    "height": 612,
+    "bytes": 81678,
+    "sha256": "5fc7ccb096d4a120da03d0224310c6a1b46794673a4b5f9765f81571c51d5ad4",
+    "checked_on": "2026-10-29",
+    "source_note": "The progress presentation dates the project to 2023 and credits 饶柏, 郑珈麒, 王子琪. The publication entry retains its verified 2024 date."
+  },
+  {
+    "publication_id": "facial-social-traits",
+    "paper_title": "Facial Social Trait Perception, Interpretation, and Prediction: A State-of-the-Art Review",
+    "paper_url": "https://doi.org/10.1109/taffc.2026.3711959",
+    "credit": "Fenggui Rao, Yuhao He, Yan Luximon*, and Jie Zhang*.",
+    "source_url": "https://www.researchgate.net/publication/408681717_Facial_Social_Trait_Perception_Interpretation_and_Prediction_A_State-of-the-Art_Review",
+    "file": "/images/research/perception/facial-social-traits-datasets.webp",
+    "figure": "Figure 4, page 7: complete representative datasets figure.",
+    "alt": "Complete Figure 4 showing representative face samples and social trait ratings across twelve datasets.",
+    "preparation": "Extracted native page image, cropped only the whitespace and surrounding article content outside Figure 4; all twelve dataset panels and their labels retained. Proportionally resized and WebP encoded.",
+    "width": 1800,
+    "height": 527,
+    "bytes": 207736,
+    "sha256": "67c662f58f4c45d59823a03daff9f28fd515c1145389674d5e38e29dd50bd273",
+    "checked_on": "2026-10-29"
   }
 ]
