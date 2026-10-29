@@ -1,6 +1,6 @@
 # Robbie Fenggui Rao — personal website
 
-A static personal website with research, design projects, creative practice, and a printable CV. The public site is in `site/`; it uses HTML and CSS with no JavaScript or build dependencies.
+A static personal website with research, design projects, creative practice, and a printable CV. The public site is in `site/`; it uses HTML, CSS, and a small optional analytics script, with no build dependencies.
 
 The homepage uses a desktop profile sidebar and compact topical publication lists, following the owner's reference to [Jie Zhang's homepage](https://easy-shu.github.io/). See `content/DESIGN-REFERENCE.md` for the layout decisions.
 
@@ -9,6 +9,8 @@ The homepage uses a desktop profile sidebar and compact topical publication list
 `content/UPDATES.md` records the sources and date meanings for the homepage updates and its collapsible archive.
 
 The homepage footer shows a [Hits](https://github.com/silentsoft/hits) page-view badge, started on October 28, 2026. It uses the dedicated key `robbierao.github.io`, separate from GitHub profile or repository traffic. Only the homepage embeds the badge; the CV and project pages do not increment it. The image loads eagerly so a visit can count without scrolling to the footer. Counts include repeat visits and verification requests, are subject to browser caching or blocking, and are not unique people or historical traffic. Click the badge for the service's statistics. This external image requires no account, script, or build dependency; if it cannot load, its alt text remains and the rest of the site works normally. Keep the key stable to preserve the count, and do not use the service's `extraCount` parameter to inflate it.
+
+Private analytics is connected to `https://robbierao-visitor-analytics.fengguirao.workers.dev/collect` on the homepage, CV, and eight design pages. `analytics/README.md` documents the private Cloudflare Worker + D1 collector, unique-browser/session definitions, account-only access, CSV export, 365-day retention, tests, and deployment steps. Raw visitor data and Cloudflare credentials are never included in the public Pages artifact or repository.
 
 ## Edit and preview
 

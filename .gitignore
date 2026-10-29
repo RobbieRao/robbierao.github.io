@@ -1,3 +1,9 @@
 .DS_Store
 __pycache__/
 *.pyc
+node_modules/
+.wrangler/
+.dev.vars*
+.env*
+analytics/wrangler.local.jsonc
+analytics/exports/

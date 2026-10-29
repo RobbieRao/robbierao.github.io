@@ -1,0 +1,9 @@
+{
+  "name": "robbierao-visitor-analytics",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-10-28",
+  "workers_dev": true,
+  "vars": { "RETENTION_DAYS": "365" },
+  "triggers": { "crons": ["0 18 * * *"] },
+  "observability": { "enabled": false }
+}
