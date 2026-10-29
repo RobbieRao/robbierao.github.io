@@ -1,6 +1,6 @@
 # Private visitor analytics
 
-The website stays on GitHub Pages. A small Cloudflare Worker accepts page-view events and writes to a private D1 database. There is no public log-reading, dashboard, or export endpoint. A fixed `GET /summary` exposes only country/region aggregate counts for the homepage footer. The owner uses the Cloudflare dashboard or Wrangler account login to read records and export CSV.
+The website stays on GitHub Pages. A small Cloudflare Worker accepts page-view events and writes to a private D1 database. There is no public log-reading, dashboard, or export endpoint. The owner uses the Cloudflare dashboard or Wrangler account login to read records and export CSV.
 
 ## Production deployment
 
@@ -53,7 +53,7 @@ Export dates use Hong Kong local midnight: `--since` is inclusive and `--until` 
 ## Validation
 
 ```sh
-node --test analytics/worker.test.mjs analytics/client.test.mjs analytics/visitor-countries.test.mjs
+node --test analytics/worker.test.mjs analytics/client.test.mjs
 python3 -m unittest discover -s analytics -p 'test_*.py'
 python3 scripts/check_site.py
 npx --yes wrangler@4.154.0 deploy --dry-run --config analytics/wrangler.jsonc
@@ -68,17 +68,3 @@ The worker tests use real in-memory SQLite for inserts, constraints, deduplicati
 - [Worker request metadata](https://developers.cloudflare.com/workers/runtime-apis/request/)
 - [Workers pricing](https://developers.cloudflare.com/workers/platform/pricing/)
 - [D1 pricing](https://developers.cloudflare.com/d1/platform/pricing/)
-
-## Public country/region summary
-
-`GET /summary` returns `periodDays`, `trackingStarted`, `totalVisitors`, `countryCount`, and `countries` (`code`, `visitors`). It accepts no query parameters, custom filters, writes, or identifiers. No raw IP, browser ID, event ID, time, browsing path, referrer, city, or network is returned. Raw read/export access remains account-only.
-
-The SQL ranks each browser's records across a rolling 365-day window, excluding marked bots, expired records, and future timestamps. Each browser is assigned once to its earliest known country/region within that window; if all locations are unknown it belongs to `ZZ`. Country counts therefore sum to the overall unique-browser total. This is browser deduplication, not a count of identified people or nationality. The summary has a five-minute browser cache and fifteen-minute edge cache with one fixed cache key; failed queries return unavailable rather than a fabricated zero.
-
-The homepage's `visitor-countries.js` fetches this read-only summary without cookies and renders up to eight locations, with an expandable remainder. Loading, no-data, and unavailable states are distinct. It does not create a page-view event or read browser identifiers. The existing collection script and Hits badge keep their separate behavior. Flags are hosted locally from the MIT-licensed `flag-icons` 7.6.0 package; no flag-image third party receives visitors' requests. The package license and source hash are in `site/assets/flags/`.
-
-Validation includes real SQLite deduplication across pages/countries, bot/date filtering, no private fields, no query filters, and no summary writes. Deploy Worker changes with the existing ignored config before publishing frontend changes:
-
-```sh
-npx --yes wrangler@4.154.0 deploy --config analytics/wrangler.local.jsonc
-```

@@ -54,61 +54,15 @@ function retentionDays(env) {
   return days;
 }
 
-const SUMMARY_DAYS = 365;
-const SUMMARY_SQL = `WITH normalized AS (
-  SELECT visitor_id, event_id, occurred_at,
-    CASE WHEN UPPER(country) GLOB '[A-Z][A-Z]' AND UPPER(country) NOT IN ('XX', 'T1', 'ZZ')
-      THEN UPPER(country) ELSE 'ZZ' END AS code
-  FROM pageviews WHERE is_bot = 0 AND occurred_at >= ? AND occurred_at <= ?
-), ranked AS (
-  SELECT code, ROW_NUMBER() OVER (
-    PARTITION BY visitor_id ORDER BY CASE WHEN code = 'ZZ' THEN 1 ELSE 0 END, occurred_at, event_id
-  ) AS position FROM normalized
-)
-SELECT code, COUNT(*) AS visitors FROM ranked WHERE position = 1
-GROUP BY code ORDER BY visitors DESC, code ASC`;
-
-async function summary(request, env, ctx) {
-  const url = new URL(request.url);
-  const publicHeaders = {
-    'Access-Control-Allow-Origin': '*',
-    'X-Content-Type-Options': 'nosniff',
-    'Cache-Control': 'public, max-age=300, s-maxage=900',
-  };
-  if (request.method !== 'GET') return new Response('Method not allowed', { status: 405, headers: { Allow: 'GET' } });
-  // This fixed aggregate accepts no filters or identifiers and never returns raw records.
-  if (url.search) return new Response('No query parameters supported', { status: 400 });
-  if (!env.DB) return new Response('Unavailable', { status: 503 });
-  try {
-    const cache = typeof caches !== 'undefined' ? caches.default : null;
-    const key = new Request(url.origin + '/summary-cache-v1');
-    const cached = cache ? await cache.match(key) : null;
-    if (cached) return cached;
-    const now = Date.now();
-    const rows = await env.DB.prepare(SUMMARY_SQL).bind(now - SUMMARY_DAYS * 86400000, now).all();
-    const countries = rows.results.map(row => ({ code: row.code, visitors: Number(row.visitors) }));
-    const response = Response.json({
-      periodDays: SUMMARY_DAYS, trackingStarted: '2026-10-28',
-      totalVisitors: countries.reduce((sum, row) => sum + row.visitors, 0),
-      countryCount: countries.filter(row => row.code !== 'ZZ').length, countries,
-    }, { headers: publicHeaders });
-    if (cache && ctx) ctx.waitUntil(cache.put(key, response.clone()).catch(() => {}));
-    return response;
-  } catch {
-    return new Response('Unavailable', { status: 503, headers: { ...publicHeaders, 'Cache-Control': 'no-store' } });
-  }
-}
-
 export default {
-  async fetch(request, env, ctx) {
+  async fetch(request, env) {
     const url = new URL(request.url);
     const origin = request.headers.get('Origin');
     const responseHeaders = headers(origin);
     if (url.pathname === '/health' && request.method === 'GET') {
       return Response.json({ ok: Boolean(env.DB) }, { status: env.DB ? 200 : 503, headers: responseHeaders });
     }
-    if (url.pathname === '/summary') return summary(request, env, ctx);
-    // Raw read/query/export access stays in the Cloudflare account.
+    // Only collection is public. Read/query/export access stays in the Cloudflare account.
     if (url.pathname !== '/collect') return new Response('Not found', { status: 404, headers: responseHeaders });
     if (origin !== SITE_ORIGIN) return new Response('Forbidden', { status: 403, headers: responseHeaders });
     if (request.method === 'OPTIONS') {
