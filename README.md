@@ -6,6 +6,8 @@ The white homepage keeps the photograph sidebar and presents About me before Rec
 
 The full-page 3D opening appears only on the first enhanced page in a tab session. Later documents and embedded notebooks display immediately. Real cover previews remain visible as higher-resolution images and videos arrive. The portfolio uses bounded video players and preserves pan, zoom, mobile scroll, and per-language reading positions. Its reader reuses up to three visited notebooks; hidden media pauses. Intent prefetch fetches only inert same-origin HTML/CSS/module bytes and never executes a speculative document or analytics.
 
+Notebook photographs carry small real-image previews while native full-resolution images load. Project covers display one proportionally scaled image on white, with a fine dark frame and restrained shadow; decoded images remove their preview layer so letterboxing never reveals a repeated or second copy. The canvas gives visible content priority, cancels unfinished off-screen downloads, and waits briefly for scrolling to settle before fetching the current mobile cover video. Desktop dragging retains a verified frame rather than exposing an undecoded video surface. Common stylesheet groups are shared across routes with the original cascade preserved; runtime graphs live under immutable `assets/runtime/<fingerprint>/` paths, while previously published asset URLs remain available for cached documents.
+
 The November 2026 release includes project-specific diagrams and first-person notebooks, updated conference recognition, the original mini-program interfaces, and the approved corrected dates and roles. Unused experiments, private source material, and the owner-supplied certificate are excluded from the public artifact. Older `content/` notes record their original source audits; the current public pages reflect subsequent owner corrections.
 
 `content/PROFILE.md` records the owner's latest bilingual biography, professional roles, memberships, and teaching experience. Public profile text uses Robbie Fenggui Rao / 饶柏; publications retain the verified author name Fenggui Rao.
@@ -23,7 +25,7 @@ Private analytics is connected to `https://robbierao-visitor-analytics.fengguira
 - `site/research/` and `site/design/`: the complete canonical notebooks, also used by the canvas reader.
 - `site/projects/`: independent project pages for DisFace3DNet, ContextCam, and art therapy.
 - `site/cv/index.html`: detailed, printable CV.
-- `site/assets/`: shared styles, localization, navigation, 3D opening, and progressive media runtime.
+- `site/assets/`: content-addressed shared styles and immutable runtime module graphs for localization, navigation, the 3D opening, and progressive media; older public assets are retained for compatibility.
 - `site/images/` and `site/videos/`: public project media and short cover derivatives.
 
 This repository contains the validated deployment artifact. The independent authoring workspace retains an immutable copy of the previous approved site/content at commit `76ae9a2e45052558ecac2c39d973f54738815057`, so publishing this artifact does not change its build inputs. Only the selected public dependency closure is copied here; authoring sources and QA remain outside `site/`.
