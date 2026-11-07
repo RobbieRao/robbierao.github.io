@@ -3,6 +3,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 import sys
+import json
 
 ROOT = Path(__file__).resolve().parents[1] / "site"
 
@@ -23,7 +24,7 @@ class Page(HTMLParser):
             if attrs["id"] in self.ids:
                 self.errors.append(f"duplicate id: {attrs['id']}")
             self.ids.add(attrs["id"])
-        for attribute in ("href", "src"):
+        for attribute in ("href", "src", "data-src"):
             if attrs.get(attribute):
                 self.references.append(attrs[attribute])
         if tag == "html":
@@ -32,12 +33,19 @@ class Page(HTMLParser):
             self.has_title = True
         if tag == "meta" and attrs.get("name") == "viewport":
             self.has_viewport = True
-        if tag == "img" and not attrs.get("alt"):
+        if tag == "img" and not attrs.get("alt") and attrs.get('aria-hidden') != 'true':
             self.errors.append("image missing alt text")
 
 
 pages = {}
 errors = []
+canvas_file = ROOT / 'canvas/index.html'
+canvas_projects = set()
+if canvas_file.exists():
+    import re
+    payload = re.search(r'<script[^>]*id="canvas-content"[^>]*>(.*?)</script>', canvas_file.read_text(), re.S)
+    if payload:
+        canvas_projects = {item['id'] for item in json.loads(payload.group(1))}
 for path in ROOT.rglob("*.html"):
     page = Page()
     source = path.read_text()
@@ -67,6 +75,8 @@ for path, page in pages.items():
         target = target.resolve()
         if not target.is_relative_to(ROOT.resolve()) or not target.is_file():
             errors.append(f"{path.relative_to(ROOT)}: broken local reference {ref}")
+        elif target == canvas_file.resolve() and parsed.fragment.startswith('project=') and parsed.fragment[8:] in canvas_projects:
+            continue
         elif parsed.fragment and target in pages and unquote(parsed.fragment) not in pages[target].ids:
             errors.append(f"{path.relative_to(ROOT)}: missing anchor {ref}")
 
