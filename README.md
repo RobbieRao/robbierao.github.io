@@ -10,6 +10,8 @@ Notebook photographs carry small real-image previews while native full-resolutio
 
 The November 2026 release includes project-specific diagrams and first-person notebooks, updated conference recognition, the original mini-program interfaces, and the approved corrected dates and roles. Unused experiments, private source material, and the owner-supplied certificate are excluded from the public artifact. Older `content/` notes record their original source audits; the current public pages reflect subsequent owner corrections.
 
+The latest notebook refinement explains individual contributions and design decisions across 22 bilingual projects. ContextCam covers the Android interface and its UI/UX decisions. Zero · Digital Human Interaction (零·数字人交互) documents Unreal Engine Blueprints, the GPT-4 API, ASR/TTS, and the transparent screen with an illuminated lightbox. Its existing `/design/digital-human/` address is retained. The CV groups design practice in one list and keeps conference selections with their project rather than in honors.
+
 `content/PROFILE.md` records the owner's latest bilingual biography, professional roles, memberships, and teaching experience. Public profile text uses Robbie Fenggui Rao / 饶柏; publications retain the verified author name Fenggui Rao.
 
 `content/UPDATES.md` records the sources and date meanings for the homepage updates and its collapsible archive.
