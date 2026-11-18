@@ -1,0 +1,62 @@
+.prose { overflow-wrap: anywhere; }
+.prose > * + * { margin-top: 1.12em; }
+.prose h2 { margin-top: 1.55em; font-size: var(--heading-size); text-wrap: pretty; }
+.prose h3 { font-size: var(--card-title-size); }
+.prose h3 { margin-top: 1.25em; }
+.prose h4 { font: 650 1rem / 1.4 var(--body); }
+.prose :is(ul, ol) { padding-inline-start: 1.4em; }
+.prose li + li { margin-top: .45em; }
+.prose :is(figure, pre, table) { margin-block: 1.8rem; }
+.prose figure img, .prose video { background: var(--surface); }
+.prose figure > img, .prose figure > a > img, .prose figure video { width: 100%; }
+.prose figcaption { margin-top: .65rem; font-size: .88rem; color: var(--muted); }
+.prose blockquote { margin-inline: 0; border-inline-start: 2px solid var(--accent); padding-inline-start: 1rem; }
+.prose code { font: .84em var(--mono); }
+.prose :not(pre) > code { background: var(--surface); padding: .1em .3em; }
+.prose pre { overflow: auto; background: var(--surface); border: 1px solid var(--line); padding: 1rem; font: .9rem / 1.6 var(--mono); }
+.prose pre code { font: inherit; }
+.prose table { display: block; overflow-x: auto; border-collapse: collapse; font-size: .94rem; }
+.prose :is(th, td) { border-bottom: 1px solid var(--line); padding: .55rem .75rem; text-align: start; min-width: 7rem; }
+.prose :is(dl.tools, dl.actions, dl.metrics, dl.facts) {
+  display: grid;
+  grid-template-columns: minmax(7rem, 1fr) minmax(0, 2.4fr);
+  gap: .7rem 1.1rem;
+  border-block: 1px solid var(--line);
+  padding: 1rem 0;
+}
+.prose dl > div { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; }
+.prose dt { font-weight: 650; }
+.prose dd { margin: 0; }
+.prose .steps { border-top: 1px solid var(--line); padding-block: .75rem; }
+.prose .steps h3, .prose .screens h3 { margin-block: .65rem .35rem; font-size: var(--card-title-size); }
+.prose .pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.prose .pair > figcaption { grid-column: 1 / -1; }
+.prose .pair figure { margin: 0; }
+.prose .diagram { padding: clamp(.4rem, 2vw, 1.25rem); background: var(--surface); border: 1px solid var(--line); }
+.prose .portrait img { width: min(100%, 26rem); margin-inline: auto; }
+.prose .video video { width: 100%; }
+.prose .legend ul { display: flex; flex-wrap: wrap; list-style: none; gap: .3rem 1rem; padding: 0; font-size: .85rem; }
+.prose .legend li { margin: 0; }
+.prose .legend i { display: inline-block; width: .8em; height: .8em; background: var(--swatch); border: 1px solid var(--line); margin-inline-end: .35em; }
+.prose .screens > ol { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); list-style: none; padding: 0; gap: .85rem; }
+.prose .screens li { margin: 0; font-size: .9rem; }
+.prose .screens a.crop {
+  display: block;
+  width: min(100%, 313px);
+  aspect-ratio: 313 / 795;
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+}
+.prose .screens a.crop img {
+  position: absolute;
+  max-width: none;
+  width: calc(1400 / 313 * 100%);
+  left: calc(var(--x) / -313 * 100%);
+}
+
+@media (max-width: 480px) {
+  .prose :is(dl.tools, dl.actions, dl.metrics, dl.facts) { grid-template-columns: minmax(0, 1fr); gap: .35rem; }
+  .prose dd + dt, .prose dl > div + div { margin-top: .55rem; }
+  .prose .pair { grid-template-columns: minmax(0, 1fr); }
+}

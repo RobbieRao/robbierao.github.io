@@ -1,0 +1,50 @@
+---
+import Base from '@/layouts/Base.astro';
+import { canvasItems } from '@/data/canvas';
+import { langFromParam, langPaths, to } from '@/i18n';
+import '@/styles/canvas.css';
+
+export const getStaticPaths = langPaths;
+const lang = langFromParam(Astro.params.lang);
+const say = (en: string, zh: string) => lang === 'en' ? en : zh;
+const title = say('Portfolio canvas', '作品画布');
+const work = to('/work/', lang);
+const description = say('Explore the research and design notebooks on a draggable portfolio canvas.', '在可拖动的画布上浏览研究与设计手记。');
+const items = await canvasItems(lang);
+---
+<Base lang={lang} path={to('/canvas/', lang)} title={title + ' · Robbie Rao'} description={description}>
+  <div class="canvas-shell">
+    <aside class="canvas-index">
+      <h1>{title}</h1>
+      <a class="canvas-back quiet-link" href={work}>← {say('Work index', '作品索引')}</a>
+      <nav id="portfolio-index" aria-label={say('Project index', '项目索引')}>
+        {items.map((item, index) => <a class="canvas-index-link" data-canvas-link={item.id} href={item.href}>
+          <span class="mono muted" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+          <span class="canvas-index-name">{item.title[lang]}</span>
+        </a>)}
+      </nav>
+    </aside>
+    <div id="infinite-viewport" role="region" tabindex="0" aria-label={say('Work canvas. Drag or use arrow keys to pan.', '作品画布。拖动或用方向键平移。')} hidden>
+      <div class="canvas-world"></div>
+    </div>
+    <div class="canvas-controls" hidden>
+      <span class="mono muted canvas-hint">{say('Drag to explore', '拖动浏览')}</span>
+      <button type="button" data-canvas-zoom="-0.1" aria-label={say('Zoom out', '缩小')}>−</button>
+      <output class="canvas-zoom-value mono">100%</output>
+      <button type="button" data-canvas-zoom="0.1" aria-label={say('Zoom in', '放大')}>+</button>
+      <button type="button" class="canvas-reset">{say('Reset', '复位')}</button>
+    </div>
+    <dialog class="canvas-detail canvas-reader" aria-labelledby="canvas-notebook-title" hidden>
+      <div class="canvas-reader-bar">
+        <button class="canvas-detail-close action" type="button">← {say('Canvas', '画布')}</button>
+        <strong class="canvas-reader-title" id="canvas-notebook-title"></strong>
+        <a class="canvas-reader-direct action" target="_blank" rel="noopener" aria-label={say('Open full notebook in a new tab', '在新标签页打开完整手记')}>{say('Open page', '打开原页')} ↗</a>
+        <a class="canvas-reader-language action" href={to('/canvas/', lang === 'en' ? 'zh' : 'en')} lang={lang === 'en' ? 'zh-Hans' : 'en'}>{say('中文', 'EN')}</a>
+      </div>
+      <p class="canvas-reader-status" role="status"></p>
+      <iframe class="canvas-reader-frame" title={say('Project notebook', '项目手记')}></iframe>
+    </dialog>
+  </div>
+  <script is:inline type="application/json" id="canvas-content" set:html={JSON.stringify(items).replaceAll('<', '\\u003c')}></script>
+  <script is:inline type="module" src="/assets/canvas/infinite-canvas.js"></script>
+</Base>

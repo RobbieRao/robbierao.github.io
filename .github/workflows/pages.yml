@@ -18,15 +18,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Check site links and metadata
-        run: python3 scripts/check_site.py
       - uses: actions/setup-node@v4
         with:
-          node-version: 24
-      - name: Check private analytics
-        run: |
-          node --test analytics/worker.test.mjs analytics/client.test.mjs
-          python3 -m unittest discover -s analytics -p 'test_*.py'
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npm run check
+      - run: npm test
+      - run: python3 -m unittest discover -s analytics -p 'test_*.py'
+      - if: github.event_name != 'pull_request' && github.ref == 'refs/heads/master'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
 
   deploy:
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/master'
@@ -39,11 +43,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: site
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

@@ -1,0 +1,25 @@
+---
+import { getEntry, render } from 'astro:content';
+import Base from '@/layouts/Base.astro';
+import { langFromParam, langPaths, to } from '@/i18n';
+
+export function getStaticPaths() {
+  return langPaths().flatMap(({ params }) => ['privacy', 'image-credits'].map(page => ({ params: { ...params, page } })));
+}
+
+const lang = langFromParam(Astro.params.lang);
+const page = Astro.params.page!;
+const entry = await getEntry('pages', page + '.' + lang);
+if (!entry) throw new Error('Missing static page: ' + page + '.' + lang);
+const { Content, headings } = await render(entry);
+const title = headings.find(heading => heading.depth === 1)?.text ?? page;
+---
+<Base lang={lang} path={to('/' + page + '/', lang)} title={title + ' · Robbie Rao'} description={title}>
+  <article class="wrap prose page"><Content /></article>
+</Base>
+<style>
+  .page { max-width: 74ch; padding-top: clamp(2.5rem, 6vw, 5rem); }
+  .page > :global(h1) { font-size: var(--page-title-size); margin-top: .25rem; }
+  .page > :global(p:first-child) { font: 500 .76rem / 1.5 var(--mono); color: var(--accent); }
+</style>
+

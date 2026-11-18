@@ -1,0 +1,5 @@
+---
+import type { Author } from '@/data/works';
+const { authors } = Astro.props as { authors: Author[] };
+---
+<span class="authors">{authors.map(({ name, me, corresponding }, i) => <>{i === 0 ? '' : i === authors.length - 1 ? (i === 1 ? ' and ' : ', and ') : ', '}{me ? <strong>{name}{corresponding && <sup>*</sup>}</strong> : <>{name}{corresponding && <sup>*</sup>}</>}</>)}.</span>

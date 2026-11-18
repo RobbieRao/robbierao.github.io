@@ -1,0 +1,80 @@
+---
+import { alternate, pick, to, ui, type Lang } from '@/i18n';
+const { lang, path } = Astro.props as { lang: Lang; path: string };
+const nav = [
+  [ui.nav.research, '/#research'], [ui.nav.work, '/work/'],
+  [ui.nav.about, '/#about'], [ui.nav.cv, '/cv/'],
+] as const;
+const other = lang === 'en' ? 'zh' : 'en';
+---
+<a class="skip-link" href="#main">{pick(ui.skip, lang)}</a>
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href={to('/', lang)}>
+      <span class="seal" lang="zh-Hans" aria-hidden="true">饶柏</span>
+      <span class="brand-name">Robbie Rao</span>
+    </a>
+    <nav aria-label={lang === 'en' ? 'Main navigation' : '主导航'}>
+      {nav.map(([label, href]) => (
+        <a class={href === '/#about' ? 'wide-only' : undefined} href={to(href, lang)} aria-current={path === to(href, lang) ? 'page' : undefined}>{pick(label, lang)}</a>
+      ))}
+    </nav>
+    <div class="controls">
+      <a class="language" lang={other === 'zh' ? 'zh-Hans' : 'en'} href={path === '/404.html' ? to('/', other) : alternate(path, other)} aria-label={pick(ui.switchLangLabel, lang)}>{pick(ui.switchLang, lang)}</a>
+      <button type="button" class="theme" data-theme-toggle aria-label={pick(ui.theme, lang)} aria-pressed="false" hidden>
+        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.35" aria-hidden="true">
+          <circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16Z" fill="currentColor" stroke="none"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+<script>
+  const root = document.documentElement;
+  const toggle = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+  const header = document.querySelector('.site-header');
+  const scheme = matchMedia('(prefers-color-scheme: dark)');
+  const dark = () => (root.dataset.theme ?? (scheme.matches ? 'dark' : 'light')) === 'dark';
+  const update = () => toggle?.setAttribute('aria-pressed', String(dark()));
+
+  if (toggle) {
+    toggle.hidden = false;
+    toggle.addEventListener('click', () => {
+      const theme = dark() ? 'light' : 'dark';
+      root.dataset.theme = theme;
+      try { localStorage.setItem('site-theme', theme); } catch {}
+      update();
+    });
+    scheme.addEventListener('change', update);
+    update();
+  }
+  const border = () => header?.classList.toggle('scrolled', scrollY > 8);
+  addEventListener('scroll', border, { passive: true });
+  border();
+</script>
+<style>
+  .site-header { position: sticky; z-index: 10; top: 0; background: var(--paper); border-bottom: 1px solid transparent; }
+  .site-header.scrolled { border-color: var(--line); }
+  .header-inner { display: grid; grid-template-columns: 1fr auto 1fr; gap: 1.5rem; align-items: center; min-height: 66px; }
+  .brand { display: flex; align-items: center; gap: .65rem; width: fit-content; font-weight: 680; white-space: nowrap; }
+  .seal { display: grid; place-items: center; width: 22px; height: 22px; flex: none; color: var(--on-accent); background: var(--accent); font: 700 9px / 1 var(--display); }
+  nav, .controls { display: flex; align-items: center; gap: clamp(.8rem, 2.5vw, 2rem); }
+  nav a, .brand, .language { text-decoration: none; }
+  nav { font-size: .91rem; }
+  [aria-current="page"] { color: var(--accent); }
+  .controls { justify-self: end; gap: .55rem; }
+  .language, .theme { display: grid; min-width: 40px; min-height: 44px; place-items: center; }
+  .language { font-size: .83rem; }
+  .theme { border: 0; background: none; padding: 0; }
+  .theme:hover { color: var(--accent); }
+  @media (max-width: 620px) {
+    .header-inner { grid-template-columns: auto 1fr auto; gap: .9rem; min-height: 56px; }
+    nav { gap: 1.05rem; }
+    .wide-only { display: none; }
+    .controls { gap: 0; }
+  }
+  @media (max-width: 460px) {
+    /* The seal alone links home; the name stays available to assistive technology. */
+    .brand-name { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  }
+</style>

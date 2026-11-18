@@ -1,0 +1,47 @@
+:root {
+  color-scheme: light;
+  --paper: #f6f4ee;
+  --surface: #fffefb;
+  --ink: #121210;
+  --muted: #6a6861;
+  --line: #dcd9cf;
+  --accent: oklch(54% 0.19 33);
+  --on-accent: #fffefb;
+  --display: "Inter Variable", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
+  --body: "Inter Variable", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
+  --mono: "Geist Mono Variable", ui-monospace, monospace;
+  --gutter: clamp(20px, 5vw, 64px);
+  --wrap: 1200px;
+  --grid-gap: clamp(16px, 2.3vw, 32px);
+  --section: clamp(72px, 10vw, 132px);
+  --hero-size: clamp(2.25rem, 5vw, 4rem);
+  --page-title-size: clamp(2rem, 4.2vw, 3.2rem);
+  --page-subtitle-size: clamp(1.08rem, 2vw, 1.45rem);
+  --card-title-size: 1.15rem;
+  --heading-size: clamp(1.7rem, 3vw, 2.4rem);
+  --ease: 240ms ease-out;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    color-scheme: dark;
+    --paper: #0f0f0d;
+    --surface: #181816;
+    --ink: #eceae3;
+    --muted: #9b988e;
+    --line: #2b2a26;
+    --accent: oklch(69% 0.18 38);
+    --on-accent: #121210;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #0f0f0d;
+  --surface: #181816;
+  --ink: #eceae3;
+  --muted: #9b988e;
+  --line: #2b2a26;
+  --accent: oklch(69% 0.18 38);
+  --on-accent: #121210;
+}

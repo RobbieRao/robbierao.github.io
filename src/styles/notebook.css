@@ -1,0 +1,16 @@
+/* Restricted to reading layouts. Photos retain their full frame. */
+.notebook .prose figure.diagram,
+.notebook .prose figure:not(.diagram):has(> a > img[src$=".svg"], > img[src$=".svg"]) {
+  padding: clamp(10px, 2.2vw, 28px);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: #fffefb;
+}
+.notebook .prose :is(figure.diagram, figure:has(> a > img[src$=".svg"], > img[src$=".svg"])) img {
+  background: #fffefb;
+  border-radius: 0;
+}
+.notebook .prose :is(figure.diagram, figure:has(> a > img[src$=".svg"], > img[src$=".svg"])) figcaption {
+  color: #6a6861;
+}
+.notebook .prose :is(figure a, pre):focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }

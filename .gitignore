@@ -7,3 +7,6 @@ node_modules/
 .env*
 analytics/wrangler.local.jsonc
 analytics/exports/
+dist/
+.astro/
+public/_covers/

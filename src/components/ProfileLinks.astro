@@ -1,0 +1,13 @@
+---
+import { site } from '@/data/site';
+import type { Lang } from '@/i18n';
+const { lang, email = false } = Astro.props as { lang: Lang; email?: boolean };
+const links = [
+  [lang === 'en' ? 'Email' : '邮箱', email ? 'mailto:' + site.email : null],
+  ['ORCID', site.links.orcid], ['GitHub', site.links.github], ['ResearchGate', site.links.researchgate],
+  ['Google Scholar', site.links.scholar], ['AED Lab', site.links.aedLab], ['Design Anything Lab', site.links.designAnything],
+];
+---
+<ul class="link-list profile-links">
+  {links.map(([label, href]) => href && <li><a class="quiet-link" href={href}>{label}</a></li>)}
+</ul>

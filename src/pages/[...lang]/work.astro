@@ -1,0 +1,51 @@
+---
+import Base from '@/layouts/Base.astro';
+import SectionHead from '@/components/SectionHead.astro';
+import WorkCard from '@/components/WorkCard.astro';
+import { themes, works } from '@/data/works';
+import { langFromParam, langPaths, to, ui } from '@/i18n';
+
+export const getStaticPaths = langPaths;
+const lang = langFromParam(Astro.params.lang);
+const en = lang === 'en';
+const title = en ? 'Work' : '作品';
+const description = en ? 'Research, interaction design and creative practice by Robbie Fenggui Rao.' : '饶柏的研究、交互设计与创作实践。';
+const filters = ['all', ...themes] as const;
+---
+<Base lang={lang} path={to('/work/', lang)} title={title + ' · Robbie Rao'} description={description}>
+  <div class="wrap archive">
+    <header>
+      <SectionHead number={1} title={title} level="h1" />
+      <p>{description}</p>
+    </header>
+    <div class="archive-tools">
+    <nav class="filters" aria-label={en ? 'Filter work by theme' : '按主题筛选作品'}>
+      {filters.map(theme => <a id={theme} class="mono" href={'#' + theme}>{ui.themes[theme][lang]}</a>)}
+    </nav>
+    <a class="canvas-link action" href={to('/canvas/', lang)}>{en ? 'Canvas view' : '画布视图'} <span aria-hidden="true">↗</span></a>
+    </div>
+    <div class="card-grid">
+      {works.map(work => <div class="entry" data-themes={work.themes.join(' ')}>
+        <WorkCard work={work} lang={lang} shared archive />
+      </div>)}
+    </div>
+  </div>
+</Base>
+<style>
+  .archive { padding-top: clamp(2.5rem, 7vw, 6rem); }
+  .filters a:focus-visible, .filters a:target { outline-offset: 3px; }
+  header p { color: var(--muted); margin-top: .55rem; }
+  .archive-tools { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .65rem 1rem; margin-block: 2rem 1.3rem; }
+  .canvas-link { font-size: .9rem; }
+  .filters { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .filters a { padding: .52rem .7rem; border: 1px solid var(--line); text-decoration: none; }
+  .filters a:hover { border-color: var(--accent); }
+  .filters a:target, .filters:not(:has(a:target)) #all { color: var(--paper); background: var(--ink); border-color: var(--ink); }
+  .archive:has(#perception:target) .entry:not([data-themes~="perception"]),
+  .archive:has(#interaction:target) .entry:not([data-themes~="interaction"]),
+  .archive:has(#art:target) .entry:not([data-themes~="art"]),
+  .archive:has(#design:target) .entry:not([data-themes~="design"]) { display: none; }
+  .card-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.8rem var(--grid-gap); }
+  @media (max-width: 900px) { .card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 520px) { .card-grid { grid-template-columns: minmax(0, 1fr); } }
+</style>

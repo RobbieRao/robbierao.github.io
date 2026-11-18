@@ -1,0 +1,329 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import FaceField from '@/components/FaceField.astro';
+import WorkMedia from '@/components/WorkMedia.astro';
+import WorkCard from '@/components/WorkCard.astro';
+import WorkLinks from '@/components/WorkLinks.astro';
+import Authors from '@/components/Authors.astro';
+import ProfileLinks from '@/components/ProfileLinks.astro';
+import { copy, site } from '@/data/site';
+import { cv } from '@/data/cv';
+import { designs, featuredWorks, publicationGroups, workPath } from '@/data/works';
+import { updates } from '@/data/updates';
+import { imageSize } from '@/lib/media';
+import { langFromParam, langPaths, to, ui } from '@/i18n';
+import portrait from '@/assets/portrait.png';
+
+export const getStaticPaths = langPaths;
+const lang = langFromParam(Astro.params.lang);
+const say = (en: string, zh: string) => lang === 'en' ? en : zh;
+const local = (path: string) => to(path, lang);
+const updateText = (html: string) => html.replace(/href="(\/(?!zh\/)[^"]+)"/g, (_, path) => 'href="' + local(path) + '"');
+
+// Paper figures sit on a white mount at their own proportions; photographs run full bleed.
+const mounted = new Set(['disface3dnet', 'facial-social-traits', 'contextcam']);
+const coverSizes = new Map(await Promise.all(featuredWorks.map(async work =>
+  [work.slug, await imageSize(work.cover.image)] as const,
+)));
+const shownDesigns = designs.slice(0, 6);
+const shownHonors = cv.honors.items.slice(0, 5);
+// Compact "where — what" lines for the About block; the CV carries the detail.
+const education = [
+  say('<strong>The Hong Kong Polytechnic University</strong> — PhD candidate in Design, School of Design, 2024–present', '<strong>香港理工大学</strong> — 设计学博士候选人，设计学院，2024–至今'),
+  say('<strong>China Academy of Art</strong> — Undergraduate degree in Innovative Design, 2020–2024', '<strong>中国美术学院</strong> — 创新设计本科，2020–2024'),
+];
+const experience = [
+  say('<strong>Bizzle Tech</strong> — Chief Executive Officer', '<strong>Bizzle Tech</strong> — 首席执行官'),
+  say('<strong>Design Anything Lab</strong> — Co-initiator', '<strong>Design Anything Lab</strong> — 联合发起人'),
+  say('<strong>Lingyuan / Soulscapes</strong> — Founder and chief curator', '<strong>Lingyuan / Soulscapes</strong> — 创始人兼首席策展人'),
+  say('<strong>PolyU SD4410</strong> — Teaching Assistant', '<strong>香港理工大学 SD4410</strong> — 教学助理'),
+  say('<strong>PolyU URIS</strong> — Project mentor', '<strong>香港理工大学 URIS</strong> — 项目导师'),
+  say('<strong>ACM CHI</strong> — Conference reviewer', '<strong>ACM CHI</strong> — 会议审稿人'),
+  say('<strong>JCCE</strong> — Journal reviewer', '<strong>JCCE</strong> — 期刊审稿人'),
+];
+---
+<Base lang={lang} path={local('/')} title={copy.title[lang]} description={copy.description[lang]} image={featuredWorks[0].cover.image}>
+  <section class="hero wrap" aria-labelledby="hero-title">
+    <div class="hero-head">
+      <p class="mono hero-eyebrow"><span aria-hidden="true"></span>{copy.hero.eyebrow[lang]}</p>
+      <h1 id="hero-title">{copy.hero.headline[lang][0]} <br /><em>{copy.hero.headline[lang][1]}</em></h1>
+    </div>
+    <figure class="hero-instrument">
+      <FaceField lang={lang} />
+      <figcaption class="mono muted">{copy.hero.figure[lang]}<span class="pointer-instruction">{copy.pointerInstruction[lang]}</span></figcaption>
+    </figure>
+    <div class="hero-body">
+      <p class="hero-intro" set:html={copy.hero.intro[lang]} />
+      <div class="hero-actions">
+        <a class="action primary" href="#selected">{say('Selected work', '精选作品')} <span aria-hidden="true">↓</span></a>
+        <a class="action" href={local('/cv/')}>{ui.nav.cv[lang]}</a>
+        <a class="hero-email quiet-link" href={'mailto:' + site.email}>{say('Email', '邮件联系')} <span aria-hidden="true">↗</span></a>
+      </div>
+      {site.availability && <p class="availability"><span aria-hidden="true"></span>{site.availability[lang]}</p>}
+    </div>
+  </section>
+
+  <section class="wrap latest" id="news" aria-labelledby="news-title">
+    <h2 id="news-title" class="mono muted">{say('Latest', '近况')}</h2>
+    <div class="latest-body">
+      <ol class="update-grid plain-list">
+        {updates.slice(0, 4).map(item => <li><time class="mono accent" datetime={item.date}>{item.date}</time><p set:html={updateText(item.text[lang])} /></li>)}
+      </ol>
+      <details>
+        <summary>{say('Earlier updates', '更早的近况')}</summary>
+        <ol class="update-grid plain-list">
+          {updates.slice(4).map(item => <li><time class="mono accent" datetime={item.date}>{item.date}</time><p set:html={updateText(item.text[lang])} /></li>)}
+        </ol>
+      </details>
+    </div>
+  </section>
+
+  <section id="research" class="wrap section" aria-labelledby="research-title">
+    <div class="section-head"><span class="mono accent" aria-hidden="true">01</span><h2 id="research-title">{copy.threads.title[lang]}</h2></div>
+    <div class="questions">
+      <p class="mono muted">{copy.threads.current.label[lang]}</p>
+      <ul class="plain-list">
+        {copy.threads.current.questions.map(question => <li>{question[lang]}</li>)}
+      </ul>
+    </div>
+    <ol class="threads plain-list">
+      {copy.threads.items.map(thread => <li>
+        <h3>{thread.label[lang]}</h3>
+        <p>{thread.body[lang]}</p>
+      </li>)}
+    </ol>
+  </section>
+
+  <section id="selected" class="wrap section" aria-labelledby="selected-title">
+    <div class="section-head"><span class="mono accent" aria-hidden="true">02</span><h2 id="selected-title">{say('Selected work', '精选作品')}</h2><a href={local('/work/')} class="quiet-link more">{ui.allWork[lang]} <span aria-hidden="true">↗</span></a></div>
+    {featuredWorks.map((work, index) => {
+      const size = coverSizes.get(work.slug)!;
+      const wide = size.width / size.height > 2;
+      const mount = mounted.has(work.slug);
+      const first = work.authors?.[0]?.me;
+      const corresponding = work.authors?.some(author => author.me && author.corresponding);
+      return (
+        <article class:list={['featured', { wide, reverse: !wide && index % 2 === 1 }]} id={work.slug}>
+          <a class:list={['featured-media', { mount }]} style={'--cover-ratio:' + size.width + '/' + size.height} href={local(workPath(work))} aria-label={work.title[lang]}>
+            <WorkMedia work={work} lang={lang} shared eager={index === 0} />
+          </a>
+          <div class="featured-copy">
+            <div class="featured-title">
+              <p class="mono accent">{work.venue?.short} · {work.year}{work.venue?.status && <> · {work.venue.status}</>}</p>
+              <h3><a href={local(workPath(work))}>{work.name[lang]}</a></h3>
+              {work.subtitle?.[lang] && <p class="featured-subtitle">{work.subtitle[lang]}</p>}
+            </div>
+            <div class="featured-detail">
+              <p class="featured-summary">{work.summary[lang]}</p>
+              <p class="featured-role">
+                {first && <span class="mono">{ui.roles.first[lang]}</span>}
+                {corresponding && <span class="mono">{ui.roles.corresponding[lang]}</span>}
+                {work.role && <span>{work.role[lang]}</span>}
+              </p>
+              <WorkLinks work={work} lang={lang} />
+            </div>
+          </div>
+        </article>
+      );
+    })}
+  </section>
+
+  <section id="publications" class="wrap section" aria-labelledby="publications-title">
+    <div class="section-head"><span class="mono accent" aria-hidden="true">03</span><h2 id="publications-title">{say('Publications', '研究发表')}</h2><span class="more muted">* {say('Corresponding author', '通讯作者')}</span></div>
+    {publicationGroups.map(group => <div class="pub-group">
+      <h3 class="mono muted">{group.title[lang]}</h3>
+      <ul class="plain-list">
+        {group.works.map(work => <li class="pub" id={work.featured === undefined ? work.slug : undefined}>
+          <p class="mono pub-venue">{work.venue?.short} {work.year}{work.venue?.status && <small>{work.venue.status}</small>}</p>
+          <div>
+            <h4><a href={local(workPath(work))}>{work.title[lang]}</a></h4>
+            {work.authors && <p class="author-line"><Authors authors={work.authors} /></p>}
+          </div>
+          <WorkLinks work={work} lang={lang} />
+        </li>)}
+      </ul>
+    </div>)}
+  </section>
+
+  <section id="practice" class="wrap section" aria-labelledby="practice-title">
+    <div class="section-head"><span class="mono accent" aria-hidden="true">04</span><h2 id="practice-title">{say('Design & making', '设计与实践')}</h2><a class="quiet-link more" href={local('/work/#design')}>{say('All ' + designs.length + ' projects', '全部 ' + designs.length + ' 个项目')} <span aria-hidden="true">↗</span></a></div>
+    <div class="card-grid">
+      {shownDesigns.map(work => <div id={work.slug}><WorkCard work={work} lang={lang} shared /></div>)}
+    </div>
+  </section>
+
+  <section id="about" class="wrap section" aria-labelledby="about-title">
+    <div class="section-head"><span class="mono accent" aria-hidden="true">05</span><h2 id="about-title">{copy.about.title[lang]}</h2></div>
+    <div class="about-grid">
+      <figure>
+        <Picture src={portrait} alt={say('Portrait of Robbie Fenggui Rao', '饶柏肖像')} width={480} height={600} widths={[280, 480, 720]} sizes="(max-width: 650px) 70vw, (max-width: 1000px) 33vw, 400px" formats={['avif', 'webp']} fallbackFormat="webp" fit="cover" loading="lazy" />
+        <figcaption><ProfileLinks lang={lang} email /></figcaption>
+      </figure>
+      <div class="about-copy">
+        {copy.about.body[lang].map(paragraph => <p set:html={paragraph} />)}
+        <a class="action" href={local('/cv/')}>{say('Full curriculum vitae', '完整简历')} <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+    <div class="about-lists">
+      <div><h3 class="mono muted">{cv.education.title[lang]}</h3><ul class="plain-list">{education.map(item => <li set:html={item} />)}</ul></div>
+      <div><h3 class="mono muted">{cv.experience.title[lang]}</h3><ul class="plain-list">{experience.map(item => <li set:html={item} />)}</ul></div>
+      <div><h3 class="mono muted">{cv.honors.title[lang]}</h3><ul class="plain-list">{shownHonors.map(item => <li set:html={item[lang]} />)}</ul></div>
+    </div>
+    <div class="toolkit" id="toolkit">
+      <h3 class="mono muted">{cv.skills.title[lang]}</h3>
+      <div class="tool-grid">
+        {cv.skills.entries.map(entry => <div><h4 set:html={entry.title[lang]} /><p set:html={entry.body[lang]} /></div>)}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* Hero: headline and body on the left, the portrait instrument spans both rows on the right. */
+  .hero { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: auto 1fr; gap: 0 var(--grid-gap); align-items: start; padding-block: clamp(2.4rem, 5.5vw, 5rem) clamp(2.6rem, 5vw, 4.5rem); }
+  .hero-head { grid-column: 1 / span 8; grid-row: 1; padding-top: clamp(0rem, 2.4vw, 2.2rem); }
+  .hero-body { grid-column: 1 / span 6; grid-row: 2; }
+  .hero-instrument { grid-column: 9 / -1; grid-row: 1 / span 2; min-width: 0; }
+  .hero-eyebrow { display: flex; align-items: center; gap: .65rem; }
+  .hero-eyebrow span { width: 1.7rem; height: 1px; background: var(--accent); flex: none; }
+  .hero h1 { font-size: var(--hero-size); line-height: 1.06; margin: .32em 0 .44em; letter-spacing: -.035em; }
+  .hero h1 em { font-style: normal; }
+  .hero-intro { max-width: 50ch; font-size: 1.12rem; line-height: 1.6; }
+  .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .55rem; margin-top: 1.7rem; font-size: .95rem; }
+  .hero-email { margin-left: .45rem; }
+  .availability { display: flex; align-items: baseline; gap: .52rem; margin-top: 1.15rem; color: var(--muted); font-size: .86rem; }
+  .availability span { width: 6px; height: 6px; flex: none; border-radius: 50%; background: var(--accent); transform: translateY(-.1em); }
+  .hero-instrument figcaption { margin-top: .8rem; }
+  .pointer-instruction { display: none; }
+  @media (hover: hover) {
+    .hero-instrument:has(:global([data-ready])) .pointer-instruction { display: inline; }
+  }
+
+  .latest { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: .6rem var(--grid-gap); border-block: 1px solid var(--line); padding-block: 1.15rem; }
+  .latest h2 { grid-column: 1 / span 2; padding-top: .1rem; }
+  .latest-body { grid-column: 3 / -1; }
+  .update-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem var(--grid-gap); }
+  .update-grid li { font-size: .91rem; line-height: 1.5; }
+  .update-grid li p { margin-top: .25rem; }
+  .update-grid :global(a) { text-decoration-color: var(--line); }
+  .latest details { margin-top: .9rem; font-size: .87rem; color: var(--muted); }
+  .latest details[open] summary { margin-bottom: .9rem; }
+  .latest details .update-grid { color: var(--ink); }
+  summary { width: fit-content; cursor: pointer; }
+  summary:hover { color: var(--accent); }
+
+  .section-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .4rem 1.1rem; }
+  .section-head h2 { font-size: clamp(1.7rem, 3vw, 2.4rem); letter-spacing: -.025em; }
+  .section-head .mono { margin: 0; }
+  .section-head .more { margin-left: auto; font-size: .9rem; }
+
+  .questions { max-width: 36em; font: 500 clamp(1.3rem, 2.4vw, 1.9rem) / 1.3 var(--display); letter-spacing: -.02em; }
+  .questions .mono { margin-bottom: 1rem; }
+  .questions li + li { margin-top: .55em; color: var(--muted); }
+  .threads { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.6rem var(--grid-gap); margin-top: clamp(2.4rem, 5vw, 4.4rem); }
+  .threads li { border-top: 1px solid var(--line); padding-top: .95rem; }
+  .threads h3 { font-size: 1.15rem; margin-bottom: .6rem; }
+  .threads p { color: var(--muted); font-size: .95rem; line-height: 1.6; }
+
+  .featured { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: clamp(1.1rem, 2.4vw, 2rem) var(--grid-gap); align-items: center; padding-block: clamp(1.8rem, 4vw, 3.6rem); border-top: 1px solid var(--line); }
+  .featured:first-of-type { border-top: 0; padding-top: 0; }
+  .featured-media { display: block; grid-column: 1 / span 7; }
+  .featured-media.mount { --cover-fit: contain; padding: clamp(10px, 2.2vw, 28px); border: 1px solid var(--line); border-radius: 4px; background: #fffefb; }
+  .featured-media.mount :global(.work-media) { background: none; border-radius: 0; }
+  .featured-media.mount :global(img) { border-radius: 0; }
+  .featured-copy { grid-column: 8 / -1; min-width: 0; }
+  .featured.reverse .featured-media { grid-column: 6 / -1; grid-row: 1; }
+  .featured.reverse .featured-copy { grid-column: 1 / span 5; grid-row: 1; }
+  .featured.wide { align-items: start; }
+  .featured.wide .featured-media { grid-column: 1 / -1; }
+  .featured.wide .featured-copy { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--grid-gap); }
+  .featured.wide .featured-title { grid-column: 1 / span 6; }
+  .featured.wide .featured-detail { grid-column: 8 / -1; padding-top: 1.9rem; }
+  .featured h3 { font-size: clamp(1.7rem, 2.8vw, 2.4rem); margin-top: .3em; letter-spacing: -.025em; overflow-wrap: anywhere; }
+  .featured h3 a { text-decoration: none; }
+  .featured-subtitle { font: 400 1.1rem / 1.4 var(--display); margin-top: .35rem; color: var(--muted); }
+  .featured-summary { margin-top: .9rem; }
+  .featured.wide .featured-summary { margin-top: 0; }
+  .featured-role { display: flex; flex-wrap: wrap; align-items: baseline; gap: .35rem .6rem; margin-block: .85rem .7rem; color: var(--muted); font-size: .89rem; }
+  .featured-role .mono { border: 1px solid var(--line); padding: .1rem .42rem; color: var(--ink); }
+  @media (prefers-reduced-motion: no-preference) {
+    .featured-media :global(img) { transition: transform 700ms cubic-bezier(.2, .7, .2, 1); }
+    .featured-media:not(.mount):hover :global(img) { transform: scale(1.02); }
+  }
+
+  .pub-group { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--grid-gap); border-top: 1px solid var(--line); padding-top: .95rem; }
+  .pub-group + .pub-group { margin-top: 2.1rem; }
+  .pub-group > h3 { grid-column: 1 / span 3; }
+  .pub-group > ul { grid-column: 4 / -1; }
+  .pub { display: grid; grid-template-columns: 6.8rem minmax(0, 1fr) auto; gap: .2rem 1.3rem; align-items: baseline; padding-block: .85rem; border-top: 1px solid var(--line); }
+  .pub:first-child { border-top: 0; padding-top: 0; }
+  .pub-venue small { display: block; color: var(--muted); font-size: inherit; letter-spacing: 0; text-transform: none; }
+  .pub h4 { font: 560 1rem / 1.4 var(--body); }
+  .pub h4 a { text-decoration: none; }
+  .author-line { margin-top: .18rem; color: var(--muted); font-size: .88rem; }
+  .author-line :global(strong) { color: var(--ink); font-weight: 620; }
+  .pub :global(.link-list) { justify-content: flex-end; gap: .2rem .8rem; font-size: .84rem; }
+
+  .card-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2rem var(--grid-gap); }
+
+  .about-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 1.6rem var(--grid-gap); align-items: start; }
+  .about-grid figure { grid-column: 1 / span 4; }
+  .about-grid figure :global(img) { width: 100%; object-fit: cover; }
+  .about-grid figcaption { margin-top: .85rem; font-size: .85rem; }
+  .about-copy { grid-column: 6 / -1; }
+  .about-copy > p:first-child { font-size: 1.28rem; line-height: 1.5; }
+  .about-copy > p + p { margin-top: 1.05em; }
+  .about-copy .action { margin-top: 1.7rem; }
+  .about-lists { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.6rem var(--grid-gap); margin-top: clamp(2.4rem, 5vw, 4rem); font-size: .9rem; }
+  .about-lists > div, .toolkit { border-top: 1px solid var(--line); padding-top: .85rem; }
+  .about-lists li { margin-top: .5em; line-height: 1.5; }
+  .about-lists li:first-child { margin-top: .8em; }
+  .about-lists :global(strong) { font-weight: 600; }
+  .toolkit { margin-top: clamp(1.8rem, 4vw, 3rem); }
+  .tool-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.4rem var(--grid-gap); margin-top: .9rem; }
+  .tool-grid h4 { font: 620 .95rem / 1.4 var(--body); margin-bottom: .3rem; }
+  .tool-grid p { color: var(--muted); font-size: .88rem; line-height: 1.55; }
+
+  /* Chinese is never italic or letter-spaced. */
+  :global(html:lang(zh-Hans)) .hero h1 { letter-spacing: 0; font-size: clamp(2.2rem, 4.6vw, 3.6rem); line-height: 1.25; }
+  :global(html:lang(zh-Hans)) .hero h1 em,
+  :global(html:lang(zh-Hans)) .questions { font-style: normal; letter-spacing: 0; }
+  :global(html:lang(zh-Hans)) .questions { line-height: 1.5; font-size: clamp(1.25rem, 2.2vw, 1.75rem); }
+  :global(html:lang(zh-Hans)) .section-head h2,
+  :global(html:lang(zh-Hans)) .featured h3 { letter-spacing: 0; }
+
+  @media (max-width: 900px) {
+    .card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .hero h1 { font-size: clamp(2rem, 4.6vw, 4rem); }
+    .update-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .pub-group > h3, .pub-group > ul { grid-column: 1 / -1; }
+    .pub-group > h3 { margin-bottom: .9rem; }
+    .featured.wide .featured-title, .featured.wide .featured-detail { grid-column: 1 / -1; padding-top: 0; }
+    .featured.wide .featured-summary { margin-top: .9rem; }
+  }
+  @media (max-width: 650px) {
+    .hero { grid-template-rows: auto; padding-top: 1.6rem; }
+    .hero-head, .hero-body, .hero-instrument { grid-column: 1 / -1; grid-row: auto; }
+    .hero-head { padding-top: 0; }
+    .hero h1 { font-size: clamp(1.75rem, 8.2vw, 3rem); margin-bottom: .5em; }
+    :global(html:lang(zh-Hans)) .hero h1 { font-size: clamp(2rem, 9.4vw, 3.2rem); }
+    .hero-instrument { margin-bottom: 1.5rem; }
+    .hero-intro { font-size: 1.02rem; }
+    .latest h2, .latest-body { grid-column: 1 / -1; }
+    .update-grid { grid-template-columns: minmax(0, 1fr); gap: .75rem; }
+    .update-grid li { display: grid; grid-template-columns: 6.2rem minmax(0, 1fr); gap: .8rem; }
+    .update-grid li p { margin-top: 0; }
+    .threads, .tool-grid, .about-lists { grid-template-columns: minmax(0, 1fr); }
+    .featured .featured-media, .featured .featured-copy,
+    .featured.reverse .featured-media, .featured.reverse .featured-copy { grid-column: 1 / -1; grid-row: auto; }
+    .pub { grid-template-columns: minmax(0, 1fr); }
+    .pub :global(.link-list) { justify-content: flex-start; margin-top: .25rem; }
+    .about-grid figure { grid-column: 1 / span 8; }
+    .about-copy { grid-column: 1 / -1; }
+    .about-copy > p:first-child { font-size: 1.14rem; }
+  }
+  @media (max-width: 480px) {
+    .card-grid { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>

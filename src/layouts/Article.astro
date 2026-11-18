@@ -1,0 +1,112 @@
+---
+import { render } from 'astro:content';
+import '@/styles/notebook.css';
+import SectionHead from '@/components/SectionHead.astro';
+import Base from './Base.astro';
+import NotebookEmbed from '@/components/NotebookEmbed.astro';
+import Authors from '@/components/Authors.astro';
+import WorkMedia from '@/components/WorkMedia.astro';
+import WorkLinks from '@/components/WorkLinks.astro';
+import Lightbox from '@/components/Lightbox.astro';
+import { imageSize } from '@/lib/media';
+import { getNote } from '@/lib/notes';
+import { workPath, works, type Work } from '@/data/works';
+import { to, ui, type Lang } from '@/i18n';
+
+const { work, lang } = Astro.props as { work: Work; lang: Lang };
+const en = lang === 'en';
+const path = to(workPath(work), lang);
+const { Content, headings } = await render(await getNote(work, lang));
+const sections = headings.filter(heading => heading.depth === 2);
+const siblings = works.filter(item => item.kind === work.kind);
+const index = siblings.indexOf(work);
+const previous = siblings[index - 1];
+const next = siblings[index + 1];
+const venue = work.venue;
+const size = await imageSize(work.cover.image);
+const tagLine = work.tags?.map(tag => tag[lang]).join(' · ');
+---
+<Base lang={lang} path={path} title={work.title[lang] + ' · Robbie Rao'} description={work.summary[lang]} image={work.cover.image} notebook>
+  <article class="wrap article notebook">
+    <a class="quiet-link back" href={to('/work/', lang)}>← {ui.allWork[lang]}</a>
+    <header>
+      <p class="mono accent">{ui.kinds[work.kind][lang]} · {work.year}</p>
+      <h1>{work.name[lang]}{work.subtitle?.[lang] && <span>{" "}{work.subtitle[lang]}</span>}</h1>
+      <p class="lead">{work.lead[lang]}</p>
+      <dl class="facts">
+        {venue && <div><dt class="mono muted">{ui.venue[lang]}</dt><dd>{venue.full}{venue.status && <> · {venue.status}</>}</dd></div>}
+        {work.authors && <div><dt class="mono muted">{ui.authors[lang]}</dt><dd><Authors authors={work.authors} /></dd></div>}
+        {work.kind === 'design' && <div><dt class="mono muted">{ui.year[lang]}</dt><dd>{work.year}</dd></div>}
+        {tagLine && <div><dt class="mono muted">{ui.practice[lang]}</dt><dd>{tagLine}</dd></div>}
+        {work.role && <div><dt class="mono muted">{ui.myRole[lang]}</dt><dd>{work.role[lang]}</dd></div>}
+        {venue && <div><dt class="mono muted">{en ? 'Links' : '链接'}</dt><dd><WorkLinks work={work} lang={lang} note="#notebook" /></dd></div>}
+      </dl>
+    </header>
+    <figure class:list={["article-media", { mount: work.cover.mount, portrait: work.slug === "digital-human" }]}
+      style={{ "--cover-ratio": size.width + " / " + size.height }}>
+      <a href={work.cover.image} aria-label={en ? "View cover image" : "查看封面原图"}><WorkMedia work={work} lang={lang} eager shared
+        sizes={work.slug === 'digital-human' ? '(max-width: 440px) 90vw, 400px' : '(max-width: 1320px) 88vw, 1200px'} /></a>
+    </figure>
+
+    <div class="reading">
+      {sections.length > 0 && <>
+        <nav class="toc desktop" aria-label={ui.onThisPage[lang]}>
+          <h2 class="mono">{ui.onThisPage[lang]}</h2>
+          <ul class="plain-list">{sections.map(({ slug, text }) => <li><a class="quiet-link" href={'#' + slug}>{text}</a></li>)}</ul>
+        </nav>
+        <details class="toc mobile">
+          <summary>{ui.onThisPage[lang]}</summary>
+          <ul class="plain-list">{sections.map(({ slug, text }) => <li><a class="quiet-link" href={'#' + slug}>{text}</a></li>)}</ul>
+        </details>
+      </>}
+      <section class="notebook-content" id="notebook" aria-labelledby="notebook-title">
+        <SectionHead id="notebook-title" number={1} title={ui.links.notes[lang]} />
+        <div class="prose"><Content /></div>
+      </section>
+    </div>
+
+    <nav class="siblings" aria-label={en ? 'Related navigation' : '作品翻页'}>
+      {previous && <a class="previous" href={to(workPath(previous), lang)}><span class="mono muted">← {ui.previous[lang]}</span>{previous.title[lang]}</a>}
+      {next && <a class="next" href={to(workPath(next), lang)}><span class="mono muted">{ui.next[lang]} →</span>{next.title[lang]}</a>}
+    </nav>
+  </article>
+  <Lightbox lang={lang} />
+  <NotebookEmbed />
+</Base>
+<style>
+  .notebook :global(.prose :is(em, i, h2):lang(zh)) { font-style: normal; letter-spacing: normal; }
+  .article { padding-top: clamp(2rem, 5vw, 4.4rem); }
+  .back { font-size: .9rem; }
+  header { margin-block: 1.65rem 1.5rem; }
+  h1 { font-size: var(--page-title-size); margin-block: .25em .4em; overflow-wrap: anywhere; text-wrap: pretty; max-width: 29ch; }
+  h1 span { display: block; font-size: var(--page-subtitle-size); font-weight: 500; line-height: 1.4; letter-spacing: normal; margin-top: .55rem; }
+  .lead { max-width: 68ch; font-size: clamp(1.06rem, 2vw, 1.24rem); }
+  .facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem var(--grid-gap); max-width: 900px; margin-top: 1.6rem; border-top: 1px solid var(--line); padding-top: .9rem; }
+  .facts dd { margin: .15rem 0 0; font-size: .93rem; }
+  .article-media.mount { --cover-fit: contain; padding: clamp(10px, 2.2vw, 28px); border: 1px solid var(--line); border-radius: 4px; background: #fffefb; }
+  .article-media.mount :global(.work-media) { background: #fffefb; border-radius: 0; }
+  .article-media.portrait { width: min(100%, 25rem); margin-inline: auto; }
+  :lang(zh) :is(h1, h1 span, .lead, .toc) { font-style: normal; letter-spacing: normal; }
+  .article-media a { display: block; }
+  .reading { display: grid; grid-template-columns: minmax(0, 68ch) minmax(0, 1fr); gap: var(--grid-gap); align-items: start; margin-block: clamp(2rem, 6vw, 4.5rem); }
+  .notebook-content { grid-column: 1; grid-row: 1; min-width: 0; }
+  .reading .prose { margin-top: clamp(1.15rem, 3.2vw, 2.65rem); }
+  .toc { border-top: 1px solid var(--line); padding-top: .65rem; font-size: .87rem; }
+  .toc.desktop { position: sticky; top: 90px; grid-column: 2; grid-row: 1; max-height: calc(100vh - 110px); overflow: auto; }
+  .toc.mobile { display: none; }
+  .toc ul { margin-top: .6rem; }
+  .toc li + li { margin-top: .35rem; }
+  summary { cursor: pointer; }
+  .siblings { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--grid-gap); border-top: 1px solid var(--line); padding-top: 1rem; }
+  .siblings a { text-decoration: none; font: 600 clamp(1.05rem, 1.8vw, 1.3rem) / 1.3 var(--display); overflow-wrap: anywhere; }
+  .siblings span { display: block; margin-bottom: .3rem; }
+  .siblings .next { grid-column: 2; text-align: end; }
+  @media (max-width: 810px) {
+    .reading { display: block; }
+    .toc.desktop { display: none; }
+    .toc.mobile { display: block; margin-bottom: 1.3rem; }
+  }
+  @media (max-width: 540px) {
+    .facts { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>

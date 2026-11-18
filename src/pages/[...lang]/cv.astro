@@ -1,0 +1,78 @@
+---
+import SectionHead from '@/components/SectionHead.astro';
+import Base from '@/layouts/Base.astro';
+import { cv, cvIntro } from '@/data/cv';
+import { site } from '@/data/site';
+import { langFromParam, langPaths, to } from '@/i18n';
+
+export const getStaticPaths = langPaths;
+const lang = langFromParam(Astro.params.lang);
+const en = lang === 'en';
+const localize = (html: string) => html.replace(/href="(\/(?!zh\/)[^"]+)"/g, (_, href) => 'href="' + to(href, lang) + '"');
+---
+<Base lang={lang} path={to('/cv/', lang)} title={cvIntro.eyebrow[lang] + ' · ' + site.name} description={en ? 'Curriculum vitae of Robbie Fenggui Rao, PhD candidate at PolyU Design.' : '香港理工大学设计学院博士候选人饶柏的简历。'}>
+  <div class="wrap cv">
+    <header class="cv-intro">
+      <p class="mono accent">{cvIntro.eyebrow[lang]}</p>
+      <h1 set:html={cvIntro.title[lang]} />
+      <p set:html={cvIntro.intro[lang]} />
+      <p class="muted">{cvIntro.publicationName[lang]}</p>
+      <div class="link-list cv-links">
+        <a class="quiet-link" href={'mailto:' + site.email}>{en ? 'Email' : '邮箱'} ↗</a>
+        <a class="quiet-link" href={site.links.orcid}>ORCID ↗</a>
+        <a class="quiet-link" href={site.links.github}>GitHub ↗</a>
+        <button type="button" class="action" data-print hidden>{en ? 'Print / Save PDF' : '打印 / 保存 PDF'}</button>
+      </div>
+    </header>
+    {Object.values(cv).map((section, index) => <section class="cv-section" aria-labelledby={section.id}>
+      <SectionHead id={section.id} number={index + 1} title={section.title[lang]} />
+      <div class="cv-content">
+        {'entries' in section && section.entries.map(entry => <div class="cv-entry" id={'id' in entry ? entry.id : undefined}>
+          <h3 set:html={entry.title[lang]} />
+          {entry.meta && <p class="entry-meta" lang={'metaLang' in entry ? entry.metaLang?.[lang] : undefined} set:html={entry.meta[lang]} />}
+          <p set:html={localize(entry.body[lang])} />
+        </div>)}
+        {'items' in section && <ul class="cv-list">{section.items.map(item => <li set:html={item[lang]} />)}</ul>}
+        {'body' in section && <Fragment set:html={localize(section.body[lang])} />}
+      </div>
+    </section>)}
+  </div>
+</Base>
+<script>
+  const print = document.querySelector<HTMLButtonElement>('[data-print]');
+  if (print) {
+    print.hidden = false;
+    print.addEventListener('click', () => window.print());
+  }
+</script>
+<style>
+  .cv { max-width: 990px; padding-top: clamp(2.5rem, 6vw, 5rem); }
+  .cv-intro { max-width: 70ch; }
+  h1 { font-size: var(--page-title-size); margin-block: .25em .36em; text-wrap: pretty; overflow-wrap: anywhere; }
+  .cv-intro p + p { margin-top: .55rem; }
+  .cv-links { margin-top: .8rem; font-size: .95rem; }
+  .cv-section { margin-top: clamp(2rem, 5vw, 4.25rem); }
+  .cv-section .cv-content { margin-top: 1.2rem; max-width: 75ch; }
+  .cv :global(:lang(zh)) { font-style: normal; letter-spacing: normal; }
+  .cv-content { overflow-wrap: anywhere; }
+  .cv-content :global(.cv-entry + .cv-entry) { margin-top: 1.15rem; }
+  .cv-content :global(h3) { font-size: var(--card-title-size); line-height: 1.4; margin-bottom: .18rem; }
+  .cv-content :global(.entry-meta), .cv-content :global(.section-note) { color: var(--muted); font-size: .91rem; }
+  .cv-content :global(.cv-list) { padding-inline-start: 1.15rem; }
+  .cv-content :global(.cv-list li + li) { margin-top: .35em; }
+  .cv-content :global(.intro-links) { margin-top: .5rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+  @media print {
+    @page { size: A4; margin: 15mm 17mm; }
+    :global(html), :global(body) { background: white !important; color: black !important; font-size: 10pt; }
+    :global(.site-header), :global(.site-footer), :global(.skip-link), [data-print] { display: none !important; }
+    .cv { width: 100%; padding-top: 0; }
+    h1 { font-size: 26pt; }
+    .cv-content :global(h3) { font-size: 12pt; }
+    .cv-section { margin-top: 1.25rem; border-top: 1px solid #999; padding-top: .6rem; }
+    .cv-section .cv-content { margin-top: .4rem; max-width: none; }
+    .cv :global(h3), .cv :global(.cv-entry), .cv :global(li) { break-inside: avoid; }
+    .cv :global(.muted), .cv :global(.accent), .cv-content :global(.entry-meta), .cv-content :global(.section-note) { color: black; }
+    .cv :global(a) { color: black; text-decoration: none; }
+    .cv :global(a[href^="https://"]::after) { content: ' (' attr(href) ')'; font-size: 8pt; overflow-wrap: anywhere; }
+  }
+</style>

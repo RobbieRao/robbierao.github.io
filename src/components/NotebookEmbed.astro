@@ -1,0 +1,39 @@
+<script is:inline>
+  if (document.documentElement.classList.contains('notebook-embedded')) {
+    const send = (data) => parent.postMessage(data, location.origin);
+    const announcePosition = () => send({
+      type: 'canvas-notebook-position', y: scrollY, entry: location.hash.slice(1),
+    });
+    let timer = 0;
+    addEventListener('scroll', () => {
+      clearTimeout(timer);
+      timer = setTimeout(announcePosition, 160);
+    }, { passive: true });
+    addEventListener('hashchange', () => {
+      send({ type: 'canvas-notebook-anchor', entry: location.hash.slice(1) });
+      announcePosition();
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key !== 'Escape' || document.querySelector('dialog[open]')) return;
+      event.preventDefault();
+      send({ type: 'canvas-notebook-close' });
+    }, { capture: true });
+    document.addEventListener('click', event => {
+      const link = event.target instanceof Element && event.target.closest('a[href]');
+      if (!link || event.defaultPrevented || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+      const url = new URL(link.href, location.href);
+      if (!['https:', 'http:'].includes(url.protocol) || url.origin === location.origin && url.pathname === location.pathname) return;
+      link.target = '_blank';
+      link.rel = 'noopener';
+    });
+    send({ type: 'canvas-notebook-ready', path: location.pathname });
+  }
+</script>
+<style is:global>
+  html.notebook-embedded { scroll-padding-top: 1rem; }
+  .notebook-embedded .site-header, .notebook-embedded .site-footer, .notebook-embedded .skip-link,
+  .notebook-embedded :is(.article .back, .article .siblings) { display: none; }
+  .notebook-embedded .article { padding-block: clamp(1rem, 4vw, 2.5rem); }
+  .notebook-embedded .article > header { margin-top: 0; }
+  .notebook-embedded .toc.desktop { top: 1rem; max-height: calc(100dvh - 2rem); }
+</style>

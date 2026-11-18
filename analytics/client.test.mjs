@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import { runInNewContext } from 'node:vm';
 import { randomUUID } from 'node:crypto';
 
-const source = readFileSync(new URL('../site/assets/analytics.js', import.meta.url), 'utf8');
+const source = readFileSync(new URL('../public/assets/analytics.js', import.meta.url), 'utf8');
 function visit(storage, { path = '/', origin = 'https://robbierao.github.io', now = Date.now(), privacy = false, brokenStorage = false } = {}) {
   const requests = [];
   const clock = class extends Date { static now() { return now; } };

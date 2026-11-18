@@ -1,0 +1,86 @@
+---
+import '@/styles/base.css';
+import '@/styles/prose.css';
+import sans from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import { site } from '@/data/site';
+import { works, workPath } from '@/data/works';
+import { alternate, htmlLang, pick, type Lang } from '@/i18n';
+interface Props {
+  lang: Lang;
+  path: string;
+  title: string;
+  description: string;
+  image?: string;
+  notFound?: boolean;
+  notebook?: boolean;
+}
+const { lang, path, title, description, image, notFound = false, notebook = false } = Astro.props;
+const home = path === '/' || path === '/zh/';
+const socialImage = home ? '/og.png' : image ?? '/og.png';
+const url = (path: string) => new URL(path, site.url).href;
+const analytics = home || /^\/(?:zh\/)?(?:cv\/|privacy\/|design\/[^/]+\/)$/.test(path);
+const homeRedirects = home ? Object.fromEntries([...works.map(work => [work.slug, workPath(work)]), ['art-tutor', '/design/artisense/']]) : null;
+const person = {
+  '@context': 'https://schema.org', '@type': 'Person', name: site.name, alternateName: [site.nameZh, site.publicationName],
+  url: site.url, affiliation: { '@type': 'Organization', name: pick(site.affiliation, lang) },
+  sameAs: [site.links.orcid, site.links.github, site.links.researchgate],
+};
+---
+<!doctype html>
+<html lang={htmlLang[lang]}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href={sans} as="font" type="font/woff2" crossorigin="anonymous" />
+    {!notFound && <>
+      <link rel="canonical" href={url(path)} />
+      <link rel="alternate" hreflang="en" href={url(alternate(path, 'en'))} />
+      <link rel="alternate" hreflang="zh-Hans" href={url(alternate(path, 'zh'))} />
+      <link rel="alternate" hreflang="x-default" href={url(alternate(path, 'en'))} />
+    </>}
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={url(path)} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:locale" content={lang === 'en' ? 'en_US' : 'zh_CN'} />
+    <meta property="og:image" content={url(socialImage)} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={url(socialImage)} />
+    {home && <script is:inline type="application/ld+json" set:html={JSON.stringify(person).replaceAll('<', '\\u003c')} />}
+    <script is:inline define:vars={{ homeRedirects, notebook }}>
+      try {
+        const theme = localStorage.getItem('site-theme');
+        if (theme === 'dark' || theme === 'light') document.documentElement.dataset.theme = theme;
+      } catch {}
+      const page = new URL(location.href);
+      if (notebook && parent !== window && page.searchParams.get('embed') === 'canvas') {
+        document.documentElement.classList.add('notebook-embedded');
+      }
+      const anchor = page.hash.slice(1);
+      const zh = page.pathname.startsWith('/zh/');
+      const switchToZh = page.searchParams.get('lang') === 'zh' && !zh && !/\\.html$/.test(page.pathname);
+      if (homeRedirects && Object.hasOwn(homeRedirects, anchor)) {
+        page.pathname = (zh || switchToZh ? '/zh' : '') + homeRedirects[anchor];
+        page.hash = '';
+      } else if (switchToZh) {
+        page.pathname = '/zh' + page.pathname;
+      }
+      if (homeRedirects && anchor === 'design') page.hash = 'practice';
+      if (switchToZh) page.searchParams.delete('lang');
+      if (page.href !== location.href) location.replace(page);
+    </script>
+  </head>
+  <body id="top">
+    <Header lang={lang} path={path} />
+    <main id="main" tabindex="-1"><slot /></main>
+    <Footer lang={lang} home={home} />
+    {analytics && <script is:inline async src="/assets/analytics.js" data-endpoint={site.analyticsEndpoint} id="site-analytics"></script>}
+  </body>
+</html>

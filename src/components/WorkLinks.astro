@@ -1,0 +1,17 @@
+---
+import { workPath, type Work } from '@/data/works';
+import { pick, to, ui, type Lang } from '@/i18n';
+interface Props { work: Work; lang: Lang; note?: string; project?: boolean; }
+const { work, lang, note, project = true } = Astro.props;
+const links = [
+  [ui.links.paper, work.links.paper], [ui.links.code, work.links.code],
+  [ui.links.codeSoon, work.links.codeSoon], [ui.links.project, project ? work.links.project : undefined],
+  [ui.links.notes, note ?? (note === undefined ? workPath(work) : '')],
+] as const;
+---
+<ul class="link-list work-links">
+  {links.map(([label, href]) => href && <li><a class="quiet-link" href={to(href, lang)}>{pick(label, lang)}{href.startsWith('https://') && <span aria-hidden="true"> ↗</span>}</a></li>)}
+</ul>
+<style>
+  .work-links { font-size: .9rem; }
+</style>

@@ -1,0 +1,75 @@
+---
+import { responsiveCover } from '@/lib/media';
+import type { Work } from '@/data/works';
+import type { Lang } from '@/i18n';
+interface Props {
+  work: Work; lang: Lang; mode?: 'still' | 'visible' | 'hover'; shared?: boolean; eager?: boolean; sizes?: string;
+}
+const { work, lang, mode = 'still', shared = false, eager = false,
+  sizes = work.featured !== undefined && work.slug !== 'facial-social-traits' && work.slug !== 'disface3dnet'
+    ? '(max-width: 650px) 90vw, (max-width: 1320px) 52vw, 700px'
+    : '(max-width: 650px) 90vw, (max-width: 1320px) 88vw, 1200px',
+} = Astro.props;
+const { image, alt, video } = work.cover;
+const { width, height, srcset } = await responsiveCover(image);
+---
+<div class:list={["work-media", { portrait: work.slug === "digital-human" }]} style={shared ? { 'view-transition-name': 'work-' + work.slug } : undefined}>
+  <img src={image} srcset={srcset} sizes={sizes} alt={alt[lang]} width={width} height={height} loading={eager ? 'eager' : 'lazy'} decoding="async" />
+  {video && mode !== 'still' && <video data-preview={mode} data-src={video} muted loop playsinline preload="none" aria-hidden="true"></video>}
+</div>
+<script>
+  const motion = matchMedia('(prefers-reduced-motion: reduce)');
+  const hover = matchMedia('(hover: hover)');
+  const network = (navigator as Navigator & { connection?: EventTarget & { saveData?: boolean } }).connection;
+  const visible = new Set<HTMLVideoElement>();
+  const hovered = new Set<HTMLVideoElement>();
+  const videos = document.querySelectorAll<HTMLVideoElement>('video[data-preview]');
+
+  function update(video: HTMLVideoElement) {
+    const active = !document.hidden && !motion.matches && !network?.saveData && visible.has(video)
+      && (video.dataset.preview === 'visible' || hovered.has(video));
+    if (!active) {
+      video.pause();
+      video.classList.remove('playing');
+      return;
+    }
+    if (!video.hasAttribute('src') && video.dataset.src) video.src = video.dataset.src;
+    video.play().catch(() => {});
+  }
+
+  if (videos.length && 'IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(entries => {
+      for (const { target, isIntersecting } of entries) {
+        const video = target as HTMLVideoElement;
+        if (isIntersecting) visible.add(video);
+        else visible.delete(video);
+        update(video);
+      }
+    }, { threshold: .15 });
+    for (const video of videos) {
+      observer.observe(video);
+      video.addEventListener('playing', () => video.classList.add('playing'));
+      if (video.dataset.preview !== 'hover') continue;
+      const target = video.closest('a') ?? video.parentElement;
+      target?.addEventListener('pointerenter', () => {
+        if (hover.matches) { hovered.add(video); update(video); }
+      });
+      target?.addEventListener('pointerleave', () => {
+        hovered.delete(video);
+        update(video);
+      });
+    }
+    const updateAll = () => videos.forEach(update);
+    motion.addEventListener('change', updateAll);
+    network?.addEventListener('change', updateAll);
+    document.addEventListener('visibilitychange', updateAll);
+  }
+</script>
+<style>
+  .work-media { position: relative; overflow: hidden; border-radius: 4px; background: var(--surface); aspect-ratio: var(--cover-ratio, 16 / 10); }
+  .portrait { --cover-fit: contain; background: #111; }
+  img, video { width: 100%; height: 100%; object-fit: var(--cover-fit, cover); }
+  video { position: absolute; inset: 0; opacity: 0; pointer-events: none; }
+  video.playing { opacity: 1; }
+  @media (prefers-reduced-motion: no-preference) { video { transition: opacity var(--ease); } }
+</style>

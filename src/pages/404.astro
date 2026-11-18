@@ -1,0 +1,15 @@
+---
+import Base from '@/layouts/Base.astro';
+---
+<Base lang="en" path="/404.html" title="Page not found · Robbie Rao" description="This page could not be found." notFound>
+  <div class="wrap error-page">
+    <p class="mono accent">404</p>
+    <h1>Page not found</h1>
+    <p><a class="action primary" href="/">Home</a> <a class="action" href="/work/">Browse work</a> <a class="action" lang="zh-Hans" href="/zh/">中文首页</a></p>
+  </div>
+</Base>
+<style>
+  .error-page { padding-block: clamp(4rem, 15vw, 9rem); }
+  h1 { font-size: var(--page-title-size); margin: .1em 0 .3em; }
+  p:last-child { display: flex; flex-wrap: wrap; gap: .5rem; }
+</style>

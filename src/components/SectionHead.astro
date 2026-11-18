@@ -1,0 +1,31 @@
+---
+interface Props {
+  id?: string;
+  number: number;
+  title: string;
+  level?: 'h1' | 'h2';
+}
+const { id, number, title, level: Heading = 'h2' } = Astro.props;
+---
+<div class="section-heading">
+  <span class="mono accent" aria-hidden="true">{String(number).padStart(2, '0')}</span>
+  <Heading id={id}>{title}</Heading>
+</div>
+<style>
+  .section-heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: .45rem .85rem;
+    border-top: 1px solid var(--line);
+    padding-block: .8rem 0;
+  }
+  h1, h2 { font-size: var(--heading-size); letter-spacing: -.025em; overflow-wrap: anywhere; }
+  h1 { font-size: var(--page-title-size); line-height: 1.08; }
+  :lang(zh) :is(h1, h2) { letter-spacing: normal; font-style: normal; }
+  @media print {
+    .section-heading { border-top: 0; padding-top: 0; break-after: avoid; }
+    .section-heading span { display: none; }
+    h2 { font-size: 17pt; }
+  }
+</style>

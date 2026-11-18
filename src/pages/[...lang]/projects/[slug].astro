@@ -1,0 +1,84 @@
+---
+import { render } from 'astro:content';
+import '@/styles/notebook.css';
+import SectionHead from '@/components/SectionHead.astro';
+import Base from '@/layouts/Base.astro';
+import Lightbox from '@/components/Lightbox.astro';
+import WorkLinks from '@/components/WorkLinks.astro';
+import { getNote, notePaths } from '@/lib/notes';
+import { workPath, type Work } from '@/data/works';
+import { langFromParam, to, ui } from '@/i18n';
+export function getStaticPaths() { return notePaths('project'); }
+
+const work = Astro.props.work as Work;
+const lang = langFromParam(Astro.params.lang);
+const en = lang === 'en';
+const project = work.project![lang];
+const notebook = to(workPath(work) + '#notebook', lang);
+const { Content } = await render(await getNote(work, lang, true));
+---
+<Base lang={lang} path={to('/projects/' + work.slug + '/', lang)} title={project.title + ' · Robbie Rao'} description={project.summary} image={work.cover.image}>
+  <article class="wrap project notebook">
+    <a class="quiet-link back" href={to('/work/', lang)}>← {ui.allWork[lang]}</a>
+    <header>
+      <p class="mono accent">{en ? 'Research project' : '研究项目'} · {work.year}</p>
+      <h1>{project.title}</h1>
+      <p class="subtitle">{project.subtitle}</p>
+      <p class="summary">{project.summary}</p>
+      <p class="muted">{project.contribution}</p>
+      <WorkLinks work={work} lang={lang} project={false} note={workPath(work) + '#notebook'} />
+    </header>
+    <div class="body">
+      <section aria-labelledby="project-notes">
+        <SectionHead id="project-notes" number={1} title={en ? 'Project notes' : '项目手记'} />
+        <div class="prose"><Content /></div>
+      </section>
+      <section class="citation prose" aria-labelledby="citation-title">
+        <SectionHead id="citation-title" number={2} title={en ? 'Citation' : '引用'} />
+        <button class="action" type="button" data-copy data-done={en ? 'Copied' : '已复制'} data-failed={en ? 'Select and copy' : '请选择并复制'} hidden>{en ? 'Copy BibTeX' : '复制 BibTeX'}</button>
+        <pre><code data-bibtex>{project.bibtex}</code></pre>
+        <a class="quiet-link" href={notebook}>{en ? 'Read the research notebook' : '阅读研究手记'} <span aria-hidden="true">→</span></a>
+      </section>
+    </div>
+  </article>
+  <Lightbox lang={lang} />
+</Base>
+<script>
+  const button = document.querySelector<HTMLButtonElement>('[data-copy]');
+  const citation = document.querySelector('[data-bibtex]');
+  if (button && citation && navigator.clipboard) {
+    button.hidden = false;
+    const label = button.textContent;
+    let timer: number;
+    button.addEventListener('click', async () => {
+      clearTimeout(timer);
+      try {
+        await navigator.clipboard.writeText(citation.textContent ?? '');
+        button.textContent = button.dataset.done ?? label;
+      } catch {
+        const range = document.createRange();
+        range.selectNodeContents(citation);
+        getSelection()?.removeAllRanges();
+        getSelection()?.addRange(range);
+        button.textContent = button.dataset.failed ?? label;
+      }
+      timer = window.setTimeout(() => { button.textContent = label; }, 2000);
+    });
+  }
+</script>
+<style>
+  .notebook :global(.prose :is(em, i, h2):lang(zh)) { font-style: normal; letter-spacing: normal; }
+  .project { padding-top: clamp(2rem, 5vw, 4.4rem); }
+  .back { font-size: .9rem; }
+  header { text-align: center; max-width: 50rem; margin: 2rem auto clamp(2rem, 6vw, 4rem); }
+  h1 { font-size: var(--page-title-size); margin-top: .25em; text-wrap: pretty; overflow-wrap: anywhere; }
+  .subtitle { font: 500 var(--page-subtitle-size) / 1.4 var(--display); margin-top: .55rem; }
+  .summary { max-width: 62ch; margin: 1rem auto .65rem; }
+  header :global(.work-links) { margin-top: .65rem; justify-content: center; }
+  .body { width: min(100%, 68ch); margin-inline: auto; }
+  .body section > .prose { margin-top: clamp(1.15rem, 3.2vw, 2.65rem); }
+  .citation { margin-top: clamp(2.5rem, 6vw, 5rem); }
+  .citation :global(.section-heading h2) { margin: 0; }
+  :lang(zh) :is(h1, .subtitle, .summary) { font-style: normal; letter-spacing: normal; }
+  .citation pre { margin-block: .8rem; }
+</style>

@@ -1,0 +1,37 @@
+---
+import WorkMedia from './WorkMedia.astro';
+import { workPath, type Work } from '@/data/works';
+import { to, ui, type Lang } from '@/i18n';
+interface Props { work: Work; lang: Lang; shared?: boolean; archive?: boolean; }
+const { work, lang, shared = false, archive = false } = Astro.props;
+const compact = archive ? 520 : 650;
+const sizes = work.slug === 'digital-human'
+  ? '(max-width: ' + compact + 'px) 38vw, (max-width: 900px) 19vw, 162px'
+  : '(max-width: ' + compact + 'px) 90vw, (max-width: 900px) 44vw, (max-width: 1300px) 29vw, 380px';
+---
+<article class:list={["work-card", { archive, paper: archive && work.cover.mount }]}>
+  <a href={to(workPath(work), lang)} aria-label={work.title[lang]}>
+    <div class="card-media">
+      <WorkMedia work={work} lang={lang} mode={work.kind === 'design' ? 'hover' : 'still'} shared={shared}
+        sizes={sizes} />
+    </div>
+    <div class="card-copy">
+      <p class="mono muted">{work.venue?.short ?? ui.kinds[work.kind][lang]} · {work.year}</p>
+      <h3>{work.title[lang]}</h3>
+      <p>{work.summary[lang]}</p>
+    </div>
+    <span class="card-arrow" aria-hidden="true">↗</span>
+  </a>
+</article>
+<style>
+  .work-card { border-top: 1px solid var(--line); --cover-ratio: 4 / 3; }
+  .work-card a { position: relative; display: block; padding-top: .7rem; text-decoration: none; }
+  .card-copy { padding: .95rem 1.9rem .6rem 0; }
+  .card-copy h3 { margin-block: .3rem .45rem; overflow-wrap: anywhere; }
+  .card-copy p:last-child { color: var(--muted); font-size: .94rem; }
+  .card-copy h3 { font-size: var(--card-title-size); line-height: 1.35; }
+  .paper .card-media { --cover-fit: contain; --cover-ratio: 16 / 10; padding: .65rem; border: 1px solid var(--line); border-radius: 4px; background: #fffefb; }
+  .paper .card-media :global(.work-media) { background: #fffefb; border-radius: 0; }
+  :lang(zh) h3 { font-style: normal; letter-spacing: normal; }
+  .card-arrow { position: absolute; right: .15rem; bottom: .62rem; }
+</style>
